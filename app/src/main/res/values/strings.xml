@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">SunnyBnb</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
+
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="favourites">Favourites</string>
+    <string name="topDestinations">Top Destinations</string>
+    <string name="messages">Messages</string>
+    <string name="allCities">All Cities</string>
+    <string name="settings">Settings</string>
+    <string name="logIn">Log In</string>
+    <string name="logOut">Log Out</string>
 </resources>

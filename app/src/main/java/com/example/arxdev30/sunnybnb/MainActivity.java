@@ -1,11 +1,8 @@
 package com.example.arxdev30.sunnybnb;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -54,6 +51,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Top right corner
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -70,18 +70,41 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displaySelectedScreen(int id) {
-        android.support.v4.app.Fragment fragment = null;
+        android.support.v4.app.Fragment fragment;
         switch (id) {
             case R.id.nav_home:
                 fragment = new HomeFragment();
                 break;
+            case R.id.nav_profile:
+                fragment = new ProfileFragment();
+                break;
+            case R.id.nav_favourites:
+                fragment = new FavouritesFragment();
+                break;
+            case R.id.nav_top_destinations:
+                fragment = new TopDestinationsFragment();
+                break;
+            case R.id.nav_cities:
+                fragment = new CitiesFragment();
+                break;
+            case R.id.nav_messages:
+                fragment = new MessagesFragment();
+                break;
+            case R.id.nav_changeAuthStatus:
+                fragment = new ChangeAuthStatusFragment();
+                break;
+            case R.id.nav_settings:
+                fragment = new SettingsFragment();
+                break;
+            default:
+                fragment = new HomeFragment();
+                break;
         }
 
-        if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
             ft.commit();
-        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -90,7 +113,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

@@ -1,6 +1,5 @@
 package com.example.arxdev30.sunnybnb;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -14,10 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-import static android.R.attr.data;
-import static android.R.attr.name;
 
 /**
  * Created by Pampoukidis on 29/5/2017.
@@ -31,7 +27,6 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         getActivity().setTitle("Home");
     }
 

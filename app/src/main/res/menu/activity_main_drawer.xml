@@ -4,16 +4,36 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Home" />
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_group_black_24dp"
+            android:title="@string/profile" />
+        <item
+            android:id="@+id/nav_favourites"
+            android:icon="@drawable/ic_heart"
+            android:title="@string/favourites" />
+        <item
+            android:id="@+id/nav_top_destinations"
+            android:icon="@drawable/ic_best"
+            android:title="@string/topDestinations" />
+        <item
+            android:id="@+id/nav_cities"
+            android:icon="@drawable/ic_city2"
+            android:title="@string/allCities" />
+        <item
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="@string/messages" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Settings" />
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/settings" />
         <item
-            android:id="@+id/nav_logOut"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Log Out" />
+            android:id="@+id/nav_changeAuthStatus"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="@string/logOut" />
     </group>
 
 </menu>
