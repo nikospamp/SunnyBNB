@@ -45,18 +45,16 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
                 Log.d("BTN", "onClick: ");
 
-                Map<String, Object> dataObj = new HashMap<>();
-                dataObj.put("Name", "Mike");
-                dataObj.put("Surname", "Pampoukidis");
-                dataObj.put("Age", "24");
-
-                mDatabase.child("Users").child("3").updateChildren(dataObj);
+//                Map<String, Object> dataObj = new HashMap<>();
+//                dataObj.put("Name", "Nick");
+//                dataObj.put("Surname", "Pampoukidis");
+//                dataObj.put("Age", "24");
+//
+//                mDatabase.child("Users").child("1").updateChildren(dataObj);
             }
         });
 
         return view;
-
-
     }
 
 }
