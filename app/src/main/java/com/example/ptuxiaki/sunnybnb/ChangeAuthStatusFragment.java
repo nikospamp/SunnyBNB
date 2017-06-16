@@ -15,6 +15,7 @@ import android.widget.Button;
 public class ChangeAuthStatusFragment extends android.support.v4.app.Fragment {
     private Button mButton;
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -27,15 +28,13 @@ public class ChangeAuthStatusFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.loguser, container, false);
 
         mButton = (Button) view.findViewById(R.id.logBtn);
-
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("BTN", "onClick: ");
+                Log.d("BTN", "db onClick: ");
             }
         });
 
         return view;
-
     }
 }
