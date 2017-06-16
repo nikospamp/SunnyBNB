@@ -1,4 +1,4 @@
-package com.example.arxdev30.sunnybnb;
+package com.example.ptuxiaki.sunnybnb;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,9 +10,6 @@ import android.widget.Button;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**

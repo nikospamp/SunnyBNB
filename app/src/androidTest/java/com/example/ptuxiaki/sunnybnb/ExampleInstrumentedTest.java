@@ -1,4 +1,4 @@
-package com.example.arxdev30.sunnybnb;
+package com.example.ptuxiaki.sunnybnb;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.arxdev30.sunnybnb", appContext.getPackageName());
+        assertEquals("com.example.ptuxiaki.sunnybnb", appContext.getPackageName());
     }
 }

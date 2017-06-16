@@ -1,4 +1,4 @@
-package com.example.arxdev30.sunnybnb;
+package com.example.ptuxiaki.sunnybnb;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,21 +12,21 @@ import android.widget.Button;
  * Created by Pampoukidis on 1/6/2017.
  */
 
-public class MessagesFragment extends android.support.v4.app.Fragment {
+public class ChangeAuthStatusFragment extends android.support.v4.app.Fragment {
     private Button mButton;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Messages");
+        getActivity().setTitle("User Log(in/out)");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.messages, container, false);
+        View view = inflater.inflate(R.layout.loguser, container, false);
 
-        mButton = (Button) view.findViewById(R.id.msgBtn);
+        mButton = (Button) view.findViewById(R.id.logBtn);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override

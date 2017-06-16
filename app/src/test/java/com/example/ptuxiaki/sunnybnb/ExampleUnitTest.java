@@ -1,4 +1,4 @@
-package com.example.arxdev30.sunnybnb;
+package com.example.ptuxiaki.sunnybnb;
 
 import org.junit.Test;
 
