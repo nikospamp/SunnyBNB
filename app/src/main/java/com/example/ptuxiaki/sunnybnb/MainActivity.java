@@ -3,6 +3,7 @@ package com.example.ptuxiaki.sunnybnb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,10 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,8 +52,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Log.d("Here","1");
         displaySelectedScreen(R.id.nav_home);
     }
+
 
     @Override
     public void onStart() {
@@ -58,6 +65,8 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
+                            .setTheme(R.style.DarkTheme)
+//                            .setLogo(R.mipmap.ic_launcher)
                             .setAvailableProviders(
                                     Arrays.asList(
                                             new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
@@ -67,7 +76,6 @@ public class MainActivity extends AppCompatActivity
                             .build(),
                     RC_SIGN_IN);
         }
-        displaySelectedScreen(R.id.nav_home);
     }
 
     @Override
@@ -98,7 +106,32 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.logOut_settings) {
+            AuthUI.getInstance()
+                    .signOut(MainActivity.this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.d(TAG, "onComplete: " + "user logged out!");
+                            mAuth = FirebaseAuth.getInstance();
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            if (currentUser == null) {
+                                startActivityForResult(
+                                        AuthUI.getInstance()
+                                                .createSignInIntentBuilder()
+                                                .setTheme(R.style.DarkTheme)
+                                                .setAvailableProviders(
+                                                        Arrays.asList(
+                                                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                                                new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build()
+                                                        ))
+                                                .build(),
+                                        RC_SIGN_IN);
+                            }
+                        }
+                    });
             return true;
         }
 
@@ -125,9 +158,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_messages:
                 fragment = new MessagesFragment();
-                break;
-            case R.id.nav_changeAuthStatus:
-                fragment = new ChangeAuthStatusFragment();
                 break;
             case R.id.nav_settings:
                 fragment = new SettingsFragment();

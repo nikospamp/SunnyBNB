@@ -26,6 +26,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Home");
+
     }
 
     @Nullable
