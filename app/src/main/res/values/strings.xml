@@ -14,4 +14,6 @@
     <string name="logIn">Log In</string>
     <string name="logOut">Log Out</string>
     <string name="title_activity_starting">StartingActivity</string>
+
+    <string name="facebook_application_id" translatable="false">142585292966099</string>
 </resources>

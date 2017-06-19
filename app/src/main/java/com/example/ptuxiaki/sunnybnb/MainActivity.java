@@ -14,23 +14,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
+    private static final int RC_SIGN_IN = 123;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Auth
         mAuth = FirebaseAuth.getInstance();
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,11 +54,20 @@ public class MainActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
-            Intent startIntent = new Intent(MainActivity.this, StartingActivity.class);
-            startActivity(startIntent);
-            finish();
+        if (currentUser == null) {
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(
+                                    Arrays.asList(
+                                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                            new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build()
+                                    ))
+                            .build(),
+                    RC_SIGN_IN);
         }
+        displaySelectedScreen(R.id.nav_home);
     }
 
     @Override
