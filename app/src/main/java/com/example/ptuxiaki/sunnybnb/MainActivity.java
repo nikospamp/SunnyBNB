@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Log.d("Here","1");
+        Log.d("Here", "1");
         displaySelectedScreen(R.id.nav_home);
     }
 
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displaySelectedScreen(int id) {
-        android.support.v4.app.Fragment fragment;
+        android.support.v4.app.Fragment fragment = null;
         switch (id) {
             case R.id.nav_home:
                 fragment = new HomeFragment();
@@ -160,17 +160,19 @@ public class MainActivity extends AppCompatActivity
                 fragment = new MessagesFragment();
                 break;
             case R.id.nav_settings:
-                fragment = new SettingsFragment();
+                Intent settingsIntent = new Intent(MainActivity.this, Settings2Activity.class);
+                startActivity(settingsIntent);
                 break;
             default:
                 fragment = new HomeFragment();
                 break;
         }
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_main, fragment);
-        ft.commit();
-
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, fragment);
+            ft.commit();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
