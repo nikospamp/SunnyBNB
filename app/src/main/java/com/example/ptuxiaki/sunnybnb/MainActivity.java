@@ -3,7 +3,6 @@ package com.example.ptuxiaki.sunnybnb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +20,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity
 
         Log.d("Here", "2");
         displaySelectedScreen(R.id.nav_home);
+
+
     }
 
 
@@ -96,19 +100,47 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            FirebaseUser signedUser = mAuth.getCurrentUser();
 
-            uid = setNullToDefaultValue(signedUser.getUid());
-            displayName = setNullToDefaultValue(signedUser.getDisplayName());
-            email = setNullToDefaultValue(signedUser.getEmail());
-            photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl().toString());
-            provider = setNullToDefaultValue(signedUser.getProviderId());
-            phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
+            final FirebaseUser signedUser = mAuth.getCurrentUser();
 
-            Log.d(TAG, "onActivityResult: User Signed In!");
-            User mUser = new User(uid, displayName, email, photoUrl, provider, phoneNumber);
-            Map<String, Object> userMap = mUser.toMap();
-            mDatabase.child(getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
+            ValueEventListener postListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Time now = new Time();
+                    Log.d(TAG, "onDataChange: TIME " + now.toString());
+                    Log.d(TAG, "onDataChange: " + dataSnapshot.child(getString(R.string.users)).child(signedUser.getUid()).exists());
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                    if (!dataSnapshot.child(getString(R.string.users)).child(signedUser.getUid()).exists()) {
+                        Log.d(TAG, "onDataChange: REGISTER");
+                        uid = setNullToDefaultValue(signedUser.getUid());
+                        displayName = setNullToDefaultValue(signedUser.getDisplayName());
+                        email = setNullToDefaultValue(signedUser.getEmail());
+                        photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl().toString());
+                        provider = setNullToDefaultValue(signedUser.getProviderId());
+                        phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
+
+                        Log.d(TAG, "onActivityResult: User Signed In!");
+                        User mUser = new User(uid, displayName, email, photoUrl, provider, phoneNumber);
+                        Map<String, Object> userMap = mUser.toMap();
+                        userMap.put("register_date", format.toString());
+
+                        mDatabase.child(getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
+                    } else {
+                        Log.d(TAG, "onDataChange: LOGIN");
+                        mDatabase.child(getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).child("last_login").setValue(format.toLocalizedPattern());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                }
+            };
+
+            mDatabase.addListenerForSingleValueEvent(postListener);
+
+
         }
     }
 
@@ -233,3 +265,4 @@ public class MainActivity extends AppCompatActivity
         return s;
     }
 }
+
