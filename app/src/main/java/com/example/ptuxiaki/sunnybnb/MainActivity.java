@@ -20,8 +20,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -30,7 +34,15 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     private static final int RC_SIGN_IN = 123;
+
+    String uid;
+    String displayName;
+    String email;
+    String photoUrl;
+    String provider;
+    String phoneNumber;
 
 
     @Override
@@ -39,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,6 +92,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            FirebaseUser signedUser = mAuth.getCurrentUser();
+
+            uid = setNullToDefaultValue(signedUser.getUid());
+            displayName = setNullToDefaultValue(signedUser.getDisplayName());
+            email = setNullToDefaultValue(signedUser.getEmail());
+            photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl().toString());
+            provider = setNullToDefaultValue(signedUser.getProviderId());
+            phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
+
+            Log.d(TAG, "onActivityResult: User Signed In!");
+            User mUser = new User(uid, displayName, email, photoUrl, provider, phoneNumber);
+            Map<String, Object> userMap = mUser.toMap();
+            mDatabase.child(getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -113,10 +147,11 @@ public class MainActivity extends AppCompatActivity
 
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Log.d(TAG, "onComplete: " + "user logged out!");
+                            Log.d(TAG, "onComplete: " + "User logged out!");
                             mAuth = FirebaseAuth.getInstance();
                             FirebaseUser currentUser = mAuth.getCurrentUser();
                             if (currentUser == null) {
+                                Log.d(TAG, "onComplete: User is null");
                                 startActivityForResult(
                                         AuthUI.getInstance()
                                                 .createSignInIntentBuilder()
@@ -188,5 +223,13 @@ public class MainActivity extends AppCompatActivity
         displaySelectedScreen(id);
 
         return true;
+    }
+
+    //Database Housekeeping
+    public String setNullToDefaultValue(String s) {
+        String defaultValue = "default_value";
+        if (s == null)
+            return defaultValue;
+        return s;
     }
 }
