@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_cities:
                 fragment = new CitiesFragment();
                 //random test comment
+                //random slack commit
                 break;
             case R.id.nav_messages:
                 fragment = new MessagesFragment();
