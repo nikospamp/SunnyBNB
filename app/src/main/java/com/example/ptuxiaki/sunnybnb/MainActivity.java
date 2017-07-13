@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_cities:
                 fragment = new CitiesFragment();
+                //random test comment
                 break;
             case R.id.nav_messages:
                 fragment = new MessagesFragment();
