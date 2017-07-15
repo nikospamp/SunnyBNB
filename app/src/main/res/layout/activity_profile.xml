@@ -39,14 +39,13 @@
         android:textSize="15sp" />
 
     <ImageView
+        android:layout_marginLeft="32dp"
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileStatus"
         android:layout_marginRight="16dp"
         android:layout_marginTop="72dp"
-        android:layout_toLeftOf="@+id/profileStatus"
-        android:layout_toStartOf="@+id/profileStatus"
         app:srcCompat="@drawable/ic_home_white_24px" />
 
     <TextView
@@ -136,5 +135,17 @@
         android:text="0"
         android:textColor="@color/colorAccent"
         android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friends"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/errorColor"
+        android:text="@string/user_settings"
+        android:textColor="@android:color/white"
+        android:onClick="settingsActivity"/>
 
 </RelativeLayout>

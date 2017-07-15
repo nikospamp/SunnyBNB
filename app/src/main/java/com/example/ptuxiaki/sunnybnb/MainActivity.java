@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity
     private String provider;
     private String phoneNumber;
     private String status;
+    private String token;
+    private String houses;
+    private String visitors;
+    private String friends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,9 +127,15 @@ public class MainActivity extends AppCompatActivity
                         photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl().toString());
                         provider = setNullToDefaultValue(signedUser.getProviderId());
                         phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
+                        token = setNullToDefaultValue(null);
+                        houses = "0";
+                        visitors = "0";
+                        friends = "0";
 
                         Log.d(TAG, "onActivityResult: User Signed In!");
-                        User mUser = new User(uid, status, displayName, email, photoUrl, provider, phoneNumber);
+                        User mUser = new User(uid, status, displayName, email,
+                                photoUrl, provider, phoneNumber, token, houses,
+                                visitors, friends);
                         Map<String, Object> userMap = mUser.toMap();
                         userMap.put("register_date", format.toString());
 

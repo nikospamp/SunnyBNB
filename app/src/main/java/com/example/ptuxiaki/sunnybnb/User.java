@@ -19,11 +19,14 @@ public class User {
     private String provider;
     private String phoneNumber;
     private String msgToken;
+    private String houses;
+    private String visitors;
+    private String friends;
 
     public User() {
     }
 
-    public User(String uid, String status, String displayName, String email, String photoUrl, String provider, String phoneNumber) {
+    public User(String uid, String status, String displayName, String email, String photoUrl, String provider, String phoneNumber, String msgToken, String houses, String visitors, String friends) {
         this.uid = uid;
         this.status = status;
         this.displayName = displayName;
@@ -31,48 +34,18 @@ public class User {
         this.photoUrl = photoUrl;
         this.provider = provider;
         this.phoneNumber = phoneNumber;
-
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-
-        return status;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getMsgToken() {
-        return msgToken;
+        this.msgToken = msgToken;
+        this.houses = houses;
+        this.visitors = visitors;
+        this.friends = friends;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setDisplayName(String displayName) {
@@ -99,6 +72,62 @@ public class User {
         this.msgToken = msgToken;
     }
 
+    public void setHouses(String houses) {
+        this.houses = houses;
+    }
+
+    public void setVisitors(String visitors) {
+        this.visitors = visitors;
+    }
+
+    public void setFriends(String friends) {
+        this.friends = friends;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getMsgToken() {
+        return msgToken;
+    }
+
+    public String getHouses() {
+        return houses;
+    }
+
+    public String getVisitors() {
+        return visitors;
+    }
+
+    public String getFriends() {
+        return friends;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> userObject = new HashMap<>();
@@ -111,21 +140,12 @@ public class User {
         userObject.put("provider", provider);
         userObject.put("phoneNumber", phoneNumber);
         userObject.put("msgToken", msgToken);
+        userObject.put("houses", houses);
+        userObject.put("visitors", visitors);
+        userObject.put("friends", friends);
 
         return userObject;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid='" + uid + '\'' +
-                "status='" + status + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", email='" + email + '\'' +
-                ", photoUrl='" + photoUrl + '\'' +
-                ", provider='" + provider + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", msgToken='" + msgToken + '\'' +
-                '}';
-    }
+
 }

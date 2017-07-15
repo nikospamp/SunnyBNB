@@ -96,4 +96,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="users">USERS</string>
     <string name="number_of_houses">Number Of Houses:</string>
+    <string name="user_settings">User Settings</string>
 </resources>

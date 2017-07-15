@@ -18,6 +18,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
@@ -121,6 +122,8 @@ public class Settings2Activity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+//        String s = getIntent().getStringExtra("fragToLoad");
+//        Log.d("TEMPO", "onCreate: "+s);
     }
 
     /**
@@ -182,6 +185,8 @@ public class Settings2Activity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
