@@ -3,6 +3,11 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="log_settings">Log Out</string>
+    
+    <string name="recent_news">Summer 2017</string>
+    <string name="in_news">mpla mpla</string>
+    <string name="publish_date">2017-04-30 12:13:14</string>
+    
 
     <string name="recent_news">Summer 2017</string>
     <string name="in_news">mpla mpla</string>
