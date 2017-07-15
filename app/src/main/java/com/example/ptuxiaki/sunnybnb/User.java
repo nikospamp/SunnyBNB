@@ -4,6 +4,7 @@ import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * Created by Pampoukidis on 7/7/2017.
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class User {
     private String uid;
+    private String status;
     private String displayName;
     private String email;
     private String photoUrl;
@@ -21,14 +23,24 @@ public class User {
     public User() {
     }
 
-    public User(String uid, String displayName, String email, String photoUrl, String provider, String phoneNumber) {
+    public User(String uid, String status, String displayName, String email, String photoUrl, String provider, String phoneNumber) {
         this.uid = uid;
+        this.status = status;
         this.displayName = displayName;
         this.email = email;
         this.photoUrl = photoUrl;
         this.provider = provider;
         this.phoneNumber = phoneNumber;
 
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+
+        return status;
     }
 
     public String getUid() {
@@ -92,6 +104,7 @@ public class User {
         HashMap<String, Object> userObject = new HashMap<>();
 
         userObject.put("uid", uid);
+        userObject.put("status", status);
         userObject.put("displayName", displayName);
         userObject.put("email", email);
         userObject.put("photoUrl", photoUrl);
@@ -106,6 +119,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "uid='" + uid + '\'' +
+                "status='" + status + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", email='" + email + '\'' +
                 ", photoUrl='" + photoUrl + '\'' +

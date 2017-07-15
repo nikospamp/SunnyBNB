@@ -39,16 +39,13 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference mDatabase;
     private static final int RC_SIGN_IN = 123;
 
-    String uid;
-    String displayName;
-    String email;
-    String photoUrl;
-    String provider;
-    String phoneNumber;
-
-
-
-
+    private String uid;
+    private String displayName;
+    private String email;
+    private String photoUrl;
+    private String provider;
+    private String phoneNumber;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +53,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -121,6 +117,7 @@ public class MainActivity extends AppCompatActivity
                     if (!dataSnapshot.child(getString(R.string.users)).child(signedUser.getUid()).exists()) {
                         Log.d(TAG, "onDataChange: REGISTER");
                         uid = setNullToDefaultValue(signedUser.getUid());
+                        status = "default_status";
                         displayName = setNullToDefaultValue(signedUser.getDisplayName());
                         email = setNullToDefaultValue(signedUser.getEmail());
                         photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl().toString());
@@ -128,7 +125,7 @@ public class MainActivity extends AppCompatActivity
                         phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
 
                         Log.d(TAG, "onActivityResult: User Signed In!");
-                        User mUser = new User(uid, displayName, email, photoUrl, provider, phoneNumber);
+                        User mUser = new User(uid, status, displayName, email, photoUrl, provider, phoneNumber);
                         Map<String, Object> userMap = mUser.toMap();
                         userMap.put("register_date", format.toString());
 
@@ -220,7 +217,9 @@ public class MainActivity extends AppCompatActivity
                 fragment = new HomeFragment();
                 break;
             case R.id.nav_profile:
-                fragment = new ProfileFragment();
+//                fragment = new ProfileFragment();
+                Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(profileIntent);
                 break;
             case R.id.nav_favourites:
                 fragment = new FavouritesFragment();
