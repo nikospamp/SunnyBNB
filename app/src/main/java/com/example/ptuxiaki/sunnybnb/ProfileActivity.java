@@ -2,6 +2,9 @@ package com.example.ptuxiaki.sunnybnb;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -53,8 +56,14 @@ public class ProfileActivity extends AppCompatActivity {
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ProfileActivity.this);
+                SharedPreferences.Editor editor = prefs.edit();
                 String user_name = dataSnapshot.child(displayName).getValue().toString();
+                editor.putString("display_name_text", user_name);
+                editor.apply();
                 String user_status = dataSnapshot.child(status).getValue().toString();
+                editor.putString("display_status_text", user_status);
+                editor.apply();
                 String user_image = dataSnapshot.child(photo).getValue().toString();
                 String user_houses = dataSnapshot.child(houses).getValue().toString();
                 String user_visitors = dataSnapshot.child(visitors).getValue().toString();

@@ -4,6 +4,7 @@ package com.example.ptuxiaki.sunnybnb;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -21,6 +22,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -36,6 +43,9 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class Settings2Activity extends AppCompatPreferenceActivity {
+
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -118,17 +128,28 @@ public class Settings2Activity extends AppCompatPreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
-//        String s = getIntent().getStringExtra("fragToLoad");
-//        Log.d("TEMPO", "onCreate: "+s);
+
+     /*   Log.d("settings2", "onCreate: ");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                Log.d("settings2", "onSharedPreferenceChanged: ");
+                Log.d("settings2", "prefs: " + prefs.toString());
+                Log.d("settings2", "key: " + key);
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(listener);*/
     }
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
+
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -181,20 +202,29 @@ public class Settings2Activity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class GeneralPreferenceFragment extends PreferenceFragment
+            implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+        private DatabaseReference mDatabaseReference;
+        private FirebaseUser mFirebaseUser;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+
+            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("USERS")
+                    .child(mFirebaseUser.getUid());
+            onSharedPreferenceChanged(null, "");
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("example_text"));
+            bindPreferenceSummaryToValue(findPreference("display_name_text"));
             bindPreferenceSummaryToValue(findPreference("example_list"));
         }
 
@@ -206,6 +236,37 @@ public class Settings2Activity extends AppCompatPreferenceActivity {
                 return true;
             }
             return super.onOptionsItemSelected(item);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (sharedPreferences != null) {
+                switch (key) {
+                    case "display_name_text":
+                        mDatabaseReference.child("displayName").setValue(sharedPreferences.getString(key, "default_value"));
+                        break;
+                    case "display_status_text":
+                        mDatabaseReference.child("status").setValue(sharedPreferences.getString(key, "default_value"));
+                        break;
+                    default:
+                        break;
+                }
+            }
+//            String value = sharedPreferences.getString(key, "");
+//            Log.i("generalFrag", value);
         }
     }
 
