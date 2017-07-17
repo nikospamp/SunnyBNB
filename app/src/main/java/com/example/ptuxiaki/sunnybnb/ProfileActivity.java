@@ -3,15 +3,20 @@ package com.example.ptuxiaki.sunnybnb;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +24,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,8 +43,10 @@ public class ProfileActivity extends AppCompatActivity {
     private String houses = "houses";
     private String visitors = "visitors";
     private String friends = "friends";
+    private CircleImageView image;
     private DatabaseReference mDatabaseReference;
     private FirebaseUser mCurrentUser;
+    private StorageReference mStorageReference;
     private ProgressDialog mProgressBar;
 
     @Override
@@ -43,12 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         getSupportActionBar().setTitle(profile);
 
+        image = (CircleImageView) findViewById(R.id.profileCircleImage);
+
         mProgressBar = new ProgressDialog(this);
         mProgressBar.setTitle("Getting User Profile");
         mProgressBar.setMessage("Please wait while we get your data!");
         mProgressBar.setCanceledOnTouchOutside(false);
         mProgressBar.show();
 
+        mStorageReference = FirebaseStorage.getInstance().getReference();
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference()
                 .child(users).child(mCurrentUser.getUid());
@@ -80,7 +95,6 @@ public class ProfileActivity extends AppCompatActivity {
                 visitorsTV.setText(user_visitors);
                 friendsTV.setText(user_friends);
 
-                CircleImageView image = (CircleImageView) findViewById(R.id.profileCircleImage);
                 Picasso.with(getApplicationContext()).load(user_image)
                         .placeholder(R.drawable.default_profile_image).into(image);
 
@@ -92,11 +106,59 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Circle", "onClick: ");
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1, 1)
+                        .start(ProfileActivity.this);
+            }
+        });
     }
 
     public void settingsActivity(View view) {
         Intent settingsIntent = new Intent(ProfileActivity.this, Settings2Activity.class);
         settingsIntent.putExtra("fragToLoad", "general");
         startActivity(settingsIntent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                mProgressBar.setTitle("Uploading Image");
+                mProgressBar.setMessage("Please wait while we upload your image!");
+                mProgressBar.setCanceledOnTouchOutside(false);
+                mProgressBar.show();
+                Uri resultUri = result.getUri();
+                StorageReference filepath = mStorageReference.child("profile_images")
+                        .child(mCurrentUser.getUid() + ".jpg");
+                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String download_url = task.getResult().getDownloadUrl().toString();
+                            mDatabaseReference.child("photoUrl").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    mProgressBar.dismiss();
+                                    Toast.makeText(ProfileActivity.this, "Images Uploaded!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else {
+                            mProgressBar.dismiss();
+                            Toast.makeText(ProfileActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 }
