@@ -63,16 +63,23 @@ public class ProfileActivity extends AppCompatActivity {
         mProgressBar.setCanceledOnTouchOutside(false);
         mProgressBar.show();
 
-        mStorageReference = FirebaseStorage.getInstance().getReference();
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        /**Edo arxikopoio ena reference to opoio deixne sto root tis vasis -> users -> currentUser
+         * */
         mDatabaseReference = FirebaseDatabase.getInstance().getReference()
                 .child(users).child(mCurrentUser.getUid());
 
+        /**Edo trabaei ta stoixeia pou 8elo kai tautoxrona "akouo" gia tuxon allages
+         * */
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ProfileActivity.this);
                 SharedPreferences.Editor editor = prefs.edit();
+                /**Edo px pairno displayName tou currentUser apo th vasi
+                 * Omoios pairno kai oti allo 8elo
+                 * */
                 String user_name = dataSnapshot.child(displayName).getValue().toString();
                 editor.putString("display_name_text", user_name);
                 editor.apply();
@@ -89,12 +96,17 @@ public class ProfileActivity extends AppCompatActivity {
                 TextView housesTV = (TextView) findViewById(R.id.profileHouseCounter);
                 TextView visitorsTV = (TextView) findViewById(R.id.profileVisitorsCounter);
                 TextView friendsTV = (TextView) findViewById(R.id.profileFriendsCounter);
+                /**Kai edo vazo to onoma poy trabiksa apo ti vasi
+                 * se ena textView sto profile mou
+                 * */
                 nameTV.setText(user_name);
                 statusTV.setText(user_status);
                 housesTV.setText(user_houses);
                 visitorsTV.setText(user_visitors);
                 friendsTV.setText(user_friends);
 
+                /**H' edo, pernao tin eikona pou traviksa apo ti vasi
+                 * */
                 Picasso.with(getApplicationContext()).load(user_image)
                         .placeholder(R.drawable.default_profile_image).into(image);
 
