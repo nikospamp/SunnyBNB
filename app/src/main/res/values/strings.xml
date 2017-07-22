@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="log_settings">Log Out</string>
-    
+
     <string name="recent_news">Summer 2017</string>
     <string name="in_news">mpla mpla</string>
     <string name="publish_date">2017-04-30 12:13:14</string>
@@ -99,4 +99,7 @@
     <string name="users">USERS</string>
     <string name="number_of_houses">Number Of Houses:</string>
     <string name="user_settings">User Settings</string>
+    <string name="house_name">House Name:</string>
+    <string name="description">Description</string>
+    <string name="add_a_house">Add A House</string>
 </resources>

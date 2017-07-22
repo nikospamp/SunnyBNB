@@ -227,7 +227,6 @@ public class MainActivity extends AppCompatActivity
                 fragment = new HomeFragment();
                 break;
             case R.id.nav_profile:
-//                fragment = new ProfileFragment();
                 Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(profileIntent);
                 break;
@@ -238,9 +237,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new TopDestinationsFragment();
                 break;
             case R.id.nav_cities:
-                fragment = new CitiesFragment();
-                //random test comment
-                //random slack commit
+
                 break;
             case R.id.nav_messages:
                 fragment = new MessagesFragment();
@@ -248,6 +245,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainActivity.this, Settings2Activity.class);
                 startActivity(settingsIntent);
+                break;
+            case R.id.nav_add_house:
+                Intent intent = new Intent(getApplicationContext(), homeAdd.class);
+                startActivity(intent);
                 break;
             default:
                 fragment = new HomeFragment();
