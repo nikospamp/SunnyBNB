@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class homeAdd extends AppCompatActivity implements ViewInterface {
 
@@ -35,6 +36,16 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     private DatabaseReference houseReference;
 
     private String HOUSES = "HOUSES";
+    private Object services_code[][] = {{"aircondition", 0},
+            {"balcony", 0}, {"breakfast", 0}, {"cafe_bar_restaurant", 0}
+            , {"child_keeping", 0}, {"clothes_laundry", 0}
+            , {"conference_rooms", 0}, {"dinner", 0}, {"doctor_support", 0}
+            , {"elevator", 0}, {"hair_dryer", 0}, {"in_room_safebox", 0}
+            , {"iron_ironing_board", 0}, {"minibar", 0}
+            , {"newspaper_delivery", 0}, {"parking", 0}
+            , {"private_bath", 0}, {"reception_24", 0}
+            , {"room_service", 0}, {"soundproof_walls", 0}
+            , {"telephone", 0}, {"wifi,0"}};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +76,8 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
         houseObject.put("description", "Mpla mpla mple");
 
         DatabaseReference tempRef = houseReference.child(HOUSES).push();
+        houseObject.put("hid", tempRef.getKey());
         tempRef.setValue(houseObject);
-        Log.d("keyDb", "onOptionsItemSelected: "+tempRef.getKey());
 
         return super.onOptionsItemSelected(item);
     }
@@ -98,7 +109,6 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
         @Override
         public void onBindViewHolder(CustomViewHolder holder, int position) {
             ServicesItem current = listOfData.get(position);
-
             holder.service.setText(current.getService());
         }
 
@@ -125,7 +135,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                 Log.d("TAG", "onClick: ");
                 ServicesItem servicesItem = listOfData.get(this.getAdapterPosition());
                 servicesPin[this.getAdapterPosition()] = 1;
-                controller.onListItemClick(servicesItem);
+//                controller.onListItemClick(servicesItem);
             }
         }
     }

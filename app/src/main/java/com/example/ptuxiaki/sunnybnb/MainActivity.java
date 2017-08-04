@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity
 
             mDatabase.addListenerForSingleValueEvent(postListener);
 
-
         }
     }
 
