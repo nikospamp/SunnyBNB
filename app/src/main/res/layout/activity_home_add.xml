@@ -60,6 +60,13 @@
             android:layout_alignParentRight="true"
             android:layout_alignStart="@+id/homeAddNameTInput"
             android:maxLines="1" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_home_add"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/homeAddHouseDesc"
+            android:padding="8dp" />
     </RelativeLayout>
 
 </ScrollView>

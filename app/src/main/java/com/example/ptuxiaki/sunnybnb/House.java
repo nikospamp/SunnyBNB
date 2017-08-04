@@ -424,7 +424,6 @@ public class House {
     public Map<String, Object> toMap() {
         HashMap<String, Object> houseObject = new HashMap<>();
 
-        houseObject.put("availability", availability);
         houseObject.put("city", city);
         houseObject.put("country", country);
         houseObject.put("description", description);
