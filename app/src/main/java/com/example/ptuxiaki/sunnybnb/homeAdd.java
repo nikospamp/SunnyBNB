@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,6 +59,8 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     private TextInputEditText homeAddCountry;
     private TextInputEditText homeAddCity;
     private TextInputEditText homeAddPostalCode;
+
+    private boolean dividerFlag = true;
 
     private Object services_code[][] = {{"aircondition", 0},
             {"balcony", 0}, {"breakfast", 0}, {"cafe_bar_restaurant", 0}
@@ -178,9 +182,17 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     @Override
     public void setUpAdapterAndView(List<ServicesItem> listOfData) {
         this.listOfData = listOfData;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
         adapter = new CustomAdapter();
+
+        if (dividerFlag) {
+            DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+            itemDecoration.setDrawable(ContextCompat.getDrawable(homeAdd.this, R.drawable.devider_white));
+            recyclerView.addItemDecoration(itemDecoration);
+            dividerFlag = false;
+        }
         recyclerView.setAdapter(adapter);
     }
 
@@ -236,9 +248,9 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                 else
                     services_code[this.getAdapterPosition()][1] = 0;
 
-                controller = new Controller(homeAdd.this, new ServiceDataSource());
 
                 printTable(services_code);
+                controller = new Controller(homeAdd.this, new ServiceDataSource());
 //                controller.onListItemClick(servicesItem);
             }
         }
