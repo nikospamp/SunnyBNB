@@ -147,60 +147,61 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        mProgressBar = new ProgressDialog(this);
-        mProgressBar.setTitle("Setting Up Your House");
-        mProgressBar.setMessage("Please wait while we upload your house!");
-        mProgressBar.setCanceledOnTouchOutside(false);
-        mProgressBar.show();
+        if (item.getItemId() == R.id.homeAddUploadBtn) {
+            mProgressBar = new ProgressDialog(this);
+            mProgressBar.setTitle("Setting Up Your House");
+            mProgressBar.setMessage("Please wait while we upload your house!");
+            mProgressBar.setCanceledOnTouchOutside(false);
+            mProgressBar.show();
 
-        final HashMap<String, Object> houseObject = new HashMap<>();
+            final HashMap<String, Object> houseObject = new HashMap<>();
 
-        houseObject.put("city", homeAddCity.getText().toString());
-        houseObject.put("country", homeAddCountry.getText().toString());
-        houseObject.put("description", homeAddDescription.getText().toString());
-        houseObject.put("house_name", homeAddHouseName.getText().toString());
-        houseObject.put("longitude", "52.25854");
-        houseObject.put("latitude", "123.17477");
-        houseObject.put("max_people", homeAddNumberOfGuests.getText().toString());
-        houseObject.put("price", homeAddPrice.getText().toString());
-        houseObject.put("uid", mAuth.getCurrentUser().getUid());
+            houseObject.put("city", homeAddCity.getText().toString());
+            houseObject.put("country", homeAddCountry.getText().toString());
+            houseObject.put("description", homeAddDescription.getText().toString());
+            houseObject.put("house_name", homeAddHouseName.getText().toString());
+            houseObject.put("longitude", "52.25854");
+            houseObject.put("latitude", "123.17477");
+            houseObject.put("max_people", homeAddNumberOfGuests.getText().toString());
+            houseObject.put("price", homeAddPrice.getText().toString());
+            houseObject.put("uid", mAuth.getCurrentUser().getUid());
 
-        HashMap<String, String> services_obj;
-        services_obj = populateServicesObject(services_code);
+            HashMap<String, String> services_obj;
+            services_obj = populateServicesObject(services_code);
 
-        houseObject.put("services", services_obj);
+            houseObject.put("services", services_obj);
 
-        final DatabaseReference tempRef = houseReference.child(HOUSES).push();
-        houseObject.put("hid", tempRef.getKey());
+            final DatabaseReference tempRef = houseReference.child(HOUSES).push();
+            houseObject.put("hid", tempRef.getKey());
 
-        StorageReference filePath = mStorageReference.child("house_images")
-                .child(tempRef.getKey() + ".jpg");
+            StorageReference filePath = mStorageReference.child("house_images")
+                    .child(tempRef.getKey() + ".jpg");
 
-        filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()) {
-                    String download_url = task.getResult().getDownloadUrl().toString();
-                    houseObject.put("mainFoto", download_url);
-                    tempRef.setValue(houseObject).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            mProgressBar.dismiss();
-                            Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(homeAdd.this, MainActivity.class));
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(homeAdd.this, e.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        String download_url = task.getResult().getDownloadUrl().toString();
+                        houseObject.put("mainFoto", download_url);
+                        tempRef.setValue(houseObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                mProgressBar.dismiss();
+                                Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(homeAdd.this, MainActivity.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(homeAdd.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
 
-
+        }
         return super.onOptionsItemSelected(item);
     }
 
