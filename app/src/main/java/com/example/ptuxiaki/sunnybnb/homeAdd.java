@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -48,18 +49,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class homeAdd extends AppCompatActivity implements ViewInterface {
 
-    private static final String EXTRA_SERVICE = "EXTRA_SERVICE";
-    private int servicesPin[];
-
     private List<ServicesItem> listOfData;
     private LayoutInflater layoutInflater;
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     private Controller controller;
+
     private DatabaseReference houseReference;
     private FirebaseAuth mAuth;
     private StorageReference mStorageReference;
-
 
     private String HOUSES = "HOUSES";
 
@@ -73,11 +71,8 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     private CircleImageView homeAddCircleImage;
 
     private Uri imageUri;
-
     private boolean dividerFlag = true;
-
     private ProgressDialog mProgressBar;
-
 
     private Object services_code[][] = {{"aircondition", 0},
             {"balcony", 0}, {"breakfast", 0}, {"cafe_bar_restaurant", 0}
@@ -135,6 +130,8 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 imageUri = result.getUri();
+                Picasso.with(getApplicationContext()).load(imageUri)
+                        .placeholder(R.drawable.default_profile_image).into(homeAddCircleImage);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -312,8 +309,6 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                 else
                     services_code[this.getAdapterPosition()][1] = 0;
 
-
-                printTable(services_code);
                 controller = new Controller(homeAdd.this, new ServiceDataSource());
 //                controller.onListItemClick(servicesItem);
             }
