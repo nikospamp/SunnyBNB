@@ -8,7 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
         android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatImageView
@@ -22,13 +23,11 @@
 
         <TextView
             android:id="@+id/homeAddHouseNameTv"
+            style="@style/homeAddTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/homeAddImage"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/house_name"
-            android:textSize="20sp" />
+            android:text="@string/house_name" />
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/homeAddNameTInput"
@@ -39,19 +38,19 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignStart="@+id/homeAddImage"
+            android:inputType="text"
             android:maxLines="1" />
 
         <TextView
             android:id="@+id/homeAddHouseDesc"
+            style="@style/homeAddTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/homeAddHouseNameTv"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/description"
-            android:textSize="20sp" />
+            android:text="@string/description2" />
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/homeAddHouseDescInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/homeAddHouseDesc"
@@ -59,14 +58,157 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignStart="@+id/homeAddNameTInput"
+            android:inputType="text"
             android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/homeAddHousePrice"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeAddHouseDesc"
+            android:text="@string/price" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/homeAddPriceInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeAddHousePrice"
+            android:layout_alignLeft="@+id/homeAddImage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@+id/homeAddImage"
+            android:inputType="number"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/homeAddMaxPeople"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeAddHousePrice"
+            android:text="@string/number_of_guests" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/homeAddMaxPeopleInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeAddMaxPeople"
+            android:layout_alignLeft="@+id/homeAddImage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@+id/homeAddImage"
+            android:inputType="number"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/homeAddHouseCountry"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeAddMaxPeople"
+            android:text="@string/country" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/homeAddCountryInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeAddHouseCountry"
+            android:layout_alignLeft="@+id/homeAddImage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@+id/homeAddImage"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/homeAddHouseCity"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeAddHouseCountry"
+            android:text="City:" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/homeAddCityInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeAddHouseCity"
+            android:layout_alignLeft="@+id/homeAddImage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@+id/homeAddImage"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/homeAddPostal"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeAddHouseCity"
+            android:text="@string/postal_code" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/homeAddPostalInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeAddPostal"
+            android:layout_alignLeft="@+id/homeAddImage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@+id/homeAddImage"
+            android:inputType="number"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/homeAddCoordinates"
+
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeAddPostal"
+            android:layout_marginTop="8dp"
+            android:text="@string/coordinates" />
+
+        <Button
+            android:id="@+id/homeAddCoordinatesInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeAddCoordinates"
+            android:layout_alignLeft="@+id/homeAddImage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@+id/homeAddImage"
+            android:layout_margin="4dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/open_map"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/homeAddServices"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/homeAddCoordinates"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/services"
+            android:textAllCaps="true"
+            android:textSize="26sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_home_add"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/homeAddHouseDesc"
-            android:padding="8dp" />
+            android:layout_below="@id/homeAddServices" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recycler_home_add"
+            android:text="Dummy text " />
     </RelativeLayout>
 
 </ScrollView>
+

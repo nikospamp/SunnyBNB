@@ -23,6 +23,7 @@ public class House {
     private String max_people;
     private String price;
     private String rating;
+    private String postalCode;
     //Services
     private String aircondition;
     private String balcony;
@@ -51,7 +52,7 @@ public class House {
     public House() {
     }
 
-    public House(String availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, String rating, String aircondition, String balcony, String breakfast, String cafe_bar_restaurant, String child_keeping, String clothes_laundry, String conference_rooms, String dinner, String doctor_support, String elevator, String hair_dryer, String in_room_safebox, String iron_ironing_board, String minibar, String newspaper_delivery, String parking, String private_bath, String reception_24, String room_service, String soundproof_walls, String wifi, String uid, Object user_reviews) {
+    public House(String availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, String rating, String postalCode, String aircondition, String balcony, String breakfast, String cafe_bar_restaurant, String child_keeping, String clothes_laundry, String conference_rooms, String dinner, String doctor_support, String elevator, String hair_dryer, String in_room_safebox, String iron_ironing_board, String minibar, String newspaper_delivery, String parking, String private_bath, String reception_24, String room_service, String soundproof_walls, String wifi, String uid, Object user_reviews) {
         this.availability = availability;
         this.city = city;
         this.country = country;
@@ -88,6 +89,15 @@ public class House {
         this.wifi = wifi;
         this.uid = uid;
         this.user_reviews = user_reviews;
+        this.postalCode = postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public void setAvailability(String availability) {
@@ -394,6 +404,7 @@ public class House {
                 ", max_people='" + max_people + '\'' +
                 ", price='" + price + '\'' +
                 ", rating='" + rating + '\'' +
+                ", postalCode='" + postalCode + '\'' +
                 ", aircondition='" + aircondition + '\'' +
                 ", balcony='" + balcony + '\'' +
                 ", breakfast='" + breakfast + '\'' +
@@ -436,6 +447,7 @@ public class House {
         houseObject.put("max_people", max_people);
         houseObject.put("price", price);
         houseObject.put("rating", rating);
+        houseObject.put("postalCode", postalCode);
         houseObject.put("aircondition", aircondition);
         houseObject.put("balcony", balcony);
         houseObject.put("breakfast", breakfast);

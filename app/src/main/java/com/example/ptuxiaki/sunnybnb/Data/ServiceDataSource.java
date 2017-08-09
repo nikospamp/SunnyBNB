@@ -10,9 +10,9 @@ import java.util.List;
 public class ServiceDataSource implements DataSourceInterface {
 
     //22
-    private final String services[] = {"aircondition", "balcony", "breakfast", "cafe_bar_restaurant", "child_keeping", "clothes_laundry", "conference_rooms"
-            , "dinner", "doctor_support", "elevator", "hair_dryer", "in_room_safebox", "iron_ironing_board", "minibar", "newspaper_delivery"
-            , "parking", "private_bath", "reception_24", "room_service", "soundproof_walls", "telephone", "wifi"};
+    private final String services[] = {"Air Condition", "Balcony", "Breakfast", "Cafe/Bar & Restaurant", "Child Keeping", "Laundry", "Conference Rooms"
+            , "Dinner", "Doctor Support", "Elevator", "Hair_Dryer", "Safe Box", "Iron & Ironing Board", "Minibar", "Newspaper Delivery"
+            , "Parking", "Private Bath", "Reception 24/7", "Room Service", "Soundproof Walls", "Telephone", "Wifi"};
 
     @Override
     public List<ServicesItem> getListOfData() {

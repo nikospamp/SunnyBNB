@@ -102,4 +102,12 @@
     <string name="house_name">House Name:</string>
     <string name="description">Description</string>
     <string name="add_a_house">Add A House</string>
+    <string name="services">Provided Services</string>
+    <string name="description2">Description:</string>
+    <string name="price">Price:</string>
+    <string name="country">Country:</string>
+    <string name="postal_code">Postal Code:</string>
+    <string name="number_of_guests">Number Of Guests:</string>
+    <string name="coordinates">Coordinates:</string>
+    <string name="open_map">Open Map</string>
 </resources>
