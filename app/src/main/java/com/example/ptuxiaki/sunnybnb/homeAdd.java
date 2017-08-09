@@ -1,6 +1,7 @@
 package com.example.ptuxiaki.sunnybnb;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -30,12 +31,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class homeAdd extends AppCompatActivity implements ViewInterface {
 
@@ -49,6 +57,8 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     private Controller controller;
     private DatabaseReference houseReference;
     private FirebaseAuth mAuth;
+    private StorageReference mStorageReference;
+
 
     private String HOUSES = "HOUSES";
 
@@ -59,6 +69,9 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     private TextInputEditText homeAddCountry;
     private TextInputEditText homeAddCity;
     private TextInputEditText homeAddPostalCode;
+    private CircleImageView homeAddCircleImage;
+
+    private Uri imageUri;
 
     private boolean dividerFlag = true;
 
@@ -82,6 +95,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
         mAuth = FirebaseAuth.getInstance();
         houseReference = FirebaseDatabase.getInstance().getReference();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
 
 //        servicesPin = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -92,11 +106,35 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
         homeAddCountry = (TextInputEditText) findViewById(R.id.homeAddCountryInput);
         homeAddCity = (TextInputEditText) findViewById(R.id.homeAddCityInput);
         homeAddPostalCode = (TextInputEditText) findViewById(R.id.homeAddPostalInput);
+        homeAddCircleImage = (CircleImageView) findViewById(R.id.homeAddImage);
+
+        homeAddCircleImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1, 1)
+                        .start(homeAdd.this);
+            }
+        });
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_home_add);
         layoutInflater = getLayoutInflater();
         controller = new Controller(this, new ServiceDataSource());
 
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                imageUri = result.getUri();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 
     @Override
@@ -107,7 +145,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        HashMap<String, Object> houseObject = new HashMap<>();
+        final HashMap<String, Object> houseObject = new HashMap<>();
 
         houseObject.put("city", homeAddCity.getText().toString());
         houseObject.put("country", homeAddCountry.getText().toString());
@@ -124,21 +162,35 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
         houseObject.put("services", services_obj);
 
-        DatabaseReference tempRef = houseReference.child(HOUSES).push();
+        final DatabaseReference tempRef = houseReference.child(HOUSES).push();
         houseObject.put("hid", tempRef.getKey());
-        tempRef.setValue(houseObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        StorageReference filePath = mStorageReference.child("house_images")
+                .child(tempRef.getKey() + ".jpg");
+
+        filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(homeAdd.this, MainActivity.class));
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(homeAdd.this, e.toString(), Toast.LENGTH_SHORT).show();
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+                    String download_url = task.getResult().getDownloadUrl().toString();
+                    houseObject.put("mainFoto", download_url);
+                    tempRef.setValue(houseObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(homeAdd.this, MainActivity.class));
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(homeAdd.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
+
 
         return super.onOptionsItemSelected(item);
     }

@@ -12,14 +12,14 @@
         android:layout_margin="0dp"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/homeAddImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            app:srcCompat="@drawable/ic_house" />
+            android:src="@drawable/ic_house" />
 
         <TextView
             android:id="@+id/homeAddHouseNameTv"
