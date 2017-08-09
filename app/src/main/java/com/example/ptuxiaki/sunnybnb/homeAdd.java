@@ -1,5 +1,6 @@
 package com.example.ptuxiaki.sunnybnb;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -75,6 +76,9 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
     private boolean dividerFlag = true;
 
+    private ProgressDialog mProgressBar;
+
+
     private Object services_code[][] = {{"aircondition", 0},
             {"balcony", 0}, {"breakfast", 0}, {"cafe_bar_restaurant", 0}
             , {"child_keeping", 0}, {"clothes_laundry", 0}
@@ -145,6 +149,13 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        mProgressBar = new ProgressDialog(this);
+        mProgressBar.setTitle("Setting Up Your House");
+        mProgressBar.setMessage("Please wait while we upload your house!");
+        mProgressBar.setCanceledOnTouchOutside(false);
+        mProgressBar.show();
+
         final HashMap<String, Object> houseObject = new HashMap<>();
 
         houseObject.put("city", homeAddCity.getText().toString());
@@ -177,6 +188,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                     tempRef.setValue(houseObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            mProgressBar.dismiss();
                             Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(homeAdd.this, MainActivity.class));
                             finish();
