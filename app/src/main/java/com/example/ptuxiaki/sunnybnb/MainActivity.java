@@ -236,8 +236,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new TopDestinationsFragment();
                 break;
             case R.id.nav_cities:
-                Intent testIntent = new Intent(getApplicationContext(), listActivityTest.class);
-                startActivity(testIntent);
+                fragment = new CitiesFragment();
                 break;
             case R.id.nav_messages:
                 fragment = new MessagesFragment();
