@@ -110,4 +110,7 @@
     <string name="number_of_guests">Number Of Guests:</string>
     <string name="coordinates">Coordinates:</string>
     <string name="open_map">Open Map</string>
+    <string name="title_activity_staring">StaringActivity</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

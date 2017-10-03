@@ -1,5 +1,6 @@
 package com.example.ptuxiaki.sunnybnb;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,13 +10,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -37,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseHouses;
     private static final int RC_SIGN_IN = 123;
 
     private String uid;
@@ -51,11 +60,12 @@ public class MainActivity extends AppCompatActivity
     private String visitors;
     private String friends;
 
+    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,6 +75,11 @@ public class MainActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabaseHouses = FirebaseDatabase.getInstance().getReference().child("HOUSES");
+
+        recyclerView = (RecyclerView) findViewById(R.id.mainRecycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -74,11 +89,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        Log.d("Here", "2");
-        displaySelectedScreen(R.id.nav_home);
-
-
     }
 
 
@@ -100,6 +110,66 @@ public class MainActivity extends AppCompatActivity
                                     ))
                             .build(),
                     RC_SIGN_IN);
+        }
+
+        FirebaseRecyclerAdapter<HousesModel, HousesViewHolder> mHousesRecyclerAdapter = new FirebaseRecyclerAdapter<HousesModel, HousesViewHolder>(
+                HousesModel.class,
+                R.layout.house_single,
+                HousesViewHolder.class,
+                mDatabaseHouses
+        ) {
+
+            @Override
+            protected void populateViewHolder(HousesViewHolder viewHolder, HousesModel model, int position) {
+                viewHolder.setHouseName(model.getHouse_name());
+                viewHolder.setCity(model.getCity(), model.getCountry());
+                viewHolder.setImage(model.getMainFoto(), getApplicationContext());
+                viewHolder.setPrice(model.getPrice());
+                final String houseId = getRef(position).getKey();
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent houseDetailsIntent = new Intent(MainActivity.this, HouseDetailsActivity.class);
+                        houseDetailsIntent.putExtra("house_id", houseId);
+                        startActivity(houseDetailsIntent);
+                    }
+                });
+            }
+        };
+
+        recyclerView.setAdapter(mHousesRecyclerAdapter);
+    }
+
+    private static class HousesViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+
+        public HousesViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+
+        void setHouseName(String house_name) {
+            TextView house_name_tv = (TextView) mView.findViewById(R.id.single_house_name_tv);
+            house_name_tv.setText(house_name);
+        }
+
+        public void setCity(String city, String country) {
+            TextView city_tv = (TextView) mView.findViewById(R.id.single_house_location_tv);
+            String finalString = city + "," + country;
+            city_tv.setText(finalString);
+        }
+
+
+        public void setImage(String mainFoto, Context context) {
+            ImageView main_image = (ImageView) mView.findViewById(R.id.single_house_image);
+            Picasso.with(context).load(mainFoto).placeholder(R.drawable.common_google_signin_btn_icon_dark_normal).into(main_image);
+        }
+
+        public void setPrice(String price) {
+            TextView price_tv = (TextView) mView.findViewById(R.id.single_house_price);
+            String finalText = price + "€";
+            price_tv.setText(finalText);
         }
     }
 
@@ -223,7 +293,7 @@ public class MainActivity extends AppCompatActivity
         android.support.v4.app.Fragment fragment = null;
         switch (id) {
             case R.id.nav_home:
-                fragment = new HomeFragment();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 break;
             case R.id.nav_profile:
                 Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
@@ -249,9 +319,7 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(), homeAdd.class);
                 startActivity(intent);
                 break;
-            default:
-                fragment = new HomeFragment();
-                break;
+
         }
 
         if (fragment != null) {
@@ -283,5 +351,7 @@ public class MainActivity extends AppCompatActivity
             return defaultValue;
         return s;
     }
+
+
 }
 

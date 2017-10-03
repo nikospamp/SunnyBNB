@@ -90,7 +90,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_add);
 
-        getSupportActionBar().setTitle("Add Your House");
+        getSupportActionBar().setTitle("Add Your HousesModel");
 
         mAuth = FirebaseAuth.getInstance();
         houseReference = FirebaseDatabase.getInstance().getReference();
@@ -149,7 +149,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
         if (item.getItemId() == R.id.homeAddUploadBtn) {
             mProgressBar = new ProgressDialog(this);
-            mProgressBar.setTitle("Setting Up Your House");
+            mProgressBar.setTitle("Setting Up Your HousesModel");
             mProgressBar.setMessage("Please wait while we upload your house!");
             mProgressBar.setCanceledOnTouchOutside(false);
             mProgressBar.show();
@@ -187,7 +187,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 mProgressBar.dismiss();
-                                Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(homeAdd.this, "HousesModel Uploaded!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(homeAdd.this, MainActivity.class));
                                 finish();
                             }
