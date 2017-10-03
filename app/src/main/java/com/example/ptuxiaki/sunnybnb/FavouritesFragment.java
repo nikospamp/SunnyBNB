@@ -1,12 +1,15 @@
 package com.example.ptuxiaki.sunnybnb;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * Created by Pampoukidis on 1/6/2017.
@@ -31,7 +34,10 @@ public class FavouritesFragment extends android.support.v4.app.Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("BTN", "onClick: ");
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String temp = prefs.getString("example_list", "not_found");
+                Toast.makeText(getContext(), temp, Toast.LENGTH_SHORT).show();
+
             }
         });
 

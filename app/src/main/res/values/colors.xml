@@ -31,4 +31,6 @@
     <color name="material_red_a200">#FF5252</color>
 
     <color name="material_deep_teal_a200">#ff80cbc4</color>
+
+    <color name="white">#ffffff</color>
 </resources>

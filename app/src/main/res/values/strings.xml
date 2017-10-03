@@ -3,11 +3,11 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="log_settings">Log Out</string>
-    
+
     <string name="recent_news">Summer 2017</string>
     <string name="in_news">mpla mpla</string>
     <string name="publish_date">2017-04-30 12:13:14</string>
-    
+
 
     <string name="home">Home</string>
     <string name="profile">Profile</string>
@@ -35,6 +35,8 @@
 
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_title_status">User Status</string>
+    <string name="pref_default_status">Hi Im using sunnybnb!</string>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -95,4 +97,20 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="users">USERS</string>
+    <string name="number_of_houses">Number Of Houses:</string>
+    <string name="user_settings">User Settings</string>
+    <string name="house_name">House Name:</string>
+    <string name="description">Description</string>
+    <string name="add_a_house">Add A House</string>
+    <string name="services">Provided Services</string>
+    <string name="description2">Description:</string>
+    <string name="price">Price:</string>
+    <string name="country">Country:</string>
+    <string name="postal_code">Postal Code:</string>
+    <string name="number_of_guests">Number Of Guests:</string>
+    <string name="coordinates">Coordinates:</string>
+    <string name="open_map">Open Map</string>
+    <string name="title_activity_staring">StaringActivity</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

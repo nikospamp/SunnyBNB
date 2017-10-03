@@ -17,6 +17,22 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="homeAddTheme">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="serviceText">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="details_text">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="DarkTheme">
         <item name="colorPrimary">@color/material_gray_900</item>
         <item name="colorPrimaryDark">@android:color/black</item>
@@ -25,10 +41,14 @@
         <item name="android:colorForeground">@android:color/white</item>
         <item name="android:textColor">@color/text_default_material_dark_primary</item>
         <item name="android:textColorPrimary">@color/text_default_material_dark_primary</item>
-        <item name="android:textColorPrimaryInverse">@color/text_default_material_light_primary</item>
+        <item name="android:textColorPrimaryInverse">@color/text_default_material_light_primary
+        </item>
         <item name="android:textColorSecondary">@color/text_default_material_dark_secondary</item>
-        <item name="android:textColorSecondaryInverse">@color/text_default_material_light_secondary</item>
+        <item name="android:textColorSecondaryInverse">
+            @color/text_default_material_light_secondary
+        </item>
         <item name="android:windowBackground">@color/material_gray_850</item>
     </style>
+
 
 </resources>
