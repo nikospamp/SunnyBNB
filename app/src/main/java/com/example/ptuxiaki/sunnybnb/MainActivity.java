@@ -351,7 +351,5 @@ public class MainActivity extends AppCompatActivity
             return defaultValue;
         return s;
     }
-
-
 }
 
