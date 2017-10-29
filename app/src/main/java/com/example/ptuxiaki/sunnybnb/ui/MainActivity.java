@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ptuxiaki.sunnybnb.Models.House;
+import com.example.ptuxiaki.sunnybnb.Models.User;
+import com.example.ptuxiaki.sunnybnb.R;
+import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesFragment;
+import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavouritesFragment;
+import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.homeAdd;
+import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesFragment;
+import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
+import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
+import com.example.ptuxiaki.sunnybnb.ui.TopDestinations.TopDestinationsFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -112,15 +122,15 @@ public class MainActivity extends AppCompatActivity
                     RC_SIGN_IN);
         }
 
-        FirebaseRecyclerAdapter<HousesModel, HousesViewHolder> mHousesRecyclerAdapter = new FirebaseRecyclerAdapter<HousesModel, HousesViewHolder>(
-                HousesModel.class,
+        FirebaseRecyclerAdapter<House, HousesViewHolder> mHousesRecyclerAdapter = new FirebaseRecyclerAdapter<House, HousesViewHolder>(
+                House.class,
                 R.layout.house_single,
                 HousesViewHolder.class,
                 mDatabaseHouses
         ) {
 
             @Override
-            protected void populateViewHolder(HousesViewHolder viewHolder, HousesModel model, int position) {
+            protected void populateViewHolder(HousesViewHolder viewHolder, House model, int position) {
                 viewHolder.setHouseName(model.getHouse_name());
                 viewHolder.setCity(model.getCity(), model.getCountry());
                 viewHolder.setImage(model.getMainFoto(), getApplicationContext());

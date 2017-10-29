@@ -1,10 +1,9 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.Models;
 
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Created by Pampoukidis on 7/7/2017.

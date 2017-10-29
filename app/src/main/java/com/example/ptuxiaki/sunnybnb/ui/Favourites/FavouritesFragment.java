@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.ui.Favourites;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.ptuxiaki.sunnybnb.R;
 
 /**
  * Created by Pampoukidis on 1/6/2017.

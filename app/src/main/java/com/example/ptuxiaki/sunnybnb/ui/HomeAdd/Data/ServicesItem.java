@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb.Data;
+package com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data;
 
 /**
  * Created by Pampoukidis on 4/8/2017.

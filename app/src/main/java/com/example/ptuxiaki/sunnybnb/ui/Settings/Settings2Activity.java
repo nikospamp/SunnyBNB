@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.ui.Settings;
 
 
 import android.annotation.TargetApi;
@@ -19,11 +19,10 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
-import android.widget.Toast;
 
+import com.example.ptuxiaki.sunnybnb.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

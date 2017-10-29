@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.ui.TopDestinations;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.ptuxiaki.sunnybnb.R;
 
 /**
  * Created by Pampoukidis on 1/6/2017.

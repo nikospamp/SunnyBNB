@@ -1,11 +1,10 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.ui.HomeAdd;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,14 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.ptuxiaki.sunnybnb.Data.ServiceDataSource;
-import com.example.ptuxiaki.sunnybnb.Data.ServicesItem;
-import com.example.ptuxiaki.sunnybnb.logic.Controller;
+import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServiceDataSource;
+import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServicesItem;
+import com.example.ptuxiaki.sunnybnb.R;
+import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.logic.Controller;
+import com.example.ptuxiaki.sunnybnb.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,11 +39,8 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -90,7 +87,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_add);
 
-        getSupportActionBar().setTitle("Add Your HousesModel");
+        getSupportActionBar().setTitle("Add Your House");
 
         mAuth = FirebaseAuth.getInstance();
         houseReference = FirebaseDatabase.getInstance().getReference();
@@ -149,7 +146,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
         if (item.getItemId() == R.id.homeAddUploadBtn) {
             mProgressBar = new ProgressDialog(this);
-            mProgressBar.setTitle("Setting Up Your HousesModel");
+            mProgressBar.setTitle("Setting Up Your House");
             mProgressBar.setMessage("Please wait while we upload your house!");
             mProgressBar.setCanceledOnTouchOutside(false);
             mProgressBar.show();
@@ -187,7 +184,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 mProgressBar.dismiss();
-                                Toast.makeText(homeAdd.this, "HousesModel Uploaded!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(homeAdd.this, MainActivity.class));
                                 finish();
                             }
@@ -236,6 +233,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     /**
      * RecyclerView
      */
+
     @Override
     public void addService(String service) {
         Log.d("TAG", "addService: ");

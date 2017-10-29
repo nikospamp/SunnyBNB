@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.ui.Settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

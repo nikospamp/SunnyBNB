@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb.Data;
+package com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb;
+package com.example.ptuxiaki.sunnybnb.Models;
 
 import com.google.firebase.database.Exclude;
 
@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by nikos on 22/7/2017.
  */
 
-public class HousesModel {
+public class House {
 
     private Object availability;
     private String city;
@@ -29,10 +29,10 @@ public class HousesModel {
     private Object user_reviews;
 
 
-    public HousesModel() {
+    public House() {
     }
 
-    public HousesModel(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, String rating, Object services, Object uid, Object user_reviews) {
+    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, String rating, Object services, Object uid, Object user_reviews) {
         this.availability = availability;
         this.city = city;
         this.country = country;
@@ -181,7 +181,7 @@ public class HousesModel {
 
     @Override
     public String toString() {
-        return "HousesModel{" +
+        return "House{" +
                 "availability=" + availability +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
