@@ -26,7 +26,7 @@ import com.example.ptuxiaki.sunnybnb.Models.User;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesFragment;
 import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavouritesFragment;
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.homeAdd;
+import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.HomeAdd;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesFragment;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             protected void populateViewHolder(HousesViewHolder viewHolder, House model, int position) {
-                viewHolder.setHouseName(model.getHouse_name());
+                viewHolder.setHouseName(model.getHouseName());
                 viewHolder.setCity(model.getCity(), model.getCountry());
                 viewHolder.setImage(model.getMainFoto(), getApplicationContext());
                 viewHolder.setPrice(model.getPrice());
@@ -164,19 +164,18 @@ public class MainActivity extends AppCompatActivity
             house_name_tv.setText(house_name);
         }
 
-        public void setCity(String city, String country) {
+        void setCity(String city, String country) {
             TextView city_tv = (TextView) mView.findViewById(R.id.single_house_location_tv);
             String finalString = city + "," + country;
             city_tv.setText(finalString);
         }
 
-
-        public void setImage(String mainFoto, Context context) {
+        void setImage(String mainFoto, Context context) {
             ImageView main_image = (ImageView) mView.findViewById(R.id.single_house_image);
             Picasso.with(context).load(mainFoto).placeholder(R.drawable.common_google_signin_btn_icon_dark_normal).into(main_image);
         }
 
-        public void setPrice(String price) {
+        void setPrice(String price) {
             TextView price_tv = (TextView) mView.findViewById(R.id.single_house_price);
             String finalText = price + "€";
             price_tv.setText(finalText);
@@ -326,7 +325,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(settingsIntent);
                 break;
             case R.id.nav_add_house:
-                Intent intent = new Intent(getApplicationContext(), homeAdd.class);
+                Intent intent = new Intent(getApplicationContext(), HomeAdd.class);
                 startActivity(intent);
                 break;
 

@@ -1,9 +1,6 @@
 package com.example.ptuxiaki.sunnybnb.Models;
 
-import com.google.firebase.database.Exclude;
-
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by nikos on 22/7/2017.
@@ -18,21 +15,21 @@ public class House {
     private Object fotos;
     private String hid;
     private String house_name;
-    private String langitude;
+    private String latitude;
     private String longitude;
     private String mainFoto;
     private String max_people;
     private String price;
     private String rating;
     private Object services;
-    private Object uid;
+    private String uid;
     private Object user_reviews;
 
 
     public House() {
     }
 
-    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, String rating, Object services, Object uid, Object user_reviews) {
+    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String latitude, String longitude, String mainFoto, String max_people, String price, String rating, Object services, String uid, Object user_reviews) {
         this.availability = availability;
         this.city = city;
         this.country = country;
@@ -40,7 +37,7 @@ public class House {
         this.fotos = fotos;
         this.hid = hid;
         this.house_name = house_name;
-        this.langitude = langitude;
+        this.latitude = latitude;
         this.longitude = longitude;
         this.mainFoto = mainFoto;
         this.max_people = max_people;
@@ -99,20 +96,20 @@ public class House {
         this.hid = hid;
     }
 
-    public String getHouse_name() {
+    public String getHouseName() {
         return house_name;
     }
 
-    public void setHouse_name(String house_name) {
+    public void setHouseName(String house_name) {
         this.house_name = house_name;
     }
 
-    public String getLangitude() {
-        return langitude;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLangitude(String langitude) {
-        this.langitude = langitude;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getLongitude() {
@@ -135,7 +132,7 @@ public class House {
         return max_people;
     }
 
-    public void setMax_people(String max_people) {
+    public void setMaxPeople(String max_people) {
         this.max_people = max_people;
     }
 
@@ -163,11 +160,11 @@ public class House {
         this.services = services;
     }
 
-    public Object getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(Object uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -189,7 +186,7 @@ public class House {
                 ", fotos=" + fotos +
                 ", hid='" + hid + '\'' +
                 ", house_name='" + house_name + '\'' +
-                ", langitude='" + langitude + '\'' +
+                ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
                 ", mainFoto='" + mainFoto + '\'' +
                 ", max_people='" + max_people + '\'' +
@@ -201,9 +198,18 @@ public class House {
                 '}';
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
+    public HashMap<String, Object> toMap() {
         HashMap<String, Object> houseObject = new HashMap<>();
+        houseObject.put("house_name", getHouseName());
+        houseObject.put("description", getDescription());
+        houseObject.put("city", getCity());
+        houseObject.put("country", getCountry());
+        houseObject.put("hid", getHid());
+        houseObject.put("latitude","<SOON>");
+        houseObject.put("longitude","<SOON>");
+        houseObject.put("max_people",getMax_people());
+        houseObject.put("price",getPrice());
+        houseObject.put("uid",getUid());
         return houseObject;
     }
 }

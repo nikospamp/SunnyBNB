@@ -1,214 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ptuxiaki.sunnybnb.ui.HomeAdd.homeAdd">
+    android:fillViewport="true"
+    android:overScrollMode="always"
+    tools:context="com.example.ptuxiaki.sunnybnb.ui.HomeAdd.HomeAdd">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="0dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guide_center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/homeAddImage"
+            android:id="@+id/homeAddMainImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_house" />
-
-        <TextView
-            android:id="@+id/homeAddHouseNameTv"
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddImage"
-            android:text="@string/house_name" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/homeAddNameTInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddHouseNameTv"
-            android:layout_alignLeft="@+id/homeAddImage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddImage"
-            android:inputType="text"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/homeAddHouseDesc"
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddHouseNameTv"
-            android:text="@string/description2" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/homeAddHouseDescInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddHouseDesc"
-            android:layout_alignLeft="@+id/homeAddNameTInput"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddNameTInput"
-            android:inputType="text"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/homeAddHousePrice"
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddHouseDesc"
-            android:text="@string/price" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/homeAddPriceInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddHousePrice"
-            android:layout_alignLeft="@+id/homeAddImage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddImage"
-            android:inputType="number"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/homeAddMaxPeople"
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddHousePrice"
-            android:text="@string/number_of_guests" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/homeAddMaxPeopleInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddMaxPeople"
-            android:layout_alignLeft="@+id/homeAddImage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddImage"
-            android:inputType="number"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/homeAddHouseCountry"
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddMaxPeople"
-            android:text="@string/country" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/homeAddCountryInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddHouseCountry"
-            android:layout_alignLeft="@+id/homeAddImage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddImage"
-            android:inputType="text"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/homeAddHouseCity"
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddHouseCountry"
-            android:text="City:" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/homeAddCityInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddHouseCity"
-            android:layout_alignLeft="@+id/homeAddImage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddImage"
-            android:inputType="text"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/homeAddPostal"
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddHouseCity"
-            android:text="@string/postal_code" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/homeAddPostalInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddPostal"
-            android:layout_alignLeft="@+id/homeAddImage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddImage"
-            android:inputType="number"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/homeAddCoordinates"
-
-            style="@style/homeAddTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeAddPostal"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/coordinates" />
+            android:focusableInTouchMode="true"
+            android:src="@drawable/ic_house"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/houseName"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="House Name:"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/homeAddMainImage" />
+
+        <EditText
+            android:id="@+id/homeAddHouseName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintBaseline_toBaselineOf="@+id/houseName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
+            android:id="@+id/houseDescription"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/description2"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseName" />
+
+        <EditText
+            android:id="@+id/homeAddDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:inputType="text"
+            app:layout_constraintBaseline_toBaselineOf="@+id/houseDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
+            android:id="@+id/houseCity"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="City:"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseDescription" />
+
+        <EditText
+            android:id="@+id/homeAddCity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:inputType="text"
+            app:layout_constraintBaseline_toBaselineOf="@+id/houseCity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
+            android:id="@+id/houseCountry"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Country:"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseCity" />
+
+        <EditText
+            android:id="@+id/homeAddCountry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintBaseline_toBaselineOf="@+id/houseCountry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
+            android:id="@+id/houseCoordinates"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Coordinates:"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseCountry" />
 
         <Button
-            android:id="@+id/homeAddCoordinatesInput"
-            android:layout_width="match_parent"
+            android:id="@+id/homeAddCoordinates"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/homeAddCoordinates"
-            android:layout_alignLeft="@+id/homeAddImage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/homeAddImage"
-            android:layout_margin="4dp"
-            android:background="@color/colorPrimaryDark"
-            android:text="@string/open_map"
-            android:textColor="@color/white" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/round_button"
+            android:text="Open Maps"
+            app:layout_constraintBaseline_toBaselineOf="@+id/houseCoordinates"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
 
         <TextView
-            android:id="@+id/homeAddServices"
+            android:id="@+id/houseMaxPeople"
             style="@style/homeAddTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/homeAddCoordinates"
-            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/services"
-            android:textAllCaps="true"
-            android:textSize="26sp" />
+            android:text="No. Of Guests:"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseCoordinates" />
+
+        <EditText
+            android:id="@+id/homeAddMaxPeople"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintBaseline_toBaselineOf="@+id/houseMaxPeople"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
+            android:id="@+id/housePrice"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Price:"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseMaxPeople" />
+
+        <EditText
+            android:id="@+id/homeAddPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintBaseline_toBaselineOf="@+id/housePrice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
+            android:id="@+id/houseServices"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Services"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/housePrice" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_home_add"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/homeAddServices" />
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/recycler_home_add"
-            android:text="Dummy text " />
-    </RelativeLayout>
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseServices" />
 
-</ScrollView>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>
+
 

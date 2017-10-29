@@ -19,7 +19,7 @@
 
     <style name="homeAddTheme">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:padding">8dp</item>
     </style>
 

@@ -11,7 +11,7 @@ public class ServiceDataSource implements DataSourceInterface {
 
     //22
     private final String services[] = {"Air Condition", "Balcony", "Breakfast", "Cafe/Bar & Restaurant", "Child Keeping", "Laundry", "Conference Rooms"
-            , "Dinner", "Doctor Support", "Elevator", "Hair_Dryer", "Safe Box", "Iron & Ironing Board", "Minibar", "Newspaper Delivery"
+            , "Dinner", "Doctor Support", "Elevator", "Hair Dryer", "Safe Box", "Iron & Ironing Board", "Minibar", "Newspaper Delivery"
             , "Parking", "Private Bath", "Reception 24/7", "Room Service", "Soundproof Walls", "Telephone", "Wifi"};
 
     @Override

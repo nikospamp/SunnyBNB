@@ -3,11 +3,10 @@ package com.example.ptuxiaki.sunnybnb.ui.HomeAdd;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,13 +16,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.example.ptuxiaki.sunnybnb.Models.House;
+import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServiceDataSource;
 import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServicesItem;
-import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.logic.Controller;
 import com.example.ptuxiaki.sunnybnb.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,7 +45,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class homeAdd extends AppCompatActivity implements ViewInterface {
+public class HomeAdd extends AppCompatActivity implements ViewInterface {
 
     private List<ServicesItem> listOfData;
     private LayoutInflater layoutInflater;
@@ -58,18 +59,20 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
     private String HOUSES = "HOUSES";
 
-    private TextInputEditText homeAddHouseName;
-    private TextInputEditText homeAddDescription;
-    private TextInputEditText homeAddPrice;
-    private TextInputEditText homeAddNumberOfGuests;
-    private TextInputEditText homeAddCountry;
-    private TextInputEditText homeAddCity;
-    private TextInputEditText homeAddPostalCode;
+    private EditText homeAddHouseName;
+    private EditText homeAddDescription;
+    private EditText homeAddPrice;
+    private EditText homeAddMaxPeople;
+    private Button coordinatesButton;
+    private EditText homeAddCountry;
+    private EditText homeAddCity;
     private CircleImageView homeAddCircleImage;
 
     private Uri imageUri;
     private boolean dividerFlag = true;
     private ProgressDialog mProgressBar;
+
+    private House houseToUpload;
 
     private Object services_code[][] = {{"aircondition", 0},
             {"balcony", 0}, {"breakfast", 0}, {"cafe_bar_restaurant", 0}
@@ -93,24 +96,22 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
         houseReference = FirebaseDatabase.getInstance().getReference();
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
-//        servicesPin = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-        homeAddDescription = (TextInputEditText) findViewById(R.id.homeAddHouseDescInput);
-        homeAddHouseName = (TextInputEditText) findViewById(R.id.homeAddNameTInput);
-        homeAddPrice = (TextInputEditText) findViewById(R.id.homeAddPriceInput);
-        homeAddNumberOfGuests = (TextInputEditText) findViewById(R.id.homeAddMaxPeopleInput);
-        homeAddCountry = (TextInputEditText) findViewById(R.id.homeAddCountryInput);
-        homeAddCity = (TextInputEditText) findViewById(R.id.homeAddCityInput);
-        homeAddPostalCode = (TextInputEditText) findViewById(R.id.homeAddPostalInput);
-        homeAddCircleImage = (CircleImageView) findViewById(R.id.homeAddImage);
+        homeAddCircleImage = (CircleImageView) findViewById(R.id.homeAddMainImage);
+        homeAddHouseName = (EditText) findViewById(R.id.homeAddHouseName);
+        homeAddDescription = (EditText) findViewById(R.id.homeAddDescription);
+        homeAddCity = (EditText) findViewById(R.id.homeAddCity);
+        homeAddCountry = (EditText) findViewById(R.id.homeAddCountry);
+        coordinatesButton = (Button) findViewById(R.id.homeAddCoordinates);
+        homeAddMaxPeople = (EditText) findViewById(R.id.homeAddMaxPeople);
+        homeAddPrice = (EditText) findViewById(R.id.homeAddPrice);
 
         homeAddCircleImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(1, 1)
-                        .start(homeAdd.this);
+                        .setAspectRatio(16, 9)
+                        .start(HomeAdd.this);
             }
         });
 
@@ -145,34 +146,36 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.homeAddUploadBtn) {
+            final HashMap<String, Object> houseObject;
+            final DatabaseReference tempRef = houseReference.child(HOUSES).push();
+            houseToUpload = new House();
+
             mProgressBar = new ProgressDialog(this);
             mProgressBar.setTitle("Setting Up Your House");
             mProgressBar.setMessage("Please wait while we upload your house!");
             mProgressBar.setCanceledOnTouchOutside(false);
             mProgressBar.show();
 
-            final HashMap<String, Object> houseObject = new HashMap<>();
+            houseToUpload.setHouseName(setDefaultValueIfNull(homeAddHouseName.getText().toString()));
+            houseToUpload.setDescription(setDefaultValueIfNull(homeAddDescription.getText().toString()));
+            houseToUpload.setCity(setDefaultValueIfNull(homeAddCity.getText().toString()));
+            houseToUpload.setCountry(setDefaultValueIfNull(homeAddCountry.getText().toString()));
+            houseToUpload.setMaxPeople(setDefaultValueIfNull(homeAddMaxPeople.getText().toString()));
+            houseToUpload.setPrice(setDefaultValueIfNull(homeAddPrice.getText().toString()));
+            houseToUpload.setUid(setDefaultValueIfNull(mAuth.getCurrentUser().getUid()));
 
-            houseObject.put("city", homeAddCity.getText().toString());
-            houseObject.put("country", homeAddCountry.getText().toString());
-            houseObject.put("description", homeAddDescription.getText().toString());
-            houseObject.put("house_name", homeAddHouseName.getText().toString());
-            houseObject.put("longitude", "52.25854");
-            houseObject.put("latitude", "123.17477");
-            houseObject.put("max_people", homeAddNumberOfGuests.getText().toString());
-            houseObject.put("price", homeAddPrice.getText().toString());
-            houseObject.put("uid", mAuth.getCurrentUser().getUid());
+            HashMap<String, String> services;
+            services = populateServicesObject(services_code);
 
-            HashMap<String, String> services_obj;
-            services_obj = populateServicesObject(services_code);
+            houseToUpload.setServices(services);
+            houseToUpload.setHid(tempRef.getKey());
 
-            houseObject.put("services", services_obj);
-
-            final DatabaseReference tempRef = houseReference.child(HOUSES).push();
-            houseObject.put("hid", tempRef.getKey());
+            houseObject = houseToUpload.toMap();
+            houseObject.put("services", services);
 
             StorageReference filePath = mStorageReference.child("house_images")
                     .child(tempRef.getKey() + ".jpg");
+
 
             filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -184,14 +187,14 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 mProgressBar.dismiss();
-                                Toast.makeText(homeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(homeAdd.this, MainActivity.class));
+                                Toast.makeText(HomeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(HomeAdd.this, MainActivity.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(homeAdd.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(HomeAdd.this, e.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -200,6 +203,13 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private String setDefaultValueIfNull(String text) {
+        if (text.length() > 0) {
+            return text;
+        }
+        return "Default";
     }
 
     private HashMap<String, String> populateServicesObject(Object[][] services_code) {
@@ -249,7 +259,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
         if (dividerFlag) {
             DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-            itemDecoration.setDrawable(ContextCompat.getDrawable(homeAdd.this, R.drawable.devider_white));
+            itemDecoration.setDrawable(ContextCompat.getDrawable(HomeAdd.this, R.drawable.devider_white));
             recyclerView.addItemDecoration(itemDecoration);
             dividerFlag = false;
         }
@@ -271,8 +281,6 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
             int TempValue = (int) services_code[position][1];
 
-            Log.d("TAG", "onBindViewHolder: " + TempValue + " Position: " + position);
-
             if (TempValue == 0)
                 holder.container.setBackgroundColor(getResources().getColor(R.color.material_red_a200));
             else
@@ -290,17 +298,15 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
             private TextView service;
             private ViewGroup container;
 
-            public CustomViewHolder(View itemView) {
+            CustomViewHolder(View itemView) {
                 super(itemView);
                 this.service = (TextView) itemView.findViewById(R.id.single_service_txt);
                 this.container = (ViewGroup) itemView.findViewById(R.id.single_service_container);
-
                 this.container.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
-//                ServicesItem servicesItem = listOfData.get(this.getAdapterPosition());
                 int TempValue = (int) services_code[this.getAdapterPosition()][1];
 
                 if (TempValue == 0)
@@ -308,8 +314,7 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
                 else
                     services_code[this.getAdapterPosition()][1] = 0;
 
-                controller = new Controller(homeAdd.this, new ServiceDataSource());
-//                controller.onListItemClick(servicesItem);
+                controller = new Controller(HomeAdd.this, new ServiceDataSource());
             }
         }
 
@@ -328,3 +333,4 @@ public class homeAdd extends AppCompatActivity implements ViewInterface {
 
     }
 }
+
