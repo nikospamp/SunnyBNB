@@ -15,21 +15,21 @@ public class House {
     private Object fotos;
     private String hid;
     private String house_name;
-    private String latitude;
+    private String langitude;
     private String longitude;
     private String mainFoto;
     private String max_people;
     private String price;
     private String rating;
     private Object services;
-    private String uid;
+    private Object uid;
     private Object user_reviews;
 
 
     public House() {
     }
 
-    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String latitude, String longitude, String mainFoto, String max_people, String price, String rating, Object services, String uid, Object user_reviews) {
+    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, String rating, Object services, Object uid, Object user_reviews) {
         this.availability = availability;
         this.city = city;
         this.country = country;
@@ -37,7 +37,7 @@ public class House {
         this.fotos = fotos;
         this.hid = hid;
         this.house_name = house_name;
-        this.latitude = latitude;
+        this.langitude = langitude;
         this.longitude = longitude;
         this.mainFoto = mainFoto;
         this.max_people = max_people;
@@ -96,20 +96,20 @@ public class House {
         this.hid = hid;
     }
 
-    public String getHouseName() {
+    public String getHouse_name() {
         return house_name;
     }
 
-    public void setHouseName(String house_name) {
+    public void setHouse_name(String house_name) {
         this.house_name = house_name;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public String getLangitude() {
+        return langitude;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
+    public void setLangitude(String langitude) {
+        this.langitude = langitude;
     }
 
     public String getLongitude() {
@@ -132,7 +132,7 @@ public class House {
         return max_people;
     }
 
-    public void setMaxPeople(String max_people) {
+    public void setMax_people(String max_people) {
         this.max_people = max_people;
     }
 
@@ -160,11 +160,11 @@ public class House {
         this.services = services;
     }
 
-    public String getUid() {
+    public Object getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(Object uid) {
         this.uid = uid;
     }
 
@@ -186,7 +186,7 @@ public class House {
                 ", fotos=" + fotos +
                 ", hid='" + hid + '\'' +
                 ", house_name='" + house_name + '\'' +
-                ", latitude='" + latitude + '\'' +
+                ", langitude='" + langitude + '\'' +
                 ", longitude='" + longitude + '\'' +
                 ", mainFoto='" + mainFoto + '\'' +
                 ", max_people='" + max_people + '\'' +
@@ -200,7 +200,7 @@ public class House {
 
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> houseObject = new HashMap<>();
-        houseObject.put("house_name", getHouseName());
+        houseObject.put("house_name", getHouse_name());
         houseObject.put("description", getDescription());
         houseObject.put("city", getCity());
         houseObject.put("country", getCountry());

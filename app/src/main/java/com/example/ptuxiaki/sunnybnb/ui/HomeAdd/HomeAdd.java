@@ -156,11 +156,11 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
             mProgressBar.setCanceledOnTouchOutside(false);
             mProgressBar.show();
 
-            houseToUpload.setHouseName(setDefaultValueIfNull(homeAddHouseName.getText().toString()));
+            houseToUpload.setHouse_name(setDefaultValueIfNull(homeAddHouseName.getText().toString()));
             houseToUpload.setDescription(setDefaultValueIfNull(homeAddDescription.getText().toString()));
             houseToUpload.setCity(setDefaultValueIfNull(homeAddCity.getText().toString()));
             houseToUpload.setCountry(setDefaultValueIfNull(homeAddCountry.getText().toString()));
-            houseToUpload.setMaxPeople(setDefaultValueIfNull(homeAddMaxPeople.getText().toString()));
+            houseToUpload.setMax_people(setDefaultValueIfNull(homeAddMaxPeople.getText().toString()));
             houseToUpload.setPrice(setDefaultValueIfNull(homeAddPrice.getText().toString()));
             houseToUpload.setUid(setDefaultValueIfNull(mAuth.getCurrentUser().getUid()));
 

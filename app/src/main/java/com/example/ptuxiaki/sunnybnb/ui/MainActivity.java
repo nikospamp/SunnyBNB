@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             protected void populateViewHolder(HousesViewHolder viewHolder, House model, int position) {
-                viewHolder.setHouseName(model.getHouseName());
+                viewHolder.setHouseName(model.getHouse_name());
                 viewHolder.setCity(model.getCity(), model.getCountry());
                 viewHolder.setImage(model.getMainFoto(), getApplicationContext());
                 viewHolder.setPrice(model.getPrice());
