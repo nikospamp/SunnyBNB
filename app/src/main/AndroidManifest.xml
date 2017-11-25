@@ -39,16 +39,17 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".ui.HomeAdd.HomeAdd">
+        <activity android:name=".ui.AddHouse.HomeAdd">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.HouseDetailsActivity">
+        <activity android:name=".ui.HouseDetails.HouseDetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
+        <activity android:name=".ui.Booking.BookingActivity"></activity>
     </application>
 
 </manifest>

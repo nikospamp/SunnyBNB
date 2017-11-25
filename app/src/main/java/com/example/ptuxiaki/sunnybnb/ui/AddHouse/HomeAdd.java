@@ -1,4 +1,4 @@
-package com.example.ptuxiaki.sunnybnb.ui.HomeAdd;
+package com.example.ptuxiaki.sunnybnb.ui.AddHouse;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,9 +23,9 @@ import android.widget.Toast;
 
 import com.example.ptuxiaki.sunnybnb.Models.House;
 import com.example.ptuxiaki.sunnybnb.R;
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServiceDataSource;
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServicesItem;
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.logic.Controller;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.Data.ServiceDataSource;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.Data.ServicesItem;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.logic.Controller;
 import com.example.ptuxiaki.sunnybnb.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

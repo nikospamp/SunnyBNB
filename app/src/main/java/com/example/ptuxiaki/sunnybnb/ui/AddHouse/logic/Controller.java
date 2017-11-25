@@ -1,8 +1,8 @@
-package com.example.ptuxiaki.sunnybnb.ui.HomeAdd.logic;
+package com.example.ptuxiaki.sunnybnb.ui.AddHouse.logic;
 
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.DataSourceInterface;
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServicesItem;
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.ViewInterface;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.Data.DataSourceInterface;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.Data.ServicesItem;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.ViewInterface;
 
 /**
  * Created by Pampoukidis on 4/8/2017.

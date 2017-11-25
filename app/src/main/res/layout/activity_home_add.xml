@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:overScrollMode="always"
-    tools:context="com.example.ptuxiaki.sunnybnb.ui.HomeAdd.HomeAdd">
+    tools:context="com.example.ptuxiaki.sunnybnb.ui.AddHouse.HomeAdd">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

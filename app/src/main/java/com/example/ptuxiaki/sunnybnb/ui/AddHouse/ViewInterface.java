@@ -1,6 +1,6 @@
-package com.example.ptuxiaki.sunnybnb.ui.HomeAdd;
+package com.example.ptuxiaki.sunnybnb.ui.AddHouse;
 
-import com.example.ptuxiaki.sunnybnb.ui.HomeAdd.Data.ServicesItem;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.Data.ServicesItem;
 
 import java.util.List;
 
