@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(mHousesRecyclerAdapter);
     }
 
-    private static class HousesViewHolder extends RecyclerView.ViewHolder {
+    public static class HousesViewHolder extends RecyclerView.ViewHolder {
         View mView;
 
         public HousesViewHolder(View itemView) {
