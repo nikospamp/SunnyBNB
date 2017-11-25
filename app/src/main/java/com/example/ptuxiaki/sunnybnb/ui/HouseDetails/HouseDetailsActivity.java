@@ -58,6 +58,7 @@ public class HouseDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HouseDetailsActivity.this, BookingActivity.class);
                 intent.putExtra("HOUSE_ID", HOUSE_ID);
+                intent.putExtra("UID", userId);
                 startActivity(intent);
                 finish();
             }
