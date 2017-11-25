@@ -143,7 +143,7 @@
         android:layout_below="@+id/friends"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
-        android:backgroundTint="@color/errorColor"
+        android:backgroundTint="@color/fui_errorColor"
         android:text="@string/user_settings"
         android:textColor="@android:color/white"
         android:onClick="settingsActivity"/>

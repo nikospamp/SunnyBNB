@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+        app:srcCompat="@drawable/fui_ic_facebook_white_22dp" />
 
     <EditText
         android:id="@+id/et_name"
