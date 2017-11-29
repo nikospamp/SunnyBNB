@@ -20,7 +20,7 @@ public class House {
     private String mainFoto;
     private String max_people;
     private String price;
-    private String rating;
+    private double rating;
     private Object services;
     private Object uid;
     private Object user_reviews;
@@ -29,7 +29,7 @@ public class House {
     public House() {
     }
 
-    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, String rating, Object services, Object uid, Object user_reviews) {
+    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, double rating, Object services, Object uid, Object user_reviews) {
         this.availability = availability;
         this.city = city;
         this.country = country;
@@ -144,11 +144,11 @@ public class House {
         this.price = price;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
