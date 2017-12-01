@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,9 +24,9 @@ import android.widget.TextView;
 import com.example.ptuxiaki.sunnybnb.Models.House;
 import com.example.ptuxiaki.sunnybnb.Models.User;
 import com.example.ptuxiaki.sunnybnb.R;
+import com.example.ptuxiaki.sunnybnb.ui.AddHouse.HomeAdd;
 import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesFragment;
 import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavouritesFragment;
-import com.example.ptuxiaki.sunnybnb.ui.AddHouse.HomeAdd;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesFragment;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
         void setImage(String mainFoto, Context context) {
             ImageView main_image = (ImageView) mView.findViewById(R.id.single_house_image);
-            Picasso.with(context).load(mainFoto).placeholder(R.drawable.common_google_signin_btn_icon_dark_normal).into(main_image);
+            Picasso.with(context).load(mainFoto).placeholder(R.drawable.property_placeholder).into(main_image);
         }
 
         void setPrice(String price) {
