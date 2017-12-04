@@ -2,10 +2,12 @@ package com.example.ptuxiaki.sunnybnb.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -47,6 +49,9 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -88,17 +93,17 @@ public class MainActivity extends AppCompatActivity
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabaseHouses = FirebaseDatabase.getInstance().getReference().child("HOUSES");
 
-        recyclerView = (RecyclerView) findViewById(R.id.mainRecycler);
+        recyclerView = findViewById(R.id.mainRecycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -106,7 +111,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             startActivityForResult(
                     AuthUI.getInstance()
@@ -131,12 +136,16 @@ public class MainActivity extends AppCompatActivity
         ) {
 
             @Override
-            protected void populateViewHolder(HousesViewHolder viewHolder, House model, int position) {
+            protected void populateViewHolder(final HousesViewHolder viewHolder, House model, int position) {
+                final String houseId = getRef(position).getKey();
+
                 viewHolder.setHouseName(model.getHouse_name());
                 viewHolder.setCity(model.getCity(), model.getCountry());
                 viewHolder.setImage(model.getMainFoto(), getApplicationContext());
                 viewHolder.setPrice(model.getPrice());
-                final String houseId = getRef(position).getKey();
+                viewHolder.setFavStatus(houseId, currentUser);
+                viewHolder.setContext(getApplicationContext());
+
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -145,6 +154,52 @@ public class MainActivity extends AppCompatActivity
                         startActivity(houseDetailsIntent);
                     }
                 });
+
+                viewHolder.favIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final DatabaseReference push = mDatabase.child("USERS")
+                                .child(currentUser.getUid())
+                                .child("favorites").child(houseId);
+
+                        push.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getValue() == null) {
+                                    DatabaseReference houseFavRef = mDatabase.child("USERS")
+                                            .child(currentUser.getUid())
+                                            .child("favorites");
+
+                                    Calendar cal = Calendar.getInstance();
+                                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                                    int month = cal.get(Calendar.MONTH) + 1;
+                                    int year = cal.get(Calendar.YEAR);
+
+                                    HashMap<String, Object> favMap = new HashMap<>();
+
+                                    favMap.put(houseId, day
+                                            + "/" + month
+                                            + "/" + year);
+
+                                    houseFavRef.updateChildren(favMap);
+
+                                    viewHolder.favIcon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
+                                } else {
+                                    push.removeValue();
+                                    viewHolder.favIcon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart_empty));
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+
+
             }
         };
 
@@ -152,34 +207,64 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static class HousesViewHolder extends RecyclerView.ViewHolder {
+        DatabaseReference favHouseRef;
         View mView;
+        ImageView favIcon;
+        Context context;
 
         public HousesViewHolder(View itemView) {
             super(itemView);
+            favHouseRef = FirebaseDatabase.getInstance().getReference();
             mView = itemView;
+            favIcon = mView.findViewById(R.id.single_house_favourite_img);
         }
 
-
         void setHouseName(String house_name) {
-            TextView house_name_tv = (TextView) mView.findViewById(R.id.single_house_name_tv);
+            TextView house_name_tv = mView.findViewById(R.id.single_house_name_tv);
             house_name_tv.setText(house_name);
         }
 
         void setCity(String city, String country) {
-            TextView city_tv = (TextView) mView.findViewById(R.id.single_house_location_tv);
+            TextView city_tv = mView.findViewById(R.id.single_house_location_tv);
             String finalString = city + "," + country;
             city_tv.setText(finalString);
         }
 
         void setImage(String mainFoto, Context context) {
-            ImageView main_image = (ImageView) mView.findViewById(R.id.single_house_image);
+            ImageView main_image = mView.findViewById(R.id.single_house_image);
             Picasso.with(context).load(mainFoto).placeholder(R.drawable.property_placeholder).into(main_image);
         }
 
         void setPrice(String price) {
-            TextView price_tv = (TextView) mView.findViewById(R.id.single_house_price);
+            TextView price_tv = mView.findViewById(R.id.single_house_price);
             String finalText = price + "€";
             price_tv.setText(finalText);
+        }
+
+        void setFavStatus(final String houseId, FirebaseUser currentUser) {
+            final DatabaseReference isFav = favHouseRef.child("USERS")
+                    .child(currentUser.getUid())
+                    .child("favorites").child(houseId);
+
+            isFav.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() == null) {
+                        favIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_empty));
+                    } else {
+                        favIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        public void setContext(Context applicationContext) {
+            context = applicationContext;
         }
     }
 
@@ -240,7 +325,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
