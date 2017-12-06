@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -55,6 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(profile);
 
         image = (CircleImageView) findViewById(R.id.profileCircleImage);
+
+        mStorageReference = FirebaseStorage.getInstance().getReference();
 
         mProgressBar = new ProgressDialog(this);
         mProgressBar.setTitle("Getting User Profile");
@@ -158,7 +161,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     mProgressBar.dismiss();
-                                    Toast.makeText(ProfileActivity.this, "Images Uploaded!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ProfileActivity.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }else {

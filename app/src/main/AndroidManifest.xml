@@ -49,7 +49,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.Booking.BookingActivity"></activity>
+        <activity android:name=".ui.Booking.BookingActivity" />
+        <activity android:name=".ui.Favourites.FavoritesActivity"></activity>
     </application>
 
 </manifest>

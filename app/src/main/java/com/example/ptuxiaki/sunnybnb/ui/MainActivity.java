@@ -2,7 +2,6 @@ package com.example.ptuxiaki.sunnybnb.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -28,7 +27,7 @@ import com.example.ptuxiaki.sunnybnb.Models.User;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.AddHouse.HomeAdd;
 import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesFragment;
-import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavouritesFragment;
+import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavoritesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesFragment;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
@@ -50,7 +49,6 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,13 +126,13 @@ public class MainActivity extends AppCompatActivity
                     RC_SIGN_IN);
         }
 
-        FirebaseRecyclerAdapter<House, HousesViewHolder> mHousesRecyclerAdapter = new FirebaseRecyclerAdapter<House, HousesViewHolder>(
+        FirebaseRecyclerAdapter<House, HousesViewHolder> mHousesRecyclerAdapter =
+                new FirebaseRecyclerAdapter<House, HousesViewHolder>(
                 House.class,
                 R.layout.house_single,
                 HousesViewHolder.class,
                 mDatabaseHouses
         ) {
-
             @Override
             protected void populateViewHolder(final HousesViewHolder viewHolder, House model, int position) {
                 final String houseId = getRef(position).getKey();
@@ -242,25 +240,28 @@ public class MainActivity extends AppCompatActivity
         }
 
         void setFavStatus(final String houseId, FirebaseUser currentUser) {
-            final DatabaseReference isFav = favHouseRef.child("USERS")
-                    .child(currentUser.getUid())
-                    .child("favorites").child(houseId);
+            if (currentUser != null) {
+                String uid = currentUser.getUid();
+                final DatabaseReference isFav = favHouseRef.child("USERS")
+                        .child(uid)
+                        .child("favorites").child(houseId);
 
-            isFav.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() == null) {
-                        favIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_empty));
-                    } else {
-                        favIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
+                isFav.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            favIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_empty));
+                        } else {
+                            favIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
         }
 
         public void setContext(Context applicationContext) {
@@ -395,7 +396,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(profileIntent);
                 break;
             case R.id.nav_favourites:
-                fragment = new FavouritesFragment();
+                startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
                 break;
             case R.id.nav_top_destinations:
                 fragment = new TopDestinationsFragment();
