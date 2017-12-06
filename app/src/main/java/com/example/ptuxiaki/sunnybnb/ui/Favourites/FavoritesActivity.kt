@@ -16,20 +16,21 @@ class FavoritesActivity : AppCompatActivity() {
 
     private lateinit var userFavHousesDb: DatabaseReference
 
-    private lateinit var housesDb: DatabaseReference
+    private val favoriteHousesAdapter: FavoritesAdapter = FavoritesAdapter(null, null)
 
     private var currentUser: FirebaseUser? = null
 
     private val favHousesList = ArrayList<String>()
 
-    @BindView(R.id.favorites_main_rec)
-    internal var favHousesRec: RecyclerView? = null
+    private lateinit var favHousesRec: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
 
-        ButterKnife.bind(this)
+        favHousesRec = findViewById(R.id.favorites_main_rec)
+
+        favHousesRec.adapter = favoriteHousesAdapter
 
         currentUser = FirebaseAuth.getInstance().currentUser
 
@@ -37,9 +38,6 @@ class FavoritesActivity : AppCompatActivity() {
                 .child("USERS")
                 .child(currentUser!!.uid)
                 .child("favorites")
-
-        housesDb = FirebaseDatabase.getInstance().reference
-                .child("HOUSES")
 
         userFavHousesDb.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {}
@@ -49,24 +47,9 @@ class FavoritesActivity : AppCompatActivity() {
 
                     snapshot.children.mapTo(favHousesList) { it.key }
 
-                    val query: Query = housesDb.orderByKey().startAt(favHousesList[0]).endAt(favHousesList[favHousesList.size - 1])
-
-                    query.addValueEventListener(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError?) {
-                            Log.d("onDataChange", "Error")
-                        }
-
-                        override fun onDataChange(snap: DataSnapshot) {
-                            if (snap.value != null) {
-                                for (tempSnap in snap.children) {
-                                    if (favHousesList.contains(tempSnap.key))
-                                        Log.d("onDataChange", tempSnap.key)
-                                }
-                            } else {
-                                Log.d("onDataChange", "Empty")
-                            }
-                        }
-
+                    favHousesRec!!.post({
+                        favoriteHousesAdapter.items = favHousesList
+                        favoriteHousesAdapter.notifyItemRangeInserted(0, favHousesList.count())
                     })
 
                 }
