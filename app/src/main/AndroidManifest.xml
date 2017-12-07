@@ -50,7 +50,12 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity android:name=".ui.Booking.BookingActivity" />
-        <activity android:name=".ui.Favourites.FavoritesActivity"></activity>
+
+        <activity android:name=".ui.Favourites.FavoritesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

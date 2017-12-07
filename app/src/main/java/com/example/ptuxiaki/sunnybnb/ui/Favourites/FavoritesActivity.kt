@@ -4,19 +4,19 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import butterknife.BindView
-import butterknife.ButterKnife
+import android.view.View
 import com.example.ptuxiaki.sunnybnb.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_favorites.*
 import java.util.*
 
 class FavoritesActivity : AppCompatActivity() {
 
     private lateinit var userFavHousesDb: DatabaseReference
 
-    private val favoriteHousesAdapter: FavoritesAdapter = FavoritesAdapter(null, null)
+    private val favoriteHousesAdapter: FavoritesAdapter = FavoritesAdapter(null, null, null)
 
     private var currentUser: FirebaseUser? = null
 
@@ -28,9 +28,17 @@ class FavoritesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
 
+        supportActionBar?.title = "Favorites"
+
         favHousesRec = findViewById(R.id.favorites_main_rec)
 
         favHousesRec.adapter = favoriteHousesAdapter
+
+        favoriteHousesAdapter.context = applicationContext
+
+        favoriteHousesAdapter.listener = { houseId ->
+            Log.d("favoriteHousesAdapter", houseId)
+        }
 
         currentUser = FirebaseAuth.getInstance().currentUser
 
@@ -47,7 +55,15 @@ class FavoritesActivity : AppCompatActivity() {
 
                     snapshot.children.mapTo(favHousesList) { it.key }
 
-                    favHousesRec!!.post({
+                    if (favHousesList.size > 0) {
+                        favorites_no_fav_txt.visibility = View.GONE
+                        favHousesRec.visibility = View.VISIBLE
+                    } else {
+                        favorites_no_fav_txt.visibility = View.VISIBLE
+                        favHousesRec.visibility = View.GONE
+                    }
+
+                    favHousesRec.post({
                         favoriteHousesAdapter.items = favHousesList
                         favoriteHousesAdapter.notifyItemRangeInserted(0, favHousesList.count())
                     })

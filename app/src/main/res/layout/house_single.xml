@@ -41,8 +41,8 @@
                 android:src="@drawable/ic_fav"
                 android:tint="@color/material_red_a200"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/single_house_image" />
+                app:layout_constraintTop_toBottomOf="@+id/single_house_image"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/single_house_set_favourite_txt"
@@ -61,14 +61,14 @@
                 android:id="@+id/single_house_book_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_margin="16dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="BOOK NOW"
-                app:layout_constraintBottom_toBottomOf="@+id/single_house_favourite_img"
-                app:layout_constraintStart_toEndOf="@id/single_house_set_favourite_txt"
-                app:layout_constraintTop_toTopOf="@+id/single_house_favourite_img" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/single_house_image"
+                app:layout_constraintStart_toEndOf="@id/single_house_set_favourite_txt" />
 
             <View
                 android:layout_width="0dp"
@@ -87,7 +87,7 @@
                 android:layout_marginStart="16dp"
                 android:text="House Location"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/single_house_favourite_img"
+                app:layout_constraintBottom_toTopOf="@+id/single_house_book_txt"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
