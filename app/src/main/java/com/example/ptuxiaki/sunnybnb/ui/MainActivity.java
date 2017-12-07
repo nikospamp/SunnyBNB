@@ -32,7 +32,7 @@ import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesFragment;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
-import com.example.ptuxiaki.sunnybnb.ui.TopDestinations.TopDestinationsFragment;
+import com.example.ptuxiaki.sunnybnb.ui.TopDestinations.TopDestinationsActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -399,7 +399,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
                 break;
             case R.id.nav_top_destinations:
-                fragment = new TopDestinationsFragment();
+                startActivity(new Intent(MainActivity.this, TopDestinationsActivity.class));
                 break;
             case R.id.nav_cities:
                 fragment = new CitiesFragment();
