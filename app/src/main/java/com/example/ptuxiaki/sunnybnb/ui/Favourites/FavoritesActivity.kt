@@ -1,11 +1,13 @@
 package com.example.ptuxiaki.sunnybnb.ui.Favourites
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import com.example.ptuxiaki.sunnybnb.R
+import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -38,6 +40,9 @@ class FavoritesActivity : AppCompatActivity() {
 
         favoriteHousesAdapter.listener = { houseId ->
             Log.d("favoriteHousesAdapter", houseId)
+            val houseDetailsIntent = Intent(this@FavoritesActivity, HouseDetailsActivity::class.java)
+            houseDetailsIntent.putExtra("house_id", houseId)
+            startActivity(houseDetailsIntent)
         }
 
         currentUser = FirebaseAuth.getInstance().currentUser
