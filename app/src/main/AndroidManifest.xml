@@ -60,6 +60,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
+        <activity android:name=".ui.Booking.BookingActivity" />
+        <activity android:name=".ui.Messages.MessagesActivity"></activity>
     </application>
 
 </manifest>

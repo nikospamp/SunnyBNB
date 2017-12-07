@@ -29,7 +29,7 @@ import com.example.ptuxiaki.sunnybnb.ui.AddHouse.HomeAdd;
 import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesFragment;
 import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavoritesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
-import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesFragment;
+import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
 import com.example.ptuxiaki.sunnybnb.ui.TopDestinations.TopDestinationsActivity;
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new CitiesFragment();
                 break;
             case R.id.nav_messages:
-                fragment = new MessagesFragment();
+                startActivity(new Intent(MainActivity.this, MessagesActivity.class));
                 break;
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainActivity.this, Settings2Activity.class);
