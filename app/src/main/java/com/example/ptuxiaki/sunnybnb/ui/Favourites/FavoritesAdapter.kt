@@ -36,10 +36,9 @@ class FavoritesAdapter(var items: List<String>?, var listener: ((houseId: String
 
     override fun getItemCount(): Int = items?.count() ?: 0
 
-    class CustomViewHolder(view: View, context: Context?) : RecyclerView.ViewHolder(view) {
+    class CustomViewHolder(view: View, private val context: Context?) : RecyclerView.ViewHolder(view) {
 
         private lateinit var fireBaseRef: DatabaseReference
-        private val context = context
         private val houseNameTv = view.single_house_name_tv
         private val housePriceTv = view.single_house_price
         private val houseLocationTv = view.single_house_location_tv
@@ -70,9 +69,9 @@ class FavoritesAdapter(var items: List<String>?, var listener: ((houseId: String
                         val houseCountry: String? = snap.child("country").value.toString()
                         val housePhoto: String? = snap.child("mainFoto").value.toString()
 
-                        houseNameTv?.text = houseName
-                        housePriceTv?.text = housePrice + "€"
-                        houseLocationTv?.text = houseCity + "," + houseCountry
+                        houseNameTv.text = houseName
+                        housePriceTv.text = housePrice + "€"
+                        houseLocationTv.text = houseCity + "," + houseCountry
                         Picasso.with(context).load(housePhoto).placeholder(R.drawable.property_placeholder).into(housePhotoImg)
 
                     }

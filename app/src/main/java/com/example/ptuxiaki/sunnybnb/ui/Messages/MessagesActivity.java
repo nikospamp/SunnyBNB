@@ -19,15 +19,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MessagesActivity extends AppCompatActivity {
 
     private static final String TAG = "MessagesActivity";
 
-    @BindView(R.id.rec_services)
-    RecyclerView servicesRec;
+    private RecyclerView servicesRec;
 
     private DatabaseReference servicesReference;
     List<String> servicesListNames = new ArrayList<>();
@@ -38,6 +36,8 @@ public class MessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
         ButterKnife.bind(this);
+
+        servicesRec = findViewById(R.id.rec_services);
 
         servicesReference = FirebaseDatabase.getInstance().getReference()
                 .child("HOUSES")
