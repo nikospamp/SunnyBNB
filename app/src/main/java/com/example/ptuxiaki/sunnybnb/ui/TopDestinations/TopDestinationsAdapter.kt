@@ -7,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.ptuxiaki.sunnybnb.R
-import com.google.firebase.database.Query
 import kotlinx.android.synthetic.main.top_destination_single.view.*
 
 /**
  * Created by arxdev30 on 8/12/2017.
  */
 
-class TopDestinationsAdapter(var cities: ArrayList<String>?, var citiesCounter: ArrayList<Int>?, var listener: ((query: Query) -> Unit)?)
+class TopDestinationsAdapter(var cities: ArrayList<String>?, var citiesCounter: ArrayList<Int>?, var listener: ((chosenCity: String) -> Unit)?)
     : RecyclerView.Adapter<TopDestinationsAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -27,7 +26,8 @@ class TopDestinationsAdapter(var cities: ArrayList<String>?, var citiesCounter: 
         val customViewHolder = CustomViewHolder(itemView)
 
         itemView.setOnClickListener({
-
+            val item = cities?.getOrNull(customViewHolder.adapterPosition) ?: return@setOnClickListener
+            listener?.invoke(item)
         })
 
         return customViewHolder

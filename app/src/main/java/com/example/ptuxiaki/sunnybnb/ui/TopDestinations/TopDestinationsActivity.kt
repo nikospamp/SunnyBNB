@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.widget.Toast
 import com.example.ptuxiaki.sunnybnb.R
 import com.google.firebase.database.*
 import java.util.*
@@ -69,8 +70,8 @@ class TopDestinationsActivity : AppCompatActivity() {
 
                 val topDestinationsAdapter: TopDestinationsAdapter?
 
-                topDestinationsAdapter = TopDestinationsAdapter(citiesList, citiesCounterList, listener = { query ->
-
+                topDestinationsAdapter = TopDestinationsAdapter(citiesList, citiesCounterList, listener = { chosenCity ->
+                    Toast.makeText(this@TopDestinationsActivity, chosenCity, Toast.LENGTH_LONG).show()
                 })
 
                 topRec.adapter = topDestinationsAdapter
