@@ -61,7 +61,8 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity android:name=".ui.Booking.BookingActivity" />
-        <activity android:name=".ui.Messages.MessagesActivity"></activity>
+        <activity android:name=".ui.Messages.MessagesActivity" />
+        <activity android:name=".ui.TopDestinations.CityRoomsActivity"></activity>
     </application>
 
 </manifest>
