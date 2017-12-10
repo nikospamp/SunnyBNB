@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,9 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class BookingActivity extends AppCompatActivity implements ChooseDatesFragment.PassDatesInterface {
 
@@ -50,20 +49,30 @@ public class BookingActivity extends AppCompatActivity implements ChooseDatesFra
     private String HOUSE_ID = "";
     private String UID = "";
 
-    @BindView(R.id.booking_arrival)
-    TextView arrivalTv;
+    private TextView arrivalTv;
 
-    @BindView(R.id.booking_departure)
-    TextView departureTv;
+    private TextView departureTv;
 
-    @BindView(R.id.booking_submit_book_request_btn)
-    Button submitBookingBtn;
+    private Button submitBookingBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
         ButterKnife.bind(this);
+
+        arrivalTv = findViewById(R.id.booking_arrival);
+
+        departureTv = findViewById(R.id.booking_departure);
+
+        submitBookingBtn = findViewById(R.id.booking_submit_book_request_btn);
+
+        submitBookingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BookNow();
+            }
+        });
 
         Intent intent = getIntent();
         HOUSE_ID = intent.getStringExtra("HOUSE_ID");
@@ -156,7 +165,6 @@ public class BookingActivity extends AppCompatActivity implements ChooseDatesFra
         return dates;
     }
 
-    @OnClick(R.id.booking_submit_book_request_btn)
     void BookNow() {
         if (arrivalYear > 0 && arrivalMonth > 0 && arrivalDay > 0
                 && departureYear > 0 && departureMonth > 0 && departureDay > 0) {
