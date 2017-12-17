@@ -62,7 +62,8 @@
         </activity>
         <activity android:name=".ui.Booking.BookingActivity" />
         <activity android:name=".ui.Messages.MessagesActivity" />
-        <activity android:name=".ui.TopDestinations.CityRoomsActivity"></activity>
+        <activity android:name=".ui.TopDestinations.CityRoomsActivity" />
+        <activity android:name=".ui.AllCities.CitiesActivity"></activity>
     </application>
 
 </manifest>

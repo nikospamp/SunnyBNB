@@ -90,7 +90,6 @@ public class BookingActivity extends AppCompatActivity implements ChooseDatesFra
 
     }
 
-
     private void loadFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();

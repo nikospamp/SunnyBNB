@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,7 +25,7 @@ import com.example.ptuxiaki.sunnybnb.Models.House;
 import com.example.ptuxiaki.sunnybnb.Models.User;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.AddHouse.HomeAdd;
-import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesFragment;
+import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavoritesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesActivity;
@@ -386,7 +385,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displaySelectedScreen(int id) {
-        android.support.v4.app.Fragment fragment = null;
         switch (id) {
             case R.id.nav_home:
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -402,7 +400,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, TopDestinationsActivity.class));
                 break;
             case R.id.nav_cities:
-                fragment = new CitiesFragment();
+                startActivity(new Intent(MainActivity.this, CitiesActivity.class));
                 break;
             case R.id.nav_messages:
                 startActivity(new Intent(MainActivity.this, MessagesActivity.class));
@@ -418,13 +416,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_main, fragment);
-            ft.commit();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
     }
