@@ -58,8 +58,10 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 
     //ButterKnife
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    def butterknifeVersion = '8.8.1'
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
     //Calendar
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'

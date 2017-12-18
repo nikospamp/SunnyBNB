@@ -53,7 +53,7 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
     private CustomAdapter adapter;
     private Controller controller;
 
-    private DatabaseReference houseReference;
+    private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private StorageReference mStorageReference;
 
@@ -93,17 +93,17 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
         getSupportActionBar().setTitle("Add Your House");
 
         mAuth = FirebaseAuth.getInstance();
-        houseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
-        homeAddCircleImage = (CircleImageView) findViewById(R.id.homeAddMainImage);
-        homeAddHouseName = (EditText) findViewById(R.id.homeAddHouseName);
-        homeAddDescription = (EditText) findViewById(R.id.homeAddDescription);
-        homeAddCity = (EditText) findViewById(R.id.homeAddCity);
-        homeAddCountry = (EditText) findViewById(R.id.homeAddCountry);
-        coordinatesButton = (Button) findViewById(R.id.homeAddCoordinates);
-        homeAddMaxPeople = (EditText) findViewById(R.id.homeAddMaxPeople);
-        homeAddPrice = (EditText) findViewById(R.id.homeAddPrice);
+        homeAddCircleImage = findViewById(R.id.homeAddMainImage);
+        homeAddHouseName = findViewById(R.id.homeAddHouseName);
+        homeAddDescription = findViewById(R.id.homeAddDescription);
+        homeAddCity = findViewById(R.id.homeAddCity);
+        homeAddCountry = findViewById(R.id.homeAddCountry);
+        coordinatesButton = findViewById(R.id.homeAddCoordinates);
+        homeAddMaxPeople = findViewById(R.id.homeAddMaxPeople);
+        homeAddPrice = findViewById(R.id.homeAddPrice);
 
         homeAddCircleImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +115,7 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_home_add);
+        recyclerView = findViewById(R.id.recycler_home_add);
         layoutInflater = getLayoutInflater();
         controller = new Controller(this, new ServiceDataSource());
 
@@ -131,7 +131,7 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
                 Picasso.with(getApplicationContext()).load(imageUri)
                         .placeholder(R.drawable.default_profile_image).into(homeAddCircleImage);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+                result.getError().printStackTrace();
             }
         }
     }
@@ -147,7 +147,7 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
 
         if (item.getItemId() == R.id.homeAddUploadBtn) {
             final HashMap<String, Object> houseObject;
-            final DatabaseReference tempRef = houseReference.child(HOUSES).push();
+            final DatabaseReference tempRef = databaseReference.child(HOUSES).push();
             houseToUpload = new House();
 
             mProgressBar = new ProgressDialog(this);
@@ -186,10 +186,18 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
                         tempRef.setValue(houseObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                mProgressBar.dismiss();
-                                Toast.makeText(HomeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(HomeAdd.this, MainActivity.class));
-                                finish();
+                                HashMap<String, Object> initObject = new HashMap<>();
+                                initObject.put("Init", "New House Added");
+                                databaseReference.child("RESERVATIONS").child(tempRef.getKey()).setValue(initObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        mProgressBar.dismiss();
+                                        Toast.makeText(HomeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(HomeAdd.this, MainActivity.class));
+                                        finish();
+                                    }
+                                });
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -300,8 +308,8 @@ public class HomeAdd extends AppCompatActivity implements ViewInterface {
 
             CustomViewHolder(View itemView) {
                 super(itemView);
-                this.service = (TextView) itemView.findViewById(R.id.single_service_txt);
-                this.container = (ViewGroup) itemView.findViewById(R.id.single_service_container);
+                this.service = itemView.findViewById(R.id.single_service_txt);
+                this.container = itemView.findViewById(R.id.single_service_container);
                 this.container.setOnClickListener(this);
             }
 
