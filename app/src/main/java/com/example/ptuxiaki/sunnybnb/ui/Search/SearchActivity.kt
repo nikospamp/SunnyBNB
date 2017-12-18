@@ -10,12 +10,14 @@ import android.view.View
 import com.example.ptuxiaki.sunnybnb.R
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity
 import com.google.firebase.database.*
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.android.synthetic.main.activity_search.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), CalendarFragment.PassCalendarInterface {
+
 
     private val searchHousesAdapter: SearchAdapter = SearchAdapter(null, null, null)
 
@@ -24,6 +26,12 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchReference: DatabaseReference
 
     private var searchHousesList = ArrayList<String>()
+
+    private var finalDates: MutableList<CalendarDay>? = null
+
+    private val manager = supportFragmentManager
+
+    private var searchBtnFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,17 +57,46 @@ class SearchActivity : AppCompatActivity() {
 
         search_button.setOnClickListener {
 
-
-            populateRecycler()
-
-
+            if (searchBtnFlag) {
+                search_main_rec.visibility = View.GONE
+                search_prompt_txt.visibility = View.GONE
+                loadCalendar()
+            } else {
+                if (finalDates != null) {
+                    if (finalDates!!.size > 0)
+                        populateRecycler(finalDates)
+                }
+            }
         }
-
-
     }
 
-    private fun populateRecycler() {
-        val dates = getDates("2017-11-08", "2017-11-10")
+    override fun calendarDatesForSearch(dates: MutableList<CalendarDay>?) {
+        searchBtnFlag = false
+        search_button.text = "Submit"
+        finalDates = dates
+    }
+
+    private fun loadCalendar() {
+        val transaction = manager.beginTransaction()
+        transaction.replace(R.id.search_calendar_container, CalendarFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun populateRecycler(finalDates: MutableList<CalendarDay>?) {
+        manager.popBackStackImmediate()
+
+        search_main_rec.visibility = View.VISIBLE
+
+        val firstDay: String = finalDates!![0].year.toString() + "-" +
+                (finalDates[0].month + 1) + "-" +
+                finalDates[0].day
+
+        val lastDay: String = finalDates[finalDates.size - 1].year.toString() + "-" +
+                (finalDates[finalDates.size - 1].month + 1) + "-" +
+                finalDates[finalDates.size - 1].day
+
+        val dates = getDates(firstDay, lastDay)
 
         searchReference.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError?) {
@@ -89,6 +126,7 @@ class SearchActivity : AppCompatActivity() {
                     searchHousesRec.visibility = View.VISIBLE
                 } else {
                     search_prompt_txt.visibility = View.VISIBLE
+                    search_prompt_txt.text = "No available houses for these dates"
                     searchHousesRec.visibility = View.GONE
                 }
 
@@ -99,6 +137,9 @@ class SearchActivity : AppCompatActivity() {
                     searchHousesAdapter.items = searchHousesList
                     searchHousesAdapter.notifyDataSetChanged()
                 })
+
+                searchBtnFlag = true
+                search_button.text = "Search Again"
             }
         })
     }
