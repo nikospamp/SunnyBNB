@@ -10,7 +10,7 @@ import android.view.View
 import com.example.ptuxiaki.sunnybnb.R
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_cities.*
+import kotlinx.android.synthetic.main.activity_search.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cities)
+        setContentView(R.layout.activity_search)
 
         supportActionBar?.title = "Search"
 
@@ -47,6 +47,18 @@ class SearchActivity : AppCompatActivity() {
 
         searchReference = FirebaseDatabase.getInstance().reference.child("RESERVATIONS")
 
+        search_button.setOnClickListener {
+
+
+            populateRecycler()
+
+
+        }
+
+
+    }
+
+    private fun populateRecycler() {
         val dates = getDates("2017-11-08", "2017-11-10")
 
         searchReference.addValueEventListener(object : ValueEventListener {
@@ -73,10 +85,10 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 if (searchHousesList.size > 0) {
-                    search_no_result_txt.visibility = View.GONE
+                    search_prompt_txt.visibility = View.GONE
                     searchHousesRec.visibility = View.VISIBLE
                 } else {
-                    search_no_result_txt.visibility = View.VISIBLE
+                    search_prompt_txt.visibility = View.VISIBLE
                     searchHousesRec.visibility = View.GONE
                 }
 
