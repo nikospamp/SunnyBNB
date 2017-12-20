@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import com.example.ptuxiaki.sunnybnb.Models.City
 import com.example.ptuxiaki.sunnybnb.R
 import com.google.firebase.database.*
 import java.util.*
@@ -39,6 +40,8 @@ class TopDestinationsActivity : AppCompatActivity() {
 
                 map = hashMapOf()
 
+                val list = mutableListOf<City>()
+
                 for (tempSnap in snap.children) run {
 
                     val currentCity: String = tempSnap.child("city").value.toString()
@@ -51,33 +54,24 @@ class TopDestinationsActivity : AppCompatActivity() {
                     }
                 }
 
-                val citiesList = ArrayList<String>()
-                val citiesCounterList = ArrayList<Int>()
-
-                val downMap = hashMapOf<String, String>()
-
-                for (x in map) {
-                    downMap.put(x.value.toString(), x.key)
+                for (city in map) {
+                    list.add(City(name = city.key, rooms = city.value))
                 }
 
-                val tree = TreeMap(downMap).descendingMap()
+                Log.d("CityList", list.toString())
 
-                for ((index, value) in tree) {
-                    Log.d("Tree", "$index $value")
-                    citiesList.add(value)
-                    citiesCounterList.add(index.toInt())
-                }
+                Collections.sort(list, object : Comparator<City> {
+                    override fun compare(city1: City?, city2: City?): Int {
+                        return city1?.rooms!!.compareTo(city2?.rooms!!)
+                    }
+                })
 
                 val topDestinationsAdapter: TopDestinationsAdapter?
 
-                topDestinationsAdapter = TopDestinationsAdapter(citiesList, citiesCounterList, listener = { chosenCity ->
-
+                topDestinationsAdapter = TopDestinationsAdapter(list.reversed(), listener = { chosenCity ->
                     val intent = Intent(this@TopDestinationsActivity, CityRoomsActivity::class.java)
                     intent.putExtra("CITY", chosenCity)
                     startActivity(intent)
-
-
-
 
                 })
 
