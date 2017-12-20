@@ -60,11 +60,9 @@ class TopDestinationsActivity : AppCompatActivity() {
 
                 Log.d("CityList", list.toString())
 
-                Collections.sort(list, object : Comparator<City> {
-                    override fun compare(city1: City?, city2: City?): Int {
-                        return city1?.rooms!!.compareTo(city2?.rooms!!)
-                    }
-                })
+                Collections.sort(list) { city1, city2 ->
+                    city1?.rooms!!.compareTo(city2?.rooms!!)
+                }
 
                 val topDestinationsAdapter: TopDestinationsAdapter?
 
