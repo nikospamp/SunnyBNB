@@ -168,7 +168,7 @@
 
             <Button
                 android:id="@+id/profile_settings_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/friends"
                 android:layout_centerHorizontal="true"
@@ -185,24 +185,28 @@
 
             <Button
                 android:id="@+id/profile_send_friend_request_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/fui_bgTwitter"
-                android:text="Send Request"
+                android:padding="16dp"
+                android:text="@string/send_friend_request"
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/profile_settings_btn"
-                app:layout_constraintStart_toStartOf="@+id/profile_settings_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_settings_btn"
                 app:layout_goneMarginTop="32dp" />
 
             <Button
                 android:id="@+id/profile_decline_friend_request_btn"
-                android:layout_width="0dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/material_red_a200"
-                android:text="Decline"
+                android:padding="16dp"
+                android:text="@string/decline_request"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/profile_send_friend_request_btn"
                 app:layout_constraintStart_toStartOf="@+id/profile_send_friend_request_btn"

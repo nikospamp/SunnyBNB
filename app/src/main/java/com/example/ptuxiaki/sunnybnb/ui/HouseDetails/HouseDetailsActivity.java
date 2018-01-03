@@ -4,14 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.Booking.BookingActivity;
+import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,7 @@ public class HouseDetailsActivity extends AppCompatActivity {
     private TextView houseName;
     private TextView houseLocation;
     private Button bookNow;
+    private Button ownerDetails;
 
 
     private DatabaseReference housesData;
@@ -48,20 +50,26 @@ public class HouseDetailsActivity extends AppCompatActivity {
 
         housesData = FirebaseDatabase.getInstance().getReference().child("HOUSES").child(HOUSE_ID);
 
-        mainImageView = (ImageView) findViewById(R.id.house_detail_photo);
-        houseName = (TextView) findViewById(R.id.house_detail_name);
-        houseLocation = (TextView) findViewById(R.id.house_detail_location);
-        bookNow = (Button) findViewById(R.id.house_detail_reservation_btn);
+        mainImageView = findViewById(R.id.house_detail_photo);
+        houseName = findViewById(R.id.house_detail_name);
+        houseLocation = findViewById(R.id.house_detail_location);
+        bookNow = findViewById(R.id.house_detail_reservation_btn);
+        ownerDetails = findViewById(R.id.house_details_owner_details_btn);
 
-        bookNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HouseDetailsActivity.this, BookingActivity.class);
-                intent.putExtra("HOUSE_ID", HOUSE_ID);
-                intent.putExtra("UID", userId);
-                startActivity(intent);
-                finish();
-            }
+        bookNow.setOnClickListener(v -> {
+            Intent intent = new Intent(HouseDetailsActivity.this, BookingActivity.class);
+            intent.putExtra("HOUSE_ID", HOUSE_ID);
+            intent.putExtra("UID", userId);
+            startActivity(intent);
+            finish();
+        });
+
+        ownerDetails.setOnClickListener(v -> {
+            Intent profileIntent = new Intent(HouseDetailsActivity.this, ProfileActivity.class);
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user != null)
+                profileIntent.putExtra("Current_User", ownerId);
+            startActivity(profileIntent);
         });
 
 

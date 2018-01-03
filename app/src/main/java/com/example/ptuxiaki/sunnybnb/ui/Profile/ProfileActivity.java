@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private final String NOT_FRIENDS = "not_friends";
+    private final String REQ_SENT = "req_sent";
+
     private String profile = "Profile";
     private String users = "USERS";
     private String photo = "photoUrl";
@@ -43,9 +47,19 @@ public class ProfileActivity extends AppCompatActivity {
     private String houses = "houses";
     private String visitors = "visitors";
     private String friends = "friends";
+
+    private Button sendRequestBtn;
+    private Button declineRequestBtn;
+    private Button settingsBtn;
+
+    private String displayingUser;
+    private String mCurrent_state;
+
     private CircleImageView image;
+
+    private FirebaseUser currentUser;
     private DatabaseReference mDatabaseReference;
-    private FirebaseUser mCurrentUser;
+    private DatabaseReference mFriendsRequestReference;
     private StorageReference mStorageReference;
     private ProgressDialog mProgressBar;
 
@@ -55,9 +69,17 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         getSupportActionBar().setTitle(profile);
 
+        sendRequestBtn = findViewById(R.id.profile_send_friend_request_btn);
+        settingsBtn = findViewById(R.id.profile_settings_btn);
+        declineRequestBtn = findViewById(R.id.profile_decline_friend_request_btn);
+
         image = findViewById(R.id.profileCircleImage);
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        mCurrent_state = NOT_FRIENDS;
 
         mProgressBar = new ProgressDialog(this);
         mProgressBar.setTitle("Getting User Profile");
@@ -65,23 +87,31 @@ public class ProfileActivity extends AppCompatActivity {
         mProgressBar.setCanceledOnTouchOutside(false);
         mProgressBar.show();
 
-        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        displayingUser = getIntent().getStringExtra("Current_User");
 
-        /**Edo arxikopoio ena reference to opoio deixne sto root tis vasis -> users -> currentUser
-         * */
+        if (currentUser != null) {
+            if (!currentUser.getUid().equals(displayingUser)) {
+                settingsBtn.setVisibility(View.GONE);
+                sendRequestBtn.setVisibility(View.VISIBLE);
+                declineRequestBtn.setVisibility(View.VISIBLE);
+            } else {
+                settingsBtn.setVisibility(View.VISIBLE);
+                sendRequestBtn.setVisibility(View.GONE);
+                declineRequestBtn.setVisibility(View.GONE);
+            }
+        }
+
         mDatabaseReference = FirebaseDatabase.getInstance().getReference()
-                .child(users).child(mCurrentUser.getUid());
+                .child(users).child(displayingUser);
 
-        /**Edo trabaei ta stoixeia pou 8elo kai tautoxrona "akouo" gia tuxon allages
-         * */
+        mFriendsRequestReference = FirebaseDatabase.getInstance().getReference().child("FRIEND_REQ");
+
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ProfileActivity.this);
                 SharedPreferences.Editor editor = prefs.edit();
-                /**Edo px pairno displayName tou currentUser apo th vasi
-                 * Omoios pairno kai oti allo 8elo
-                 * */
+
                 String user_name = dataSnapshot.child(displayName).getValue().toString();
                 editor.putString("display_name_text", user_name);
                 editor.apply();
@@ -98,17 +128,13 @@ public class ProfileActivity extends AppCompatActivity {
                 TextView housesTV = findViewById(R.id.profileHouseCounter);
                 TextView visitorsTV = findViewById(R.id.profileVisitorsCounter);
                 TextView friendsTV = findViewById(R.id.profileFriendsCounter);
-                /**Kai edo vazo to onoma poy trabiksa apo ti vasi
-                 * se ena textView sto profile mou
-                 * */
+
                 nameTV.setText(user_name);
                 statusTV.setText(user_status);
                 housesTV.setText(user_houses);
                 visitorsTV.setText(user_visitors);
                 friendsTV.setText(user_friends);
 
-                /**H' edo, pernao tin eikona pou traviksa apo ti vasi
-                 * */
                 Picasso.with(getApplicationContext()).load(user_image)
                         .placeholder(R.drawable.default_profile_image).into(image);
 
@@ -121,14 +147,59 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Circle", "onClick: ");
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(1, 1)
-                        .start(ProfileActivity.this);
+        image.setOnClickListener(v -> {
+            Log.d("Circle", "onClick: ");
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(ProfileActivity.this);
+        });
+
+        sendRequestBtn.setOnClickListener(view -> {
+
+            /*
+             * Should Handle Remove Request
+             * */
+
+            if (mCurrent_state.equals(NOT_FRIENDS)) {
+
+                mFriendsRequestReference.child(currentUser.getUid()).child(displayingUser).child("request_type")
+                        .setValue("sent").addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mFriendsRequestReference.child(displayingUser).child(currentUser.getUid()).child("request_type")
+                                .setValue("received").addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+
+                                mCurrent_state = REQ_SENT;
+
+                                sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.cancel_friend_request));
+
+                                Toast.makeText(ProfileActivity.this, "Friend Request Sent", Toast.LENGTH_LONG).show();
+                            }
+
+                        });
+
+                    } else {
+                        Toast.makeText(ProfileActivity.this, "Failed sending friend request", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+
+            if (mCurrent_state.equals(REQ_SENT)) {
+
+
+                mFriendsRequestReference.child(currentUser.getUid()).child(displayingUser).removeValue().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mFriendsRequestReference.child(displayingUser).child(currentUser.getUid()).removeValue().addOnCompleteListener(task1 -> {
+
+                            mCurrent_state = NOT_FRIENDS;
+                            sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.send_friend_request));
+
+                        });
+                    }
+                });
+
             }
         });
     }
@@ -151,7 +222,7 @@ public class ProfileActivity extends AppCompatActivity {
                 mProgressBar.show();
                 Uri resultUri = result.getUri();
                 StorageReference filepath = mStorageReference.child("profile_images")
-                        .child(mCurrentUser.getUid() + ".jpg");
+                        .child(displayingUser + ".jpg");
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -164,7 +235,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     Toast.makeText(ProfileActivity.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        }else {
+                        } else {
                             mProgressBar.dismiss();
                             Toast.makeText(ProfileActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
                         }
