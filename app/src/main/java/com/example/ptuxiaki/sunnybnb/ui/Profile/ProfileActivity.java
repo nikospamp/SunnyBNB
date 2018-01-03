@@ -4,10 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -55,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         getSupportActionBar().setTitle(profile);
 
-        image = (CircleImageView) findViewById(R.id.profileCircleImage);
+        image = findViewById(R.id.profileCircleImage);
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
@@ -93,11 +93,11 @@ public class ProfileActivity extends AppCompatActivity {
                 String user_visitors = dataSnapshot.child(visitors).getValue().toString();
                 String user_friends = dataSnapshot.child(friends).getValue().toString();
 
-                TextView nameTV = (TextView) findViewById(R.id.profileDisplayName);
-                TextView statusTV = (TextView) findViewById(R.id.profileStatus);
-                TextView housesTV = (TextView) findViewById(R.id.profileHouseCounter);
-                TextView visitorsTV = (TextView) findViewById(R.id.profileVisitorsCounter);
-                TextView friendsTV = (TextView) findViewById(R.id.profileFriendsCounter);
+                TextView nameTV = findViewById(R.id.profileDisplayName);
+                TextView statusTV = findViewById(R.id.profileStatus);
+                TextView housesTV = findViewById(R.id.profileHouseCounter);
+                TextView visitorsTV = findViewById(R.id.profileVisitorsCounter);
+                TextView friendsTV = findViewById(R.id.profileFriendsCounter);
                 /**Kai edo vazo to onoma poy trabiksa apo ti vasi
                  * se ena textView sto profile mou
                  * */

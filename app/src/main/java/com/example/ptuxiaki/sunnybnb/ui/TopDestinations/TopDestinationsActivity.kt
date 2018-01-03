@@ -79,7 +79,5 @@ class TopDestinationsActivity : AppCompatActivity() {
 
             }
         })
-
-
     }
 }
