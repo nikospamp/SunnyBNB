@@ -32,12 +32,17 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private final String NOT_FRIENDS = "not_friends";
-    private final String REQ_SENT = "req_sent";
+    private static final String FRIENDS = "friends";
+    private static final String NOT_FRIENDS = "not_friends";
+    private static final String REQ_SENT = "sent";
+    private static final String REQ_RECEIVED = "received";
 
     private String profile = "Profile";
     private String users = "USERS";
@@ -60,6 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mFriendsRequestReference;
+    private DatabaseReference mFriendsDatabaseReference;
     private StorageReference mStorageReference;
     private ProgressDialog mProgressBar;
 
@@ -105,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .child(users).child(displayingUser);
 
         mFriendsRequestReference = FirebaseDatabase.getInstance().getReference().child("FRIEND_REQ");
+        mFriendsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("FRIENDS");
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -138,7 +145,33 @@ public class ProfileActivity extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load(user_image)
                         .placeholder(R.drawable.default_profile_image).into(image);
 
-                mProgressBar.dismiss();
+                mFriendsRequestReference.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(displayingUser)) {
+                            String request_type = dataSnapshot.child(displayingUser).child("request_type").getValue().toString();
+                            if (request_type.equals(REQ_RECEIVED)) {
+
+                                mCurrent_state = REQ_RECEIVED;
+                                sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.accept_friend_request));
+
+                            } else if (request_type.equals(REQ_SENT)) {
+
+                                mCurrent_state = REQ_SENT;
+                                sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.cancel_friend_request));
+
+                            }
+                        }
+                        mProgressBar.dismiss();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
             }
 
             @Override
@@ -188,7 +221,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             if (mCurrent_state.equals(REQ_SENT)) {
 
-
                 mFriendsRequestReference.child(currentUser.getUid()).child(displayingUser).removeValue().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         mFriendsRequestReference.child(displayingUser).child(currentUser.getUid()).removeValue().addOnCompleteListener(task1 -> {
@@ -201,6 +233,35 @@ public class ProfileActivity extends AppCompatActivity {
                 });
 
             }
+
+            if (mCurrent_state.equals(REQ_RECEIVED)) {
+
+                String currentDate = DateFormat.getDateTimeInstance().format(new Date());
+
+                mFriendsDatabaseReference.child(currentUser.getUid()).child(displayingUser).setValue(currentDate).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        mFriendsDatabaseReference.child(displayingUser).child(currentUser.getUid()).setValue(currentDate).addOnSuccessListener(aVoid -> {
+
+                            mFriendsRequestReference.child(currentUser.getUid()).child(displayingUser).removeValue().addOnCompleteListener(task1 -> {
+                                if (task.isSuccessful()) {
+                                    mFriendsRequestReference.child(displayingUser).child(currentUser.getUid()).removeValue().addOnCompleteListener(task2 -> {
+
+                                        mCurrent_state = FRIENDS;
+                                        sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.remove_friend));
+
+                                    });
+                                }
+                            });
+
+
+                        });
+
+                    }
+                });
+
+            }
+
         });
     }
 

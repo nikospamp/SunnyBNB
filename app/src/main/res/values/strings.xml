@@ -118,6 +118,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="send_friend_request">Send Friend Request</string>
+    <string name="accept_friend_request">Accept Friend Request</string>
     <string name="decline_request">Decline Request</string>
     <string name="cancel_friend_request">Cancel Friend Request</string>
+    <string name="remove_friend">Unfriend</string>
 </resources>

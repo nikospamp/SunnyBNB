@@ -168,7 +168,7 @@
 
             <Button
                 android:id="@+id/profile_settings_btn"
-                android:layout_width="200dp"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/friends"
                 android:layout_centerHorizontal="true"
@@ -185,7 +185,7 @@
 
             <Button
                 android:id="@+id/profile_send_friend_request_btn"
-                android:layout_width="200dp"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -201,7 +201,7 @@
 
             <Button
                 android:id="@+id/profile_decline_friend_request_btn"
-                android:layout_width="200dp"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/material_red_a200"
