@@ -161,6 +161,28 @@ public class ProfileActivity extends AppCompatActivity {
                                 sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.cancel_friend_request));
 
                             }
+                        } else {
+                            mFriendsDatabaseReference.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String friend = dataSnapshot.child(displayingUser).getValue().toString();
+
+                                    Log.d("FriendsList", "onDataChange: " + dataSnapshot.toString());
+
+                                    if (friend != null) {
+
+                                        mCurrent_state = FRIENDS;
+                                        sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.remove_friend));
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
                         mProgressBar.dismiss();
                     }
@@ -259,6 +281,16 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 });
+
+            }
+
+            if (mCurrent_state.equals(FRIENDS)) {
+
+                mFriendsDatabaseReference.child(currentUser.getUid()).child(displayingUser).removeValue().addOnSuccessListener(aVoid ->
+                        mFriendsDatabaseReference.child(displayingUser).child(currentUser.getUid()).removeValue().addOnSuccessListener(aVoid1 -> {
+                            mCurrent_state = NOT_FRIENDS;
+                            sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.send_friend_request));
+                        }));
 
             }
 
