@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +15,6 @@ import android.widget.Toast;
 
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,13 +24,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -63,9 +60,12 @@ public class ProfileActivity extends AppCompatActivity {
     private CircleImageView image;
 
     private FirebaseUser currentUser;
-    private DatabaseReference mDatabaseReference;
-    private DatabaseReference mFriendsRequestReference;
-    private DatabaseReference mFriendsDatabaseReference;
+
+    private DatabaseReference mRootDb;
+    private DatabaseReference mFriendsRequestDb;
+    private DatabaseReference mFriendsDb;
+    private DatabaseReference mNotificationDb;
+
     private StorageReference mStorageReference;
     private ProgressDialog mProgressBar;
 
@@ -107,13 +107,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference()
+        mRootDb = FirebaseDatabase.getInstance().getReference()
                 .child(users).child(displayingUser);
 
-        mFriendsRequestReference = FirebaseDatabase.getInstance().getReference().child("FRIEND_REQ");
-        mFriendsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("FRIENDS");
+        mFriendsRequestDb = FirebaseDatabase.getInstance().getReference().child("FRIEND_REQ");
+        mFriendsDb = FirebaseDatabase.getInstance().getReference().child("FRIENDS");
+        mNotificationDb = FirebaseDatabase.getInstance().getReference().child("NOTIFICATIONS");
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mRootDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ProfileActivity.this);
@@ -145,7 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load(user_image)
                         .placeholder(R.drawable.default_profile_image).into(image);
 
-                mFriendsRequestReference.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                mFriendsRequestDb.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(displayingUser)) {
@@ -154,18 +155,22 @@ public class ProfileActivity extends AppCompatActivity {
 
                                 mCurrent_state = REQ_RECEIVED;
                                 sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.accept_friend_request));
+                                declineRequestBtn.setVisibility(View.VISIBLE);
 
                             } else if (request_type.equals(REQ_SENT)) {
+
 
                                 mCurrent_state = REQ_SENT;
                                 sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.cancel_friend_request));
 
+                                declineRequestBtn.setVisibility(View.GONE);
+
                             }
                         } else {
-                            mFriendsDatabaseReference.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            mFriendsDb.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    String friend = dataSnapshot.child(displayingUser).getValue().toString();
+                                    Object friend = dataSnapshot.child(displayingUser).getValue();
 
                                     Log.d("FriendsList", "onDataChange: " + dataSnapshot.toString());
 
@@ -173,6 +178,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                         mCurrent_state = FRIENDS;
                                         sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.remove_friend));
+                                        declineRequestBtn.setVisibility(View.GONE);
 
                                     }
                                 }
@@ -212,24 +218,31 @@ public class ProfileActivity extends AppCompatActivity {
 
         sendRequestBtn.setOnClickListener(view -> {
 
-            /*
-             * Should Handle Remove Request
-             * */
-
             if (mCurrent_state.equals(NOT_FRIENDS)) {
 
-                mFriendsRequestReference.child(currentUser.getUid()).child(displayingUser).child("request_type")
+                mFriendsRequestDb.child(currentUser.getUid()).child(displayingUser).child("request_type")
                         .setValue("sent").addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        mFriendsRequestReference.child(displayingUser).child(currentUser.getUid()).child("request_type")
+                        mFriendsRequestDb.child(displayingUser).child(currentUser.getUid()).child("request_type")
                                 .setValue("received").addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
 
-                                mCurrent_state = REQ_SENT;
+                                HashMap<String, String> notificationData = new HashMap<>();
+                                notificationData.put("from", currentUser.getUid());
+                                notificationData.put("type", "request");
 
-                                sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.cancel_friend_request));
+                                mNotificationDb.child(displayingUser).push()
+                                        .setValue(notificationData).addOnCompleteListener(task2 -> {
 
-                                Toast.makeText(ProfileActivity.this, "Friend Request Sent", Toast.LENGTH_LONG).show();
+                                    mCurrent_state = REQ_SENT;
+
+                                    sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.cancel_friend_request));
+
+                                    declineRequestBtn.setVisibility(View.GONE);
+
+                                });
+
+
                             }
 
                         });
@@ -243,12 +256,15 @@ public class ProfileActivity extends AppCompatActivity {
 
             if (mCurrent_state.equals(REQ_SENT)) {
 
-                mFriendsRequestReference.child(currentUser.getUid()).child(displayingUser).removeValue().addOnCompleteListener(task -> {
+                mFriendsRequestDb.child(currentUser.getUid()).child(displayingUser).removeValue().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        mFriendsRequestReference.child(displayingUser).child(currentUser.getUid()).removeValue().addOnCompleteListener(task1 -> {
+                        mFriendsRequestDb.child(displayingUser).child(currentUser.getUid()).removeValue().addOnCompleteListener(task1 -> {
 
                             mCurrent_state = NOT_FRIENDS;
                             sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.send_friend_request));
+
+                            declineRequestBtn.setVisibility(View.GONE);
+
 
                         });
                     }
@@ -260,17 +276,20 @@ public class ProfileActivity extends AppCompatActivity {
 
                 String currentDate = DateFormat.getDateTimeInstance().format(new Date());
 
-                mFriendsDatabaseReference.child(currentUser.getUid()).child(displayingUser).setValue(currentDate).addOnCompleteListener(task -> {
+                mFriendsDb.child(currentUser.getUid()).child(displayingUser).setValue(currentDate).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
-                        mFriendsDatabaseReference.child(displayingUser).child(currentUser.getUid()).setValue(currentDate).addOnSuccessListener(aVoid -> {
+                        mFriendsDb.child(displayingUser).child(currentUser.getUid()).setValue(currentDate).addOnSuccessListener(aVoid -> {
 
-                            mFriendsRequestReference.child(currentUser.getUid()).child(displayingUser).removeValue().addOnCompleteListener(task1 -> {
+                            mFriendsRequestDb.child(currentUser.getUid()).child(displayingUser).removeValue().addOnCompleteListener(task1 -> {
                                 if (task.isSuccessful()) {
-                                    mFriendsRequestReference.child(displayingUser).child(currentUser.getUid()).removeValue().addOnCompleteListener(task2 -> {
+                                    mFriendsRequestDb.child(displayingUser).child(currentUser.getUid()).removeValue().addOnCompleteListener(task2 -> {
 
                                         mCurrent_state = FRIENDS;
                                         sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.remove_friend));
+
+                                        declineRequestBtn.setVisibility(View.GONE);
+
 
                                     });
                                 }
@@ -286,8 +305,8 @@ public class ProfileActivity extends AppCompatActivity {
 
             if (mCurrent_state.equals(FRIENDS)) {
 
-                mFriendsDatabaseReference.child(currentUser.getUid()).child(displayingUser).removeValue().addOnSuccessListener(aVoid ->
-                        mFriendsDatabaseReference.child(displayingUser).child(currentUser.getUid()).removeValue().addOnSuccessListener(aVoid1 -> {
+                mFriendsDb.child(currentUser.getUid()).child(displayingUser).removeValue().addOnSuccessListener(aVoid ->
+                        mFriendsDb.child(displayingUser).child(currentUser.getUid()).removeValue().addOnSuccessListener(aVoid1 -> {
                             mCurrent_state = NOT_FRIENDS;
                             sendRequestBtn.setText(getApplicationContext().getResources().getString(R.string.send_friend_request));
                         }));
@@ -316,26 +335,21 @@ public class ProfileActivity extends AppCompatActivity {
                 Uri resultUri = result.getUri();
                 StorageReference filepath = mStorageReference.child("profile_images")
                         .child(displayingUser + ".jpg");
-                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String download_url = task.getResult().getDownloadUrl().toString();
-                            mDatabaseReference.child("photoUrl").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    mProgressBar.dismiss();
-                                    Toast.makeText(ProfileActivity.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
+                filepath.putFile(resultUri).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String download_url = task.getResult().getDownloadUrl().toString();
+                        mRootDb.child("photoUrl").setValue(download_url).addOnCompleteListener(task1 -> {
                             mProgressBar.dismiss();
-                            Toast.makeText(ProfileActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
-                        }
+                            Toast.makeText(ProfileActivity.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
+                        });
+                    } else {
+                        mProgressBar.dismiss();
+                        Toast.makeText(ProfileActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
+                Log.d("ImageUpload", error.toString());
             }
         }
     }

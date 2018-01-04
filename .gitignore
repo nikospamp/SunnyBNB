@@ -122,6 +122,9 @@ obj/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+# Node Modules
+node_modules
+
 # Keystore files
 
 # OS-specific files
