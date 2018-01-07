@@ -45,6 +45,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -290,9 +291,13 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "onActivityResult: Sign/Register");
+
         if (requestCode == RC_SIGN_IN) {
 
             final FirebaseUser signedUser = mAuth.getCurrentUser();
+
+            final String currentToken = FirebaseInstanceId.getInstance().getToken();
 
             ValueEventListener postListener = new ValueEventListener() {
                 @Override
@@ -302,7 +307,8 @@ public class MainActivity extends AppCompatActivity
                     Log.d(TAG, "onDataChange: " + dataSnapshot.child(getString(R.string.users)).child(signedUser.getUid()).exists());
                     SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                     if (!dataSnapshot.child(getString(R.string.users)).child(signedUser.getUid()).exists()) {
-                        Log.d(TAG, "onDataChange: REGISTER");
+                        Log.d(TAG, "onActivityResult: Register");
+
                         uid = setNullToDefaultValue(signedUser.getUid());
                         status = "default_status";
                         displayName = setNullToDefaultValue(signedUser.getDisplayName());
@@ -310,12 +316,11 @@ public class MainActivity extends AppCompatActivity
                         photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl().toString());
                         provider = setNullToDefaultValue(signedUser.getProviderId());
                         phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
-                        token = setNullToDefaultValue(null);
+                        token = currentToken;
                         houses = "0";
                         visitors = "0";
                         friends = "0";
 
-                        Log.d(TAG, "onActivityResult: User Signed In!");
                         User mUser = new User(uid, status, displayName, email,
                                 photoUrl, provider, phoneNumber, token, houses,
                                 visitors, friends);
@@ -324,8 +329,14 @@ public class MainActivity extends AppCompatActivity
 
                         mDatabase.child(getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
                     } else {
-                        Log.d(TAG, "onDataChange: LOGIN");
+                        Log.d(TAG, "onActivityResult: Login");
+
+                        Log.d(TAG, "onActivityResult: Token: " + currentToken);
+
                         mDatabase.child(getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).child("last_login").setValue(format.toLocalizedPattern());
+
+                        mDatabase.child(getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).child("msgToken")
+                                .setValue(currentToken);
                     }
                 }
 
