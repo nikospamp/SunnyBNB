@@ -9,7 +9,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-exports.sendNotification = functions.database.ref('/NOTIFICATIONS/{user_id}/{notification_id}').onWrite(event => {
+exports.sendFriendNotification = functions.database.ref('/NOTIFICATIONS/{user_id}/{notification_id}').onWrite(event => {
 
     const user_id = event.params.user_id;
     const notification_id = event.params.notification_id;
@@ -44,6 +44,10 @@ exports.sendNotification = functions.database.ref('/NOTIFICATIONS/{user_id}/{not
                     title: "New Friend Request",
                     body: `${userName} has sent you request`,
                     icon: "default",
+                    click_action: ".ui.Profile.ProfileActivity"
+                },
+                data: {
+                    from_user_id : from_user_id
                 }
             };
 
