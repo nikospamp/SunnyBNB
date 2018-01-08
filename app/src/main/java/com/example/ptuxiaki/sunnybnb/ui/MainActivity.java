@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity
                 Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null)
-                    profileIntent.putExtra("Current_User", user.getUid());
+                    profileIntent.putExtra("from_user_id", user.getUid());
                 startActivity(profileIntent);
                 break;
             case R.id.nav_favourites:

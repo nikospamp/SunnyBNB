@@ -68,7 +68,7 @@ public class HouseDetailsActivity extends AppCompatActivity {
             Intent profileIntent = new Intent(HouseDetailsActivity.this, ProfileActivity.class);
             FirebaseUser user = mAuth.getCurrentUser();
             if (user != null)
-                profileIntent.putExtra("Current_User", ownerId);
+                profileIntent.putExtra("from_user_id", ownerId);
             startActivity(profileIntent);
         });
 

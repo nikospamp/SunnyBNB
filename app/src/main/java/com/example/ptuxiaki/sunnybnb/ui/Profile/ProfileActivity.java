@@ -94,7 +94,14 @@ public class ProfileActivity extends AppCompatActivity {
         mProgressBar.setCanceledOnTouchOutside(false);
         mProgressBar.show();
 
-        displayingUser = getIntent().getStringExtra("Current_User");
+        displayingUser = getIntent().getStringExtra("from_user_id");
+        if (displayingUser == null) {
+            for (String x : getIntent().getExtras().keySet()) {
+                if (x.equals("from_user_id")) {
+                    displayingUser = getIntent().getStringExtra(x);
+                }
+            }
+        }
         Log.d("Messaging", displayingUser);
 
         if (currentUser != null) {

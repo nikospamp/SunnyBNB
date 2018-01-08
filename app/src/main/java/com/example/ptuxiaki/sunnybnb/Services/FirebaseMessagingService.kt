@@ -15,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class FirebaseMessagingService : com.google.firebase.messaging.FirebaseMessagingService() {
 
+
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
 
@@ -31,7 +32,7 @@ class FirebaseMessagingService : com.google.firebase.messaging.FirebaseMessaging
                 .setContentText(notificationBody)
 
         val resultIntent = Intent(clickAction)
-        resultIntent.putExtra("Current_User", fromUserId)
+        resultIntent.putExtra("from_user_id", fromUserId)
 
         val resultPendingIntent = PendingIntent.getActivity(
                 this,
