@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service android:name=".Services.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -38,19 +37,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-
-
         <activity android:name=".ui.Profile.ProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
+
             <intent-filter>
-                <action android:name=".ui.Profile.ProfileActivity"></action>
-                <category android:name="android.intent.category.DEFAULT"></category>
+                <action android:name=".ui.Profile.ProfileActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
@@ -78,8 +75,12 @@
         <activity android:name=".ui.Messages.MessagesActivity" />
         <activity android:name=".ui.TopDestinations.CityRoomsActivity" />
         <activity android:name=".ui.AllCities.CitiesActivity" />
-
         <activity android:name=".ui.Search.SearchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity android:name=".ui.Friends.FriendsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />

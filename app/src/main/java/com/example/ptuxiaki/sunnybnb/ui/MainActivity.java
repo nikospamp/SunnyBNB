@@ -28,6 +28,7 @@ import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.AddHouse.HomeAdd;
 import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavoritesActivity;
+import com.example.ptuxiaki.sunnybnb.ui.Friends.FriendsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
@@ -162,57 +163,51 @@ public class MainActivity extends AppCompatActivity
                         viewHolder.setFavStatus(houseId, currentUser);
                         viewHolder.setContext(getApplicationContext());
 
-                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent houseDetailsIntent = new Intent(MainActivity.this, HouseDetailsActivity.class);
-                                houseDetailsIntent.putExtra("house_id", houseId);
-                                startActivity(houseDetailsIntent);
-                            }
+                        viewHolder.mView.setOnClickListener(v -> {
+                            Intent houseDetailsIntent = new Intent(MainActivity.this, HouseDetailsActivity.class);
+                            houseDetailsIntent.putExtra("house_id", houseId);
+                            startActivity(houseDetailsIntent);
                         });
 
-                        viewHolder.favIcon.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                final DatabaseReference push = mDatabase.child("USERS")
-                                        .child(currentUser.getUid())
-                                        .child("favorites").child(houseId);
+                        viewHolder.favIcon.setOnClickListener(view -> {
+                            final DatabaseReference push = mDatabase.child("USERS")
+                                    .child(currentUser.getUid())
+                                    .child("favorites").child(houseId);
 
-                                push.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.getValue() == null) {
-                                            DatabaseReference houseFavRef = mDatabase.child("USERS")
-                                                    .child(currentUser.getUid())
-                                                    .child("favorites");
+                            push.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getValue() == null) {
+                                        DatabaseReference houseFavRef = mDatabase.child("USERS")
+                                                .child(currentUser.getUid())
+                                                .child("favorites");
 
-                                            Calendar cal = Calendar.getInstance();
-                                            int day = cal.get(Calendar.DAY_OF_MONTH);
-                                            int month = cal.get(Calendar.MONTH) + 1;
-                                            int year = cal.get(Calendar.YEAR);
+                                        Calendar cal = Calendar.getInstance();
+                                        int day = cal.get(Calendar.DAY_OF_MONTH);
+                                        int month = cal.get(Calendar.MONTH) + 1;
+                                        int year = cal.get(Calendar.YEAR);
 
-                                            HashMap<String, Object> favMap = new HashMap<>();
+                                        HashMap<String, Object> favMap = new HashMap<>();
 
-                                            favMap.put(houseId, day
-                                                    + "/" + month
-                                                    + "/" + year);
+                                        favMap.put(houseId, day
+                                                + "/" + month
+                                                + "/" + year);
 
-                                            houseFavRef.updateChildren(favMap);
+                                        houseFavRef.updateChildren(favMap);
 
-                                            viewHolder.favIcon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
-                                        } else {
-                                            push.removeValue();
-                                            viewHolder.favIcon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart_empty));
-                                        }
-
+                                        viewHolder.favIcon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
+                                    } else {
+                                        push.removeValue();
+                                        viewHolder.favIcon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart_empty));
                                     }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                }
 
-                                    }
-                                });
-                            }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                         });
 
 
@@ -427,6 +422,9 @@ public class MainActivity extends AppCompatActivity
                 if (user != null)
                     profileIntent.putExtra("from_user_id", user.getUid());
                 startActivity(profileIntent);
+                break;
+            case R.id.nav_friends:
+                startActivity(new Intent(MainActivity.this, FriendsActivity.class));
                 break;
             case R.id.nav_favourites:
                 startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
