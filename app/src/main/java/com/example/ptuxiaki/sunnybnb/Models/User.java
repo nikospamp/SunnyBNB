@@ -18,6 +18,7 @@ public class User {
     private String provider;
     private String phoneNumber;
     private String msgToken;
+    private Boolean online;
     private String houses;
     private String visitors;
     private String friends;
@@ -25,7 +26,7 @@ public class User {
     public User() {
     }
 
-    public User(String uid, String status, String displayName, String email, String photoUrl, String provider, String phoneNumber, String msgToken, String houses, String visitors, String friends) {
+    public User(String uid, String status, String displayName, String email, String photoUrl, String provider, String phoneNumber, String msgToken, Boolean online, String houses, String visitors, String friends) {
         this.uid = uid;
         this.status = status;
         this.displayName = displayName;
@@ -34,52 +35,9 @@ public class User {
         this.provider = provider;
         this.phoneNumber = phoneNumber;
         this.msgToken = msgToken;
+        this.online = online;
         this.houses = houses;
         this.visitors = visitors;
-        this.friends = friends;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setMsgToken(String msgToken) {
-        this.msgToken = msgToken;
-    }
-
-    public void setHouses(String houses) {
-        this.houses = houses;
-    }
-
-    public void setVisitors(String visitors) {
-        this.visitors = visitors;
-    }
-
-    public void setFriends(String friends) {
         this.friends = friends;
     }
 
@@ -87,44 +45,96 @@ public class User {
         return uid;
     }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhotoUrl() {
         return photoUrl;
     }
 
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     public String getProvider() {
         return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getMsgToken() {
         return msgToken;
+    }
+
+    public void setMsgToken(String msgToken) {
+        this.msgToken = msgToken;
+    }
+
+    public Boolean getOnline() {
+        return online;
+    }
+
+    public void setOnline(Boolean online) {
+        this.online = online;
     }
 
     public String getHouses() {
         return houses;
     }
 
+    public void setHouses(String houses) {
+        this.houses = houses;
+    }
+
     public String getVisitors() {
         return visitors;
     }
 
+    public void setVisitors(String visitors) {
+        this.visitors = visitors;
+    }
+
     public String getFriends() {
         return friends;
+    }
+
+    public void setFriends(String friends) {
+        this.friends = friends;
     }
 
     @Exclude

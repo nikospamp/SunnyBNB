@@ -61,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
 
-    private DatabaseReference mRootDb;
+    private DatabaseReference mUserDb;
     private DatabaseReference mRootRef;
     private DatabaseReference mFriendsRequestDb;
     private DatabaseReference mFriendsDb;
@@ -116,8 +116,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
 
-        mRootDb = FirebaseDatabase.getInstance().getReference()
+        mUserDb = FirebaseDatabase.getInstance().getReference()
                 .child(users).child(displayingUser);
+        mUserDb.keepSynced(true);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
@@ -125,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
         mFriendsDb = FirebaseDatabase.getInstance().getReference().child("FRIENDS");
         mNotificationDb = FirebaseDatabase.getInstance().getReference().child("NOTIFICATIONS");
 
-        mRootDb.addValueEventListener(new ValueEventListener() {
+        mUserDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ProfileActivity.this);
@@ -235,7 +236,7 @@ public class ProfileActivity extends AppCompatActivity {
                 notificationData.put("from", currentUser.getUid());
                 notificationData.put("type", "request");
 
-                DatabaseReference newNotificationRef = mRootDb.child("NOTIFICATIONS")
+                DatabaseReference newNotificationRef = mUserDb.child("NOTIFICATIONS")
                         .child(displayingUser).push();
 
                 String notificationId = newNotificationRef.getKey();
@@ -335,7 +336,7 @@ public class ProfileActivity extends AppCompatActivity {
                 filepath.putFile(resultUri).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         String download_url = task.getResult().getDownloadUrl().toString();
-                        mRootDb.child("photoUrl").setValue(download_url).addOnCompleteListener(task1 -> {
+                        mUserDb.child("photoUrl").setValue(download_url).addOnCompleteListener(task1 -> {
                             mProgressBar.dismiss();
                             Toast.makeText(ProfileActivity.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
                         });

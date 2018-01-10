@@ -37,8 +37,6 @@ import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
 import com.example.ptuxiaki.sunnybnb.ui.TopDestinations.TopDestinationsActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -66,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private DatabaseReference mUserDatabase;
     private DatabaseReference mDatabaseHouses;
     private static final int RC_SIGN_IN = 123;
 
@@ -107,6 +106,9 @@ public class MainActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabaseHouses = FirebaseDatabase.getInstance().getReference().child("HOUSES");
+        if (mAuth.getCurrentUser() != null) {
+            mUserDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child(mAuth.getCurrentUser().getUid());
+        }
 
         recyclerView = findViewById(R.id.mainRecycler);
         recyclerView.setHasFixedSize(true);
@@ -124,6 +126,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mUserDatabase.child("online").setValue(false);
+    }
 
     @Override
     public void onStart() {
@@ -143,6 +150,8 @@ public class MainActivity extends AppCompatActivity
                                     ))
                             .build(),
                     RC_SIGN_IN);
+        } else {
+            mUserDatabase.child("online").setValue(true);
         }
 
         FirebaseRecyclerAdapter<House, HousesViewHolder> mHousesRecyclerAdapter =
@@ -317,7 +326,7 @@ public class MainActivity extends AppCompatActivity
                         friends = "0";
 
                         User mUser = new User(uid, status, displayName, email,
-                                photoUrl, provider, phoneNumber, token, houses,
+                                photoUrl, provider, phoneNumber, token, true, houses,
                                 visitors, friends);
                         Map<String, Object> userMap = mUser.toMap();
                         userMap.put("register_date", format.toString());
@@ -378,28 +387,25 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.logOut_settings) {
             AuthUI.getInstance()
                     .signOut(MainActivity.this)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    .addOnCompleteListener(task -> {
+                        Log.d(TAG, "onComplete: " + "User logged out!");
+                        mAuth = FirebaseAuth.getInstance();
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Log.d(TAG, "onComplete: " + "User logged out!");
-                            mAuth = FirebaseAuth.getInstance();
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
-                            if (currentUser == null) {
-                                Log.d(TAG, "onComplete: User is null");
-                                startActivityForResult(
-                                        AuthUI.getInstance()
-                                                .createSignInIntentBuilder()
-                                                .setTheme(R.style.DarkTheme)
-                                                .setAvailableProviders(
-                                                        Arrays.asList(
-                                                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                                                new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build()
-                                                        ))
-                                                .build(),
-                                        RC_SIGN_IN);
-                            }
+                        if (currentUser == null) {
+                            Log.d(TAG, "onComplete: User is null");
+                            startActivityForResult(
+                                    AuthUI.getInstance()
+                                            .createSignInIntentBuilder()
+                                            .setTheme(R.style.DarkTheme)
+                                            .setAvailableProviders(
+                                                    Arrays.asList(
+                                                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                                            new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build()
+                                                    ))
+                                            .build(),
+                                    RC_SIGN_IN);
                         }
                     });
             return true;
