@@ -1,26 +1,28 @@
 package com.example.ptuxiaki.sunnybnb.ui.Friends
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
-import com.example.ptuxiaki.sunnybnb.Models.Friends
 import com.example.ptuxiaki.sunnybnb.R
-import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_friends.*
-import kotlinx.android.synthetic.main.friend_single.view.*
 
 class FriendsActivity : AppCompatActivity() {
 
     private lateinit var friendsDb: DatabaseReference
 
     private var currentUser: FirebaseUser? = null
+
+
+    private lateinit var friendsList: MutableList<String>
+
+    private lateinit var datesList: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,35 +32,43 @@ class FriendsActivity : AppCompatActivity() {
         friends_main_rec.layoutManager = LinearLayoutManager(this)
         friends_main_rec.setHasFixedSize(true)
 
-
         currentUser = FirebaseAuth.getInstance().currentUser
 
-        friendsDb = FirebaseDatabase.getInstance().reference.child("FRIENDS")
-                .child(currentUser!!.uid)
+        friendsDb = FirebaseDatabase.getInstance().reference.child("FRIENDS").child(currentUser!!.uid)
 
-        val friendsRecyclerViewAdapter = object : FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(
-                Friends::class.java,
-                R.layout.friend_single,
-                FriendsViewHolder::class.java,
-                friendsDb) {
+        friendsDb.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot?) {
+                friendsList = mutableListOf()
+                datesList = mutableListOf()
 
-            override fun populateViewHolder(viewHolder: FriendsViewHolder, model: Friends, position: Int) {
-                Log.d("FriendsList", model.toString())
-                viewHolder.setDate(model.date)
+                snapshot?.children!!.mapTo(friendsList) { it.key }
+                snapshot.children!!.mapTo(datesList) { it.child("date").value.toString() }
+
+                if (friendsList.isEmpty()) {
+                    friends_main_rec.visibility = View.INVISIBLE
+                    friends_no_text.visibility = View.VISIBLE
+                } else {
+                    friends_main_rec.visibility = View.VISIBLE
+                    friends_no_text.visibility = View.INVISIBLE
+                    val friendsAdapter = FriendsAdapter(friends = friendsList,
+                            dates = datesList,
+                            listener = { friendUid ->
+                                val houseDetailsIntent = Intent(this@FriendsActivity, ProfileActivity::class.java)
+                                houseDetailsIntent.putExtra("from_user_id", friendUid)
+                                startActivity(houseDetailsIntent)
+                            },
+                            context = applicationContext)
+
+                    friends_main_rec.adapter = friendsAdapter
+                }
+
+
             }
 
-        }
-
-        friends_main_rec.adapter = friendsRecyclerViewAdapter
-    }
-
-
-    class FriendsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        fun setDate(date: String) {
-            itemView.friend_single_date.text = date
-            Log.d("FriendsList", date)
-        }
+            override fun onCancelled(error: DatabaseError?) {
+                Log.d("FriendsActivity", error?.message)
+            }
+        })
 
     }
 }

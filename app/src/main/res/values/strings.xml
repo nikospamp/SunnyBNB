@@ -38,7 +38,7 @@
     <string name="pref_title_status">User Status</string>
     <string name="pref_default_status">Hi Im using sunnybnb!</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string name="pref_title_add_friends_to_messages">Add friendsList to messages</string>
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
@@ -122,5 +122,5 @@
     <string name="decline_request">Decline Request</string>
     <string name="cancel_friend_request">Cancel Friend Request</string>
     <string name="remove_friend">Unfriend</string>
-    <string name="friends">Friends</string>
+    <string name="friendsList">Friends</string>
 </resources>

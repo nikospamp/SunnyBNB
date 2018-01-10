@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_friends"
             android:icon="@drawable/ic_group_of_friends"
-            android:title="@string/friends" />
+            android:title="@string/friendsList" />
         <item
             android:id="@+id/nav_favourites"
             android:icon="@drawable/ic_heart"

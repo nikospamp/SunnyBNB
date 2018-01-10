@@ -131,7 +131,7 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="@+id/profileFriendsCounter"
-                app:layout_constraintTop_toTopOf="@+id/friends" />
+                app:layout_constraintTop_toTopOf="@+id/friendsList" />
 
             <ImageView
                 android:id="@+id/profile_friends_img"
@@ -145,7 +145,7 @@
                 app:srcCompat="@drawable/ic_network" />
 
             <TextView
-                android:id="@+id/friends"
+                android:id="@+id/friendsList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -170,7 +170,7 @@
                 android:id="@+id/profile_settings_btn"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/friends"
+                android:layout_below="@+id/friendsList"
                 android:layout_centerHorizontal="true"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -181,7 +181,7 @@
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/friends" />
+                app:layout_constraintTop_toBottomOf="@+id/friendsList" />
 
             <Button
                 android:id="@+id/profile_send_friend_request_btn"
