@@ -3,11 +3,11 @@ package com.example.ptuxiaki.sunnybnb.ui.HouseDetails;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.Booking.BookingActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class HouseDetailsActivity extends AppCompatActivity {
+public class HouseDetailsActivity extends BaseActivity {
 
     private ImageView mainImageView;
     private TextView houseName;

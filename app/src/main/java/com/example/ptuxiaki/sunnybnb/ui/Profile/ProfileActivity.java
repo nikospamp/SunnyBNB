@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +34,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     private static final String FRIENDS = "friends";
     private static final String NOT_FRIENDS = "not_friends";

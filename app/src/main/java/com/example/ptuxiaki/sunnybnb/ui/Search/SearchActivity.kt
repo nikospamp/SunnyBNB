@@ -3,10 +3,10 @@ package com.example.ptuxiaki.sunnybnb.ui.Search
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import com.example.ptuxiaki.sunnybnb.BaseActivity
 import com.example.ptuxiaki.sunnybnb.R
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity
 import com.google.firebase.database.*
@@ -16,7 +16,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SearchActivity : AppCompatActivity(), CalendarFragment.PassCalendarInterface {
+class SearchActivity : BaseActivity(), CalendarFragment.PassCalendarInterface {
 
 
     private val searchHousesAdapter: SearchAdapter = SearchAdapter(null, null, null)

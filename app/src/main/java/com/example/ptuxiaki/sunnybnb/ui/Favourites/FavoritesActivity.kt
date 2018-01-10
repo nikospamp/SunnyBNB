@@ -2,10 +2,10 @@ package com.example.ptuxiaki.sunnybnb.ui.Favourites
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import com.example.ptuxiaki.sunnybnb.BaseActivity
 import com.example.ptuxiaki.sunnybnb.R
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -14,7 +14,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_favorites.*
 import java.util.*
 
-class FavoritesActivity : AppCompatActivity() {
+class FavoritesActivity : BaseActivity() {
 
     private lateinit var userFavHousesDb: DatabaseReference
 

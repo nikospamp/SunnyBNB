@@ -2,16 +2,16 @@ package com.example.ptuxiaki.sunnybnb.ui.TopDestinations
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import com.example.ptuxiaki.sunnybnb.BaseActivity
 import com.example.ptuxiaki.sunnybnb.Models.City
 import com.example.ptuxiaki.sunnybnb.R
 import com.google.firebase.database.*
 import java.util.*
 
 
-class TopDestinationsActivity : AppCompatActivity() {
+class TopDestinationsActivity : BaseActivity() {
 
     private lateinit var topDestinationsDb: DatabaseReference
     private var map: HashMap<String, Int> = hashMapOf()

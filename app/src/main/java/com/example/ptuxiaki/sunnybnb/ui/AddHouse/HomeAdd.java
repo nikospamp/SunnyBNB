@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.Models.House;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.AddHouse.Data.ServiceDataSource;
@@ -45,7 +45,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAdd extends AppCompatActivity implements ViewInterface {
+public class HomeAdd extends BaseActivity implements ViewInterface {
 
     private List<ServicesItem> listOfData;
     private LayoutInflater layoutInflater;

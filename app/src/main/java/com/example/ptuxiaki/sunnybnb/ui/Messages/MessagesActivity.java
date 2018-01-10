@@ -1,7 +1,6 @@
 package com.example.ptuxiaki.sunnybnb.ui.Messages;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class MessagesActivity extends AppCompatActivity {
+public class MessagesActivity extends BaseActivity {
 
     private static final String TAG = "MessagesActivity";
 

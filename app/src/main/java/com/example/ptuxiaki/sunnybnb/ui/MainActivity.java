@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.Models.House;
 import com.example.ptuxiaki.sunnybnb.Models.User;
 import com.example.ptuxiaki.sunnybnb.R;
@@ -58,7 +58,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
@@ -126,12 +126,12 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mUserDatabase.child("online").setValue(false);
-    }
-
+    /* @Override
+     protected void onStop() {
+         super.onStop();
+         mUserDatabase.child("online").setValue(false);
+     }
+ */
     @Override
     public void onStart() {
         super.onStart();
@@ -150,9 +150,12 @@ public class MainActivity extends AppCompatActivity
                                     ))
                             .build(),
                     RC_SIGN_IN);
-        } else {
+        }
+/*
+        else {
             mUserDatabase.child("online").setValue(true);
         }
+*/
 
         FirebaseRecyclerAdapter<House, HousesViewHolder> mHousesRecyclerAdapter =
                 new FirebaseRecyclerAdapter<House, HousesViewHolder>(

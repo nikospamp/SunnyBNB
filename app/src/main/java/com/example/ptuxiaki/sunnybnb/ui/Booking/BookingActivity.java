@@ -6,13 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,7 +32,7 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 
-public class BookingActivity extends AppCompatActivity implements ChooseDatesFragment.PassDatesInterface {
+public class BookingActivity extends BaseActivity implements ChooseDatesFragment.PassDatesInterface {
 
     private static final String TAG = "BookingActivity";
 

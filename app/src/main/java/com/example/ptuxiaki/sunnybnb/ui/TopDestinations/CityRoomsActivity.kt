@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.ptuxiaki.sunnybnb.BaseActivity
 import com.example.ptuxiaki.sunnybnb.Models.House
 import com.example.ptuxiaki.sunnybnb.R
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity
@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_city_rooms.*
 import java.util.*
 
-class CityRoomsActivity : AppCompatActivity() {
+class CityRoomsActivity : BaseActivity() {
 
     private lateinit var topDestinationsDb: DatabaseReference
     private lateinit var mDatabase: DatabaseReference
@@ -70,14 +70,14 @@ class CityRoomsActivity : AppCompatActivity() {
 
                 viewHolder.favIcon.setOnClickListener({
                     val push = mDatabase.child("USERS")
-                            .child(currentUser.getUid())
+                            .child(currentUser.uid)
                             .child("favorites").child(houseId)
 
                     push.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             if (dataSnapshot.value == null) {
                                 val houseFavRef = mDatabase.child("USERS")
-                                        .child(currentUser.getUid())
+                                        .child(currentUser.uid)
                                         .child("favorites")
 
                                 val cal = Calendar.getInstance()

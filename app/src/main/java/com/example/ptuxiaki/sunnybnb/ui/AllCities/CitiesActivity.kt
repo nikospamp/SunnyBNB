@@ -1,10 +1,10 @@
 package com.example.ptuxiaki.sunnybnb.ui.AllCities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import com.example.ptuxiaki.sunnybnb.BaseActivity
 import com.example.ptuxiaki.sunnybnb.R
 
-class CitiesActivity : AppCompatActivity() {
+class CitiesActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
