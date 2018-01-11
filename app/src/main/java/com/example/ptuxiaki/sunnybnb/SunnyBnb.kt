@@ -26,8 +26,9 @@ class SunnyBnb : Application() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot?) {
-                if (snapshot != null)
-                    mUserDatabase.child("online").onDisconnect().setValue(false)
+                if (snapshot != null) {
+                    mUserDatabase.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP)
+                }
             }
         })
     }

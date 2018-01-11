@@ -123,4 +123,5 @@
     <string name="cancel_friend_request">Cancel Friend Request</string>
     <string name="remove_friend">Unfriend</string>
     <string name="friendsList">Friends</string>
+    <string name="send_direct_message">Send Direct Message</string>
 </resources>

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
+import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,6 +54,7 @@ public class ProfileActivity extends BaseActivity {
     private Button sendRequestBtn;
     private Button declineRequestBtn;
     private Button settingsBtn;
+    private Button sendMessageBtn;
 
     private String displayingUser;
     private String mCurrent_state;
@@ -65,7 +67,6 @@ public class ProfileActivity extends BaseActivity {
     private DatabaseReference mRootRef;
     private DatabaseReference mFriendsRequestDb;
     private DatabaseReference mFriendsDb;
-    private DatabaseReference mNotificationDb;
 
     private StorageReference mStorageReference;
     private ProgressDialog mProgressBar;
@@ -79,6 +80,7 @@ public class ProfileActivity extends BaseActivity {
         sendRequestBtn = findViewById(R.id.profile_send_friend_request_btn);
         settingsBtn = findViewById(R.id.profile_settings_btn);
         declineRequestBtn = findViewById(R.id.profile_decline_friend_request_btn);
+        sendMessageBtn = findViewById(R.id.profile_send_message);
 
         image = findViewById(R.id.profileCircleImage);
 
@@ -116,6 +118,13 @@ public class ProfileActivity extends BaseActivity {
             }
         }
 
+        if (displayingUser.equals(currentUser.getUid())) {
+            sendMessageBtn.setVisibility(View.INVISIBLE);
+        } else {
+            sendMessageBtn.setVisibility(View.VISIBLE);
+        }
+
+
         mUserDb = FirebaseDatabase.getInstance().getReference()
                 .child(users).child(displayingUser);
         mUserDb.keepSynced(true);
@@ -124,7 +133,6 @@ public class ProfileActivity extends BaseActivity {
 
         mFriendsRequestDb = FirebaseDatabase.getInstance().getReference().child("FRIEND_REQ");
         mFriendsDb = FirebaseDatabase.getInstance().getReference().child("FRIENDS");
-        mNotificationDb = FirebaseDatabase.getInstance().getReference().child("NOTIFICATIONS");
 
         mUserDb.addValueEventListener(new ValueEventListener() {
             @Override
@@ -142,6 +150,13 @@ public class ProfileActivity extends BaseActivity {
                 String user_houses = dataSnapshot.child(houses).getValue().toString();
                 String user_visitors = dataSnapshot.child(visitors).getValue().toString();
                 String user_friends = dataSnapshot.child(friends).getValue().toString();
+
+                sendMessageBtn.setOnClickListener(view -> {
+                    Intent msgIntent = new Intent(getApplicationContext(), MessagesActivity.class);
+                    msgIntent.putExtra("from_user_id", displayingUser);
+                    msgIntent.putExtra("from_user_name", user_name);
+                    startActivity(msgIntent);
+                });
 
                 TextView nameTV = findViewById(R.id.profileDisplayName);
                 TextView statusTV = findViewById(R.id.profileStatus);
@@ -220,13 +235,14 @@ public class ProfileActivity extends BaseActivity {
             }
         });
 
-        image.setOnClickListener(v -> {
-            Log.d("Circle", "onClick: ");
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1)
-                    .start(ProfileActivity.this);
-        });
+        if (currentUser.getUid().equals(displayingUser))
+            image.setOnClickListener(v -> {
+                Log.d("Circle", "onClick: ");
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1, 1)
+                        .start(ProfileActivity.this);
+            });
 
         sendRequestBtn.setOnClickListener(view -> {
 

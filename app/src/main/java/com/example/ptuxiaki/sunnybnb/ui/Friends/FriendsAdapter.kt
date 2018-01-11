@@ -44,7 +44,8 @@ class FriendsAdapter(var friends: List<String>?, var dates: List<String>?, var l
                 Log.d("FriendsAdapter", snapshot.toString())
                 val friendName = snapshot.child("displayName").value.toString()
                 val friendImage = snapshot.child("photoUrl").value.toString()
-                holder?.bindTo(friendName, dateAdded, friendImage)
+                val friendOnlineStatus = snapshot.child("online").value.toString().toBoolean()
+                holder?.bindTo(friendName, dateAdded, friendImage, friendOnlineStatus)
             }
 
         })
@@ -55,11 +56,16 @@ class FriendsAdapter(var friends: List<String>?, var dates: List<String>?, var l
     override fun getItemCount(): Int = friends?.count() ?: 0
 
     class CustomViewHolder(var view: View, private val context: Context?) : RecyclerView.ViewHolder(view) {
-        fun bindTo(friendName: String?, dateAdded: String?, friendImage: String) {
+        fun bindTo(friendName: String?, dateAdded: String?, friendImage: String, friendOnlineStatus: Boolean) {
             view.friend_single_name.text = friendName
             view.friend_single_date.text = dateAdded
             Picasso.with(context).load(friendImage)
                     .placeholder(R.drawable.default_profile_image).into(view.friend_single_image)
+            if (friendOnlineStatus) {
+                view.friend_single_online_status.visibility = View.VISIBLE
+            } else {
+                view.friend_single_online_status.visibility = View.INVISIBLE
+            }
 
         }
     }
