@@ -6,7 +6,9 @@ import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import com.example.ptuxiaki.sunnybnb.BaseActivity
 import com.example.ptuxiaki.sunnybnb.R
+import com.example.ptuxiaki.sunnybnb.ui.Utilities.GetTimeAgo
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.chat_app_bar.*
 
 class MessagesActivity : BaseActivity() {
@@ -47,11 +49,19 @@ class MessagesActivity : BaseActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot?) {
                 val online = snapshot?.child("online")?.value.toString()
+                val image = snapshot?.child("photoUrl")?.value.toString()
 
                 if (online == "true")
                     custom_bar_last_seen.text = "Online"
-                else
-                    custom_bar_last_seen.text = online
+                else {
+                    val timeAgo = GetTimeAgo()
+                    val lastTime = online.toLong()
+                    val lastSeenTime = timeAgo.getTimeAgo(lastTime)
+                    custom_bar_last_seen.text = lastSeenTime
+                }
+
+                Picasso.with(applicationContext).load(image)
+                        .placeholder(R.drawable.default_profile_image).into(custom_bar_image)
             }
         })
 

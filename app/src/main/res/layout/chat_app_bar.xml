@@ -6,7 +6,6 @@
     tools:background="@color/com_facebook_blue">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:padding="2dp"
         android:id="@+id/custom_bar_image"
         android:layout_width="36dp"
         android:layout_height="36dp"
@@ -14,6 +13,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/custom_bar_name"
         android:layout_marginEnd="8dp"
+        android:padding="2dp"
         android:src="@drawable/default_profile_image" />
 
     <TextView

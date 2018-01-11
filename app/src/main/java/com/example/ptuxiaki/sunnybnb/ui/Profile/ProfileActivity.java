@@ -127,7 +127,6 @@ public class ProfileActivity extends BaseActivity {
 
         mUserDb = FirebaseDatabase.getInstance().getReference()
                 .child(users).child(displayingUser);
-        mUserDb.keepSynced(true);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
