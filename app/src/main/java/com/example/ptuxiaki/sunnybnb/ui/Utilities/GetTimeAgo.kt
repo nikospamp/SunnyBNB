@@ -5,10 +5,9 @@ package com.example.ptuxiaki.sunnybnb.ui.Utilities
  */
 class GetTimeAgo {
 
-    fun getTimeAgo(time: Long): String? {
-        var time = time
+    fun getTimeAgo(givenTime: Long): String? {
+        var time = givenTime
         if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
             time *= 1000
         }
 
@@ -18,20 +17,14 @@ class GetTimeAgo {
         }
 
         val diff = now - time
-        return if (diff < MINUTE_MILLIS) {
-            "just now"
-        } else if (diff < 2 * MINUTE_MILLIS) {
-            "a minute ago"
-        } else if (diff < 50 * MINUTE_MILLIS) {
-            (diff / MINUTE_MILLIS).toString() + " minutes ago"
-        } else if (diff < 90 * MINUTE_MILLIS) {
-            "an hour ago"
-        } else if (diff < 24 * HOUR_MILLIS) {
-            (diff / HOUR_MILLIS).toString() + " hours ago"
-        } else if (diff < 48 * HOUR_MILLIS) {
-            "yesterday"
-        } else {
-            (diff / DAY_MILLIS).toString() + " days ago"
+        return when {
+            diff < MINUTE_MILLIS -> "just now"
+            diff < 2 * MINUTE_MILLIS -> "a minute ago"
+            diff < 50 * MINUTE_MILLIS -> (diff / MINUTE_MILLIS).toString() + " minutes ago"
+            diff < 90 * MINUTE_MILLIS -> "an hour ago"
+            diff < 24 * HOUR_MILLIS -> (diff / HOUR_MILLIS).toString() + " hours ago"
+            diff < 48 * HOUR_MILLIS -> "yesterday"
+            else -> (diff / DAY_MILLIS).toString() + " days ago"
         }
     }
 
