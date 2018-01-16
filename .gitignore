@@ -123,7 +123,7 @@ obj/
 .idea/uiDesigner.xml
 
 # Node Modules
-node_modules/
+backend/functions/node_modules/
 
 # Keystore files
 
