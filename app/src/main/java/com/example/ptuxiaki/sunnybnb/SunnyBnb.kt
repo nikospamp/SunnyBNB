@@ -14,22 +14,24 @@ class SunnyBnb : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-
         mAuth = FirebaseAuth.getInstance()
-        mUserDatabase = FirebaseDatabase.getInstance().reference
-                .child("USERS").child(mAuth.currentUser?.uid)
 
-        mUserDatabase.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
+        if (mAuth.currentUser != null) {
+            mUserDatabase = FirebaseDatabase.getInstance().reference
+                    .child("USERS").child(mAuth.currentUser?.uid)
 
-            }
+            mUserDatabase.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
 
-            override fun onDataChange(snapshot: DataSnapshot?) {
-                if (snapshot != null) {
-                    mUserDatabase.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP)
                 }
-            }
-        })
+
+                override fun onDataChange(snapshot: DataSnapshot?) {
+                    if (snapshot != null) {
+                        mUserDatabase.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP)
+                    }
+                }
+            })
+        }
+
     }
 }
