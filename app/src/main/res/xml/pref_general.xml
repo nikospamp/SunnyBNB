@@ -38,6 +38,7 @@
         android:title="@string/pref_title_add_friends_to_messages" />
 
     <CheckBoxPreference
+        android:defaultValue="true"
         android:enabled="true"
         android:key="display_welcome_screen"
         android:summary="Display it when application opens"
