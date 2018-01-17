@@ -3,6 +3,7 @@ package com.example.ptuxiaki.sunnybnb.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chyrta.onboarder.OnboarderPage;
 import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.Models.House;
 import com.example.ptuxiaki.sunnybnb.Models.User;
@@ -35,6 +37,7 @@ import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Search.SearchActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
 import com.example.ptuxiaki.sunnybnb.ui.TopDestinations.TopDestinationsActivity;
+import com.example.ptuxiaki.sunnybnb.ui.WelcomeScreen.WelcomeScreenActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +54,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -60,6 +64,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static boolean RUN_ONCE = true;
 
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
@@ -81,6 +87,9 @@ public class MainActivity extends BaseActivity
     private String friends;
 
     private RecyclerView recyclerView;
+
+    private List<OnboarderPage> onboarderPages;
+
 
     @BindView(R.id.main_fab_search)
     FloatingActionButton actionButton;
@@ -108,6 +117,15 @@ public class MainActivity extends BaseActivity
         mDatabaseHouses = FirebaseDatabase.getInstance().getReference().child("HOUSES");
         if (mAuth.getCurrentUser() != null) {
             mUserDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child(mAuth.getCurrentUser().getUid());
+        }
+
+        boolean welcome_screen = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("display_welcome_screen", true);
+
+
+        if (welcome_screen && RUN_ONCE) {
+            RUN_ONCE = false;
+            startActivity(new Intent(this, WelcomeScreenActivity.class));
         }
 
         recyclerView = findViewById(R.id.mainRecycler);
