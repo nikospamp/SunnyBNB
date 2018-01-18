@@ -83,13 +83,10 @@ public class MainActivity extends BaseActivity
     private String status;
     private String token;
     private String houses;
-    private String visitors;
+    private long visitors;
     private String friends;
 
     private RecyclerView recyclerView;
-
-    private List<OnboarderPage> onboarderPages;
-
 
     @BindView(R.id.main_fab_search)
     FloatingActionButton actionButton;
@@ -343,7 +340,7 @@ public class MainActivity extends BaseActivity
                         phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
                         token = currentToken;
                         houses = "0";
-                        visitors = "0";
+                        visitors = 0;
                         friends = "0";
 
                         User mUser = new User(uid, status, displayName, email,

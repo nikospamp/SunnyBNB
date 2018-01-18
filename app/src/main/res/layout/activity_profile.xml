@@ -126,14 +126,14 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                app:srcCompat="@drawable/ic_supervisor_account_white_24px" />
+                app:srcCompat="@drawable/ic_network" />
 
             <TextView
                 android:id="@+id/visitorsTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Number Of Visitors:"
+                android:text="Number Of Friends:"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_visitors_img"
@@ -159,14 +159,14 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_visitors_img"
-                app:srcCompat="@drawable/ic_network" />
+                app:srcCompat="@drawable/ic_supervisor_account_white_24px" />
 
             <TextView
                 android:id="@+id/friendsList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Number Of Friends:"
+                android:text="Number Of Visitors:"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_friends_img"

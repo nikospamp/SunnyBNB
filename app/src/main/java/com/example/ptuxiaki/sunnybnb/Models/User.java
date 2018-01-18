@@ -20,13 +20,13 @@ public class User {
     private String msgToken;
     private Boolean online;
     private String houses;
-    private String visitors;
+    private long visitors;
     private String friends;
 
     public User() {
     }
 
-    public User(String uid, String status, String displayName, String email, String photoUrl, String provider, String phoneNumber, String msgToken, Boolean online, String houses, String visitors, String friends) {
+    public User(String uid, String status, String displayName, String email, String photoUrl, String provider, String phoneNumber, String msgToken, Boolean online, String houses, long visitors, String friends) {
         this.uid = uid;
         this.status = status;
         this.displayName = displayName;
@@ -121,11 +121,11 @@ public class User {
         this.houses = houses;
     }
 
-    public String getVisitors() {
+    public long getVisitors() {
         return visitors;
     }
 
-    public void setVisitors(String visitors) {
+    public void setVisitors(long visitors) {
         this.visitors = visitors;
     }
 

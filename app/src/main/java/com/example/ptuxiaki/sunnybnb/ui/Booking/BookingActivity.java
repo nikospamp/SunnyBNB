@@ -2,12 +2,10 @@ package com.example.ptuxiaki.sunnybnb.ui.Booking;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,10 +13,11 @@ import android.widget.Toast;
 import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,6 +36,7 @@ public class BookingActivity extends BaseActivity implements ChooseDatesFragment
     private static final String TAG = "BookingActivity";
 
     private DatabaseReference bookingReference;
+    private DatabaseReference ownerReference;
 
     private int arrivalDay = -1;
     private int arrivalMonth = -1;
@@ -48,6 +48,7 @@ public class BookingActivity extends BaseActivity implements ChooseDatesFragment
 
     private String HOUSE_ID = "";
     private String UID = "";
+    private String OWNER = "";
 
     private TextView arrivalTv;
 
@@ -67,18 +68,15 @@ public class BookingActivity extends BaseActivity implements ChooseDatesFragment
 
         submitBookingBtn = findViewById(R.id.booking_submit_book_request_btn);
 
-        submitBookingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BookNow();
-            }
-        });
+        submitBookingBtn.setOnClickListener(view -> BookNow());
 
         Intent intent = getIntent();
         HOUSE_ID = intent.getStringExtra("HOUSE_ID");
         UID = intent.getStringExtra("UID");
+        OWNER = intent.getStringExtra("OWNER_ID");
 
         bookingReference = FirebaseDatabase.getInstance().getReference().child("RESERVATIONS").child(HOUSE_ID);
+        ownerReference = FirebaseDatabase.getInstance().getReference().child("USERS").child(OWNER);
 
         ChooseDatesFragment fragmentArrival = new ChooseDatesFragment();
         Bundle bundle = new Bundle();
@@ -168,19 +166,42 @@ public class BookingActivity extends BaseActivity implements ChooseDatesFragment
         if (arrivalYear > 0 && arrivalMonth > 0 && arrivalDay > 0
                 && departureYear > 0 && departureMonth > 0 && departureDay > 0) {
             Map<String, Object> bookingMap = new HashMap<>();
+            Map<String, Object> bookingInfo = new HashMap<>();
+
+            bookingInfo.put("visitor", UID);
+            bookingInfo.put("owner", OWNER);
+
             List<String> dates = getDates(arrivalYear + "-" + arrivalMonth + "-" + arrivalDay,
                     departureYear + "-" + departureMonth + "-" + departureDay);
+
             for (String date : dates)
-                bookingMap.put(date, UID);
+                bookingMap.put(date, bookingInfo);
 
             if (bookingMap.size() > 0) {
-                bookingReference.updateChildren(bookingMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "Booked!", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(BookingActivity.this, MainActivity.class));
-                        finish();
+                bookingReference.updateChildren(bookingMap).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        ownerReference.child("visitors").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Log.d(TAG, "onDataChange: " + dataSnapshot.toString());
+                                long value = (long) dataSnapshot.getValue();
+                                value = value + 1;
+                                dataSnapshot.getRef().setValue(value).addOnCompleteListener(task1 -> {
+                                    Toast.makeText(getApplicationContext(), "Booked!", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(BookingActivity.this, MainActivity.class));
+                                    finish();
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
+
                 });
             }
         } else {

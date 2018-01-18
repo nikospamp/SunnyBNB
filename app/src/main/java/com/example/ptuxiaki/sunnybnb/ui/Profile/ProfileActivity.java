@@ -73,6 +73,8 @@ public class ProfileActivity extends BaseActivity {
 
     private TextView housesTV;
     private TextView friendsTV;
+    private TextView visitorsTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,8 @@ public class ProfileActivity extends BaseActivity {
         sendMessageBtn = findViewById(R.id.profile_send_message);
         housesTV = findViewById(R.id.profileHouseCounter);
         friendsTV = findViewById(R.id.profileFriendsCounter);
+        visitorsTV = findViewById(R.id.profileVisitorsCounter);
+
 
         image = findViewById(R.id.profileCircleImage);
 
@@ -149,7 +153,9 @@ public class ProfileActivity extends BaseActivity {
                 editor.putString("display_status_text", user_status);
                 editor.apply();
                 String user_image = dataSnapshot.child(photo).getValue().toString();
-                String user_visitors = dataSnapshot.child(visitors).getValue().toString();
+                long visitors = (long) dataSnapshot.child("visitors").getValue();
+
+                visitorsTV.setText(String.valueOf(visitors));
 
                 sendMessageBtn.setOnClickListener(view -> {
                     Intent msgIntent = new Intent(getApplicationContext(), MessagesActivity.class);
@@ -160,11 +166,9 @@ public class ProfileActivity extends BaseActivity {
 
                 TextView nameTV = findViewById(R.id.profileDisplayName);
                 TextView statusTV = findViewById(R.id.profileStatus);
-                TextView visitorsTV = findViewById(R.id.profileVisitorsCounter);
 
                 nameTV.setText(user_name);
                 statusTV.setText(user_status);
-                visitorsTV.setText(user_visitors);
 
                 Picasso.with(getApplicationContext()).load(user_image)
                         .placeholder(R.drawable.default_profile_image).into(image);
@@ -328,7 +332,9 @@ public class ProfileActivity extends BaseActivity {
         setHousesNumber();
 
         setFriendsNumber();
+
     }
+
 
     private void setFriendsNumber() {
         mRootRef.child("FRIENDS").child(displayingUser).addValueEventListener(new ValueEventListener() {

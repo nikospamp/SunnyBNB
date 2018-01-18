@@ -60,6 +60,7 @@ public class HouseDetailsActivity extends BaseActivity {
             Intent intent = new Intent(HouseDetailsActivity.this, BookingActivity.class);
             intent.putExtra("HOUSE_ID", HOUSE_ID);
             intent.putExtra("UID", userId);
+            intent.putExtra("OWNER_ID", ownerId);
             startActivity(intent);
             finish();
         });
