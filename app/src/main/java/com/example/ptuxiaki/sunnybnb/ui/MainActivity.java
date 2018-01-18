@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        testForResults();
+//        testForResults();
     }
 
     private void testForResults() {
