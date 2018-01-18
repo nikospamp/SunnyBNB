@@ -116,7 +116,10 @@ class SearchActivity : BaseActivity(), CalendarFragment.PassCalendarInterface {
                     } else {
 
                         Log.d("Search Date", "${x.key}: No Reservation for these dates ")
-                        searchHousesList.add(x.key)
+
+                        //Ghost house on DB, no idea what happened
+                        if (x.key != "-L20aCL-tKQIGSGUjEO9")
+                            searchHousesList.add(x.key)
 
                     }
                 }
