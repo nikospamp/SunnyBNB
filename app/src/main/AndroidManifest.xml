@@ -92,8 +92,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.Settings.SettingsActivity" />
-        <activity android:name=".ui.WelcomeScreen.WelcomeScreenActivity"></activity>
+        <activity android:name=".ui.WelcomeScreen.WelcomeScreenActivity" />
+        <activity android:name=".ui.Reservations.ReservationsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

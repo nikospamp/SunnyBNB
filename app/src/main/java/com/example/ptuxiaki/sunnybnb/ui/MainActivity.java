@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chyrta.onboarder.OnboarderPage;
 import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.Models.House;
 import com.example.ptuxiaki.sunnybnb.Models.User;
@@ -34,6 +33,7 @@ import com.example.ptuxiaki.sunnybnb.ui.Friends.FriendsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
+import com.example.ptuxiaki.sunnybnb.ui.Reservations.ReservationsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Search.SearchActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Settings.Settings2Activity;
 import com.example.ptuxiaki.sunnybnb.ui.TopDestinations.TopDestinationsActivity;
@@ -54,7 +54,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -138,15 +137,39 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        testForResults();
     }
 
-    /* @Override
-     protected void onStop() {
-         super.onStop();
-         mUserDatabase.child("online").setValue(false);
-     }
- */
+    private void testForResults() {
+        mDatabase.child("RESERVATIONS")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        String hid;
+
+                        for (DataSnapshot x : dataSnapshot.getChildren()) {
+                            hid = x.getKey();
+                            for (DataSnapshot y : x.getChildren()) {
+                                String date = y.getKey();
+                                String visitor = "NBHM6Bpo7CQ8quFOTCKGoHsnx0N2";
+                                if (y.child("visitor").getValue().equals(visitor)) {
+                                    Log.d("testForResults", "onDataChange: The user: " + visitor + " will visit: " + hid
+                                            + " on: " + date);
+                                }
+                            }
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -449,6 +472,9 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.nav_friends:
                 startActivity(new Intent(MainActivity.this, FriendsActivity.class));
+                break;
+            case R.id.nav_reservation:
+                startActivity(new Intent(MainActivity.this, ReservationsActivity.class));
                 break;
             case R.id.nav_favourites:
                 startActivity(new Intent(MainActivity.this, FavoritesActivity.class));

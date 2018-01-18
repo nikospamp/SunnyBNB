@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_group_black_24dp"
             android:title="@string/profile" />
         <item
+            android:id="@+id/nav_reservation"
+            android:icon="@drawable/ic_reservation"
+            android:title="@string/reservations" />
+        <item
             android:id="@+id/nav_friends"
             android:icon="@drawable/ic_group_of_friends"
             android:title="@string/friendsList" />
