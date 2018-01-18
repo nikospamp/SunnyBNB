@@ -71,6 +71,8 @@ public class ProfileActivity extends BaseActivity {
     private StorageReference mStorageReference;
     private ProgressDialog mProgressBar;
 
+    private TextView housesTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,7 @@ public class ProfileActivity extends BaseActivity {
         settingsBtn = findViewById(R.id.profile_settings_btn);
         declineRequestBtn = findViewById(R.id.profile_decline_friend_request_btn);
         sendMessageBtn = findViewById(R.id.profile_send_message);
-
+        housesTV = findViewById(R.id.profileHouseCounter);
         image = findViewById(R.id.profileCircleImage);
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
@@ -104,7 +106,6 @@ public class ProfileActivity extends BaseActivity {
                 }
             }
         }
-        Log.d("Messaging", displayingUser);
 
         if (currentUser != null) {
             if (!currentUser.getUid().equals(displayingUser)) {
@@ -146,7 +147,6 @@ public class ProfileActivity extends BaseActivity {
                 editor.putString("display_status_text", user_status);
                 editor.apply();
                 String user_image = dataSnapshot.child(photo).getValue().toString();
-                String user_houses = dataSnapshot.child(houses).getValue().toString();
                 String user_visitors = dataSnapshot.child(visitors).getValue().toString();
                 String user_friends = dataSnapshot.child(friends).getValue().toString();
 
@@ -159,13 +159,11 @@ public class ProfileActivity extends BaseActivity {
 
                 TextView nameTV = findViewById(R.id.profileDisplayName);
                 TextView statusTV = findViewById(R.id.profileStatus);
-                TextView housesTV = findViewById(R.id.profileHouseCounter);
                 TextView visitorsTV = findViewById(R.id.profileVisitorsCounter);
                 TextView friendsTV = findViewById(R.id.profileFriendsCounter);
 
                 nameTV.setText(user_name);
                 statusTV.setText(user_status);
-                housesTV.setText(user_houses);
                 visitorsTV.setText(user_visitors);
                 friendsTV.setText(user_friends);
 
@@ -326,6 +324,23 @@ public class ProfileActivity extends BaseActivity {
                 });
             }
 
+        });
+
+        setHousesNumber();
+    }
+
+    private void setHousesNumber() {
+        mRootRef.child("HOUSES").orderByChild("uid").equalTo(displayingUser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String childrenCount = String.valueOf(dataSnapshot.getChildrenCount());
+                housesTV.setText(childrenCount);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
     }
 
