@@ -25,6 +25,8 @@ class SearchActivity : BaseActivity(), CalendarFragment.PassCalendarInterface {
 
     private lateinit var searchReference: DatabaseReference
 
+    private lateinit var housesReference: DatabaseReference
+
     private var searchHousesList = ArrayList<String>()
 
     private var finalDates: MutableList<CalendarDay>? = null
@@ -54,6 +56,8 @@ class SearchActivity : BaseActivity(), CalendarFragment.PassCalendarInterface {
 
 
         searchReference = FirebaseDatabase.getInstance().reference.child("RESERVATIONS")
+
+        housesReference = FirebaseDatabase.getInstance().reference.child("HOUSES")
 
         search_button.setOnClickListener {
 
@@ -104,46 +108,53 @@ class SearchActivity : BaseActivity(), CalendarFragment.PassCalendarInterface {
             }
 
             override fun onDataChange(snap: DataSnapshot?) {
+
                 searchHousesList = arrayListOf()
 
-                for (x in snap?.children!!) {
-                    val dataSnapshot = x.value as HashMap<*, *>
 
-                    if (dates.any { dataSnapshot.containsKey(it) }) {
+                housesReference.addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {
+                    }
 
-                        Log.d("Search Date", "${x.key}: Reserved")
+                    override fun onDataChange(snapshot: DataSnapshot?) {
+                        Log.d("Search Date 1.5", "$snapshot")
+                        snapshot!!.children
+                                .forEach { searchHousesList.add(it.key) }
 
-                    } else {
+                        for (x in snap?.children!!) {
 
-                        Log.d("Search Date", "${x.key}: No Reservation for these dates ")
+                            val dataSnapshot = x.value as HashMap<*, *>
 
-                        //Ghost house on DB, no idea what happened
-                        if (x.key != "-L20aCL-tKQIGSGUjEO9")
-                            searchHousesList.add(x.key)
+                            if (dates.any { dataSnapshot.containsKey(it) }) {
+                                searchHousesList.remove(x.key)
+                            }
+                        }
+
+                        if (searchHousesList.size > 0) {
+                            search_prompt_txt.visibility = View.GONE
+                            searchHousesRec.visibility = View.VISIBLE
+                        } else {
+                            search_prompt_txt.visibility = View.VISIBLE
+                            search_prompt_txt.text = "No available houses for these dates"
+                            searchHousesRec.visibility = View.GONE
+                        }
+
+
+                        searchHousesRec.post({
+                            searchHousesAdapter.items = searchHousesList
+                            searchHousesAdapter.notifyDataSetChanged()
+                        })
+
+                        searchBtnFlag = true
+                        search_button.text = "Search Again"
 
                     }
-                }
-
-                if (searchHousesList.size > 0) {
-                    search_prompt_txt.visibility = View.GONE
-                    searchHousesRec.visibility = View.VISIBLE
-                } else {
-                    search_prompt_txt.visibility = View.VISIBLE
-                    search_prompt_txt.text = "No available houses for these dates"
-                    searchHousesRec.visibility = View.GONE
-                }
-
-                Log.d("Search Date", "Houses Added: $searchHousesList")
-
-
-                searchHousesRec.post({
-                    searchHousesAdapter.items = searchHousesList
-                    searchHousesAdapter.notifyDataSetChanged()
                 })
 
-                searchBtnFlag = true
-                search_button.text = "Search Again"
+
             }
+
+
         })
     }
 
