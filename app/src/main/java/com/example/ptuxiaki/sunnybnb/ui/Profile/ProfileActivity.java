@@ -72,7 +72,7 @@ public class ProfileActivity extends BaseActivity {
     private ProgressDialog mProgressBar;
 
     private TextView housesTV;
-
+    private TextView friendsTV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +84,8 @@ public class ProfileActivity extends BaseActivity {
         declineRequestBtn = findViewById(R.id.profile_decline_friend_request_btn);
         sendMessageBtn = findViewById(R.id.profile_send_message);
         housesTV = findViewById(R.id.profileHouseCounter);
+        friendsTV = findViewById(R.id.profileFriendsCounter);
+
         image = findViewById(R.id.profileCircleImage);
 
         mStorageReference = FirebaseStorage.getInstance().getReference();
@@ -148,7 +150,6 @@ public class ProfileActivity extends BaseActivity {
                 editor.apply();
                 String user_image = dataSnapshot.child(photo).getValue().toString();
                 String user_visitors = dataSnapshot.child(visitors).getValue().toString();
-                String user_friends = dataSnapshot.child(friends).getValue().toString();
 
                 sendMessageBtn.setOnClickListener(view -> {
                     Intent msgIntent = new Intent(getApplicationContext(), MessagesActivity.class);
@@ -160,12 +161,10 @@ public class ProfileActivity extends BaseActivity {
                 TextView nameTV = findViewById(R.id.profileDisplayName);
                 TextView statusTV = findViewById(R.id.profileStatus);
                 TextView visitorsTV = findViewById(R.id.profileVisitorsCounter);
-                TextView friendsTV = findViewById(R.id.profileFriendsCounter);
 
                 nameTV.setText(user_name);
                 statusTV.setText(user_status);
                 visitorsTV.setText(user_visitors);
-                friendsTV.setText(user_friends);
 
                 Picasso.with(getApplicationContext()).load(user_image)
                         .placeholder(R.drawable.default_profile_image).into(image);
@@ -327,6 +326,23 @@ public class ProfileActivity extends BaseActivity {
         });
 
         setHousesNumber();
+
+        setFriendsNumber();
+    }
+
+    private void setFriendsNumber() {
+        mRootRef.child("FRIENDS").child(displayingUser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String childrenCount = String.valueOf(dataSnapshot.getChildrenCount());
+                friendsTV.setText(childrenCount);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setHousesNumber() {
