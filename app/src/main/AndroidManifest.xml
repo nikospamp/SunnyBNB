@@ -102,6 +102,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
+        <activity android:name=".ui.Messages.ChatActivity"></activity>
     </application>
 
 </manifest>

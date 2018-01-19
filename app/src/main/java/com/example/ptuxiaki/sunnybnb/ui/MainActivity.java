@@ -31,6 +31,7 @@ import com.example.ptuxiaki.sunnybnb.ui.AllCities.CitiesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavoritesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Friends.FriendsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
+import com.example.ptuxiaki.sunnybnb.ui.Messages.ChatActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Reservations.ReservationsActivity;
@@ -486,7 +487,7 @@ public class MainActivity extends BaseActivity
                 startActivity(new Intent(MainActivity.this, CitiesActivity.class));
                 break;
             case R.id.nav_messages:
-                startActivity(new Intent(MainActivity.this, MessagesActivity.class));
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
                 break;
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainActivity.this, Settings2Activity.class);
