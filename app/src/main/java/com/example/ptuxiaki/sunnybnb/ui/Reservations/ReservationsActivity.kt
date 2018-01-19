@@ -14,7 +14,7 @@ class ReservationsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reservations)
-        supportActionBar?.title = "Reservations"
+        supportActionBar?.title = "Reservation Dates"
 
         pagerAdapter = ViewPagerAdapter(supportFragmentManager)
 
