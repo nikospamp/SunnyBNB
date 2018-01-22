@@ -66,6 +66,8 @@ public class HomeAdd extends BaseActivity implements ViewInterface {
     private Button coordinatesButton;
     private EditText homeAddCountry;
     private EditText homeAddCity;
+    private EditText homeAddAddress;
+    private EditText homeAddPhone;
     private CircleImageView homeAddCircleImage;
 
     private Uri imageUri;
@@ -104,16 +106,13 @@ public class HomeAdd extends BaseActivity implements ViewInterface {
         coordinatesButton = findViewById(R.id.homeAddCoordinates);
         homeAddMaxPeople = findViewById(R.id.homeAddMaxPeople);
         homeAddPrice = findViewById(R.id.homeAddPrice);
+        homeAddPhone = findViewById(R.id.homeAddPhone);
+        homeAddAddress = findViewById(R.id.homeAddAddress);
 
-        homeAddCircleImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(16, 9)
-                        .start(HomeAdd.this);
-            }
-        });
+        homeAddCircleImage.setOnClickListener(v -> CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(16, 9)
+                .start(HomeAdd.this));
 
         recyclerView = findViewById(R.id.recycler_home_add);
         layoutInflater = getLayoutInflater();
@@ -157,6 +156,8 @@ public class HomeAdd extends BaseActivity implements ViewInterface {
             mProgressBar.show();
 
             houseToUpload.setHouse_name(setDefaultValueIfNull(homeAddHouseName.getText().toString()));
+            houseToUpload.setAddress(setDefaultValueIfNull(homeAddAddress.getText().toString()));
+            houseToUpload.setPhoneNumber(setDefaultValueIfNull(homeAddPhone.getText().toString()));
             houseToUpload.setDescription(setDefaultValueIfNull(homeAddDescription.getText().toString()));
             houseToUpload.setCity(setDefaultValueIfNull(homeAddCity.getText().toString()));
             houseToUpload.setCountry(setDefaultValueIfNull(homeAddCountry.getText().toString()));
@@ -177,35 +178,24 @@ public class HomeAdd extends BaseActivity implements ViewInterface {
                     .child(tempRef.getKey() + ".jpg");
 
 
-            filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        String download_url = task.getResult().getDownloadUrl().toString();
-                        houseObject.put("mainFoto", download_url);
-                        tempRef.setValue(houseObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+            filePath.putFile(imageUri).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String download_url = task.getResult().getDownloadUrl().toString();
+                    houseObject.put("mainFoto", download_url);
+                    tempRef.setValue(houseObject).addOnCompleteListener(task1 -> {
+                        HashMap<String, Object> initObject = new HashMap<>();
+                        initObject.put("Init", "New House Added");
+                        databaseReference.child("RESERVATIONS").child(tempRef.getKey()).setValue(initObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                HashMap<String, Object> initObject = new HashMap<>();
-                                initObject.put("Init", "New House Added");
-                                databaseReference.child("RESERVATIONS").child(tempRef.getKey()).setValue(initObject).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        mProgressBar.dismiss();
-                                        Toast.makeText(HomeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(HomeAdd.this, MainActivity.class));
-                                        finish();
-                                    }
-                                });
-
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(HomeAdd.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            public void onComplete(@NonNull Task<Void> task1) {
+                                mProgressBar.dismiss();
+                                Toast.makeText(HomeAdd.this, "House Uploaded!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(HomeAdd.this, MainActivity.class));
+                                finish();
                             }
                         });
-                    }
+
+                    }).addOnFailureListener(e -> Toast.makeText(HomeAdd.this, e.toString(), Toast.LENGTH_SHORT).show());
                 }
             });
 

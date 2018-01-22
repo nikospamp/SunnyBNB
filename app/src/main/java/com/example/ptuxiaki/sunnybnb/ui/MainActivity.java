@@ -288,7 +288,7 @@ public class MainActivity extends BaseActivity
 
         void setCity(String city, String country) {
             TextView city_tv = mView.findViewById(R.id.single_house_location_tv);
-            String finalString = city + "," + country;
+            String finalString = city + ", " + country;
             city_tv.setText(finalString);
         }
 

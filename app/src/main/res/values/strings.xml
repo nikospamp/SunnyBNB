@@ -125,4 +125,5 @@
     <string name="friendsList">Friends</string>
     <string name="send_direct_message">Send Direct Message</string>
     <string name="reservations">Reservations</string>
+    <string name="address">Address</string>
 </resources>

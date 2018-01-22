@@ -24,12 +24,16 @@ public class House {
     private Object services;
     private Object uid;
     private Object user_reviews;
+    private String address;
+    private String phoneNumber;
 
 
     public House() {
     }
 
-    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name, String langitude, String longitude, String mainFoto, String max_people, String price, double rating, Object services, Object uid, Object user_reviews) {
+    public House(Object availability, String city, String country, String description, Object fotos, String hid, String house_name,
+                 String langitude, String longitude, String mainFoto, String max_people, String price, double rating,
+                 Object services, Object uid, Object user_reviews, String address, String phoneNumber) {
         this.availability = availability;
         this.city = city;
         this.country = country;
@@ -46,6 +50,24 @@ public class House {
         this.services = services;
         this.uid = uid;
         this.user_reviews = user_reviews;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Object getAvailability() {
@@ -205,11 +227,13 @@ public class House {
         houseObject.put("city", getCity());
         houseObject.put("country", getCountry());
         houseObject.put("hid", getHid());
-        houseObject.put("latitude","<SOON>");
-        houseObject.put("longitude","<SOON>");
-        houseObject.put("max_people",getMax_people());
-        houseObject.put("price",getPrice());
-        houseObject.put("uid",getUid());
+        houseObject.put("latitude", "<SOON>");
+        houseObject.put("longitude", "<SOON>");
+        houseObject.put("max_people", getMax_people());
+        houseObject.put("price", getPrice());
+        houseObject.put("uid", getUid());
+        houseObject.put("address", getAddress());
+        houseObject.put("phone", getPhoneNumber());
         return houseObject;
     }
 }

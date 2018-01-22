@@ -85,6 +85,30 @@
             app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
 
         <TextView
+            android:id="@+id/houseAddress"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/address"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseDescription" />
+
+        <EditText
+            android:id="@+id/homeAddAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:inputType="textPostalAddress"
+            app:layout_constraintBaseline_toBaselineOf="@+id/houseAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
             android:id="@+id/houseCity"
             style="@style/homeAddTheme"
             android:layout_width="wrap_content"
@@ -96,7 +120,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/houseDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/houseAddress" />
 
         <EditText
             android:id="@+id/homeAddCity"
@@ -137,6 +161,31 @@
             app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
 
         <TextView
+            android:id="@+id/housePhone"
+            style="@style/homeAddTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Phone:"
+            app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/houseCountry" />
+
+        <EditText
+            android:id="@+id/homeAddPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:inputType="phone"
+            app:layout_constraintBaseline_toBaselineOf="@+id/housePhone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_center_vertical" />
+
+        <TextView
             android:id="@+id/houseCoordinates"
             style="@style/homeAddTheme"
             android:layout_width="wrap_content"
@@ -148,14 +197,13 @@
             app:layout_constraintEnd_toStartOf="@+id/guide_center_vertical"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/houseCountry" />
+            app:layout_constraintTop_toBottomOf="@+id/housePhone" />
 
         <Button
             android:id="@+id/homeAddCoordinates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:background="@drawable/round_button"
             android:text="Open Maps"
             app:layout_constraintBaseline_toBaselineOf="@+id/houseCoordinates"
@@ -181,7 +229,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:ems="10"
             android:inputType="number"
             app:layout_constraintBaseline_toBaselineOf="@+id/houseMaxPeople"
@@ -207,7 +254,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:ems="10"
             android:inputType="number"
             app:layout_constraintBaseline_toBaselineOf="@+id/housePrice"
