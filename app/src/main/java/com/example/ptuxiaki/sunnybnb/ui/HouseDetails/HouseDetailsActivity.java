@@ -205,7 +205,6 @@ public class HouseDetailsActivity extends BaseActivity {
                             }
                         }
 
-                        Log.d("ServicesDisplay", "onDataChange: " + servicesListNames);
                         servicesRec.setAdapter(new CustomAdapter(servicesListNames, servicesListImages));
                     }
 

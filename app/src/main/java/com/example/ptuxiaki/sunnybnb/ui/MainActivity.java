@@ -60,6 +60,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends BaseActivity
@@ -91,6 +92,9 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.main_fab_search)
     FloatingActionButton actionButton;
 
+    private TextView navigationDisplayName;
+    private CircleImageView navigationImage;
+
     @OnClick(R.id.main_fab_search)
     public void showToast(View view) {
         startActivity(new Intent(this, SearchActivity.class));
@@ -112,9 +116,7 @@ public class MainActivity extends BaseActivity
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabaseHouses = FirebaseDatabase.getInstance().getReference().child("HOUSES");
-        if (mAuth.getCurrentUser() != null) {
-            mUserDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child(mAuth.getCurrentUser().getUid());
-        }
+
 
         boolean welcome_screen = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("display_welcome_screen", true);
@@ -138,38 +140,32 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        testForResults();
+        View headerView = navigationView.getHeaderView(0);
+
+        navigationDisplayName = headerView.findViewById(R.id.nav_drawer_display_name);
+        navigationImage = headerView.findViewById(R.id.nav_drawer_profile_image);
+
+        if (mAuth.getCurrentUser() != null) {
+            mUserDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child(mAuth.getCurrentUser().getUid());
+            mUserDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String userName = dataSnapshot.child("displayName").getValue().toString();
+                    String userImage = dataSnapshot.child("photoUrl").getValue().toString();
+
+                    navigationDisplayName.setText(userName);
+                    Picasso.with(getApplicationContext()).load(userImage)
+                            .placeholder(R.drawable.default_profile_image).into(navigationImage);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
-    private void testForResults() {
-        mDatabase.child("RESERVATIONS")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        String hid;
-
-                        for (DataSnapshot x : dataSnapshot.getChildren()) {
-                            hid = x.getKey();
-                            for (DataSnapshot y : x.getChildren()) {
-                                String date = y.getKey();
-                                String visitor = "NBHM6Bpo7CQ8quFOTCKGoHsnx0N2";
-                                if (y.child("visitor").getValue().equals(visitor)) {
-                                    Log.d("testForResults", "onDataChange: The user: " + visitor + " will visit: " + hid
-                                            + " on: " + date);
-                                }
-                            }
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
 
     @Override
     public void onStart() {
@@ -190,11 +186,7 @@ public class MainActivity extends BaseActivity
                             .build(),
                     RC_SIGN_IN);
         }
-/*
-        else {
-            mUserDatabase.child("online").setValue(true);
-        }
-*/
+
 
         FirebaseRecyclerAdapter<House, HousesViewHolder> mHousesRecyclerAdapter =
                 new FirebaseRecyclerAdapter<House, HousesViewHolder>(
