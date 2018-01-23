@@ -28,14 +28,12 @@ import com.example.ptuxiaki.sunnybnb.ui.AddHouse.Data.ServicesItem;
 import com.example.ptuxiaki.sunnybnb.ui.AddHouse.logic.Controller;
 import com.example.ptuxiaki.sunnybnb.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -47,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeAdd extends BaseActivity implements ViewInterface {
 
+    private static final int MAP_CODE = 123;
     private List<ServicesItem> listOfData;
     private LayoutInflater layoutInflater;
     private RecyclerView recyclerView;
@@ -117,6 +116,11 @@ public class HomeAdd extends BaseActivity implements ViewInterface {
         recyclerView = findViewById(R.id.recycler_home_add);
         layoutInflater = getLayoutInflater();
         controller = new Controller(this, new ServiceDataSource());
+
+        coordinatesButton.setOnClickListener(view -> {
+            Intent mapsIntent = new Intent(this, MapsActivity.class);
+            startActivityForResult(mapsIntent, MAP_CODE);
+        });
 
     }
 

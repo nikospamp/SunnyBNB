@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".SunnyBnb"
@@ -103,7 +104,15 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity android:name=".ui.Messages.ChatActivity" />
-        <activity android:name=".ui.Reviews.ReviewsActivity"></activity>
+        <activity android:name=".ui.Reviews.ReviewsActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".ui.AddHouse.MapsActivity"
+            android:label="@string/title_activity_maps" />
     </application>
 
 </manifest>
