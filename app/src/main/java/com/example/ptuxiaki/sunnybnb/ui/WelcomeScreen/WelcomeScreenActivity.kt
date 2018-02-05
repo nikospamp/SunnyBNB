@@ -15,7 +15,7 @@ class WelcomeScreenActivity : OnboarderActivity() {
 
         val welcomePage1 = OnboarderPage("Explore new places", "Discover new local and abroad experiences", R.drawable.ic_explore)
         val welcomePage2 = OnboarderPage("Friendships", "Build new bonds with interesting people", R.drawable.ic_friends)
-        val welcomePage3 = OnboarderPage("Reserve", "Easy booking with no hustle", R.drawable.ic_reservation)
+        val welcomePage3 = OnboarderPage("Reserve", "Easy booking with no hustle", R.drawable.bookingdate)
 
         welcomePage1.setBackgroundColor(R.color.material_blue_500)
         welcomePage2.setBackgroundColor(R.color.material_brown_400)
