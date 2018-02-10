@@ -2,11 +2,13 @@ package com.example.ptuxiaki.sunnybnb.ui.Reservations
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.ptuxiaki.sunnybnb.Models.Review
 import com.example.ptuxiaki.sunnybnb.R
-import com.facebook.FacebookSdk.getApplicationContext
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.reservation_single.view.*
@@ -31,6 +33,22 @@ class ReservationsAdapter(private var reservationDates: List<String>?,
                     ?: return@setOnClickListener
             listener?.invoke(item)
         })
+
+        itemView.reservation_review_btn.setOnClickListener {
+            Log.d("ReservationsAdapter", "Clicked")
+            var reviewRef = FirebaseDatabase.getInstance().reference.child("REVIEWS").child(houseIds?.getOrNull(customViewHolder.adapterPosition))
+
+            val mReview = Review("This is a review!", "123", "16:30", 5, "A great house review")
+
+            val reviewMap = mReview.toMap()
+
+            val reviewId = reviewRef.push().key
+
+            reviewRef.child(reviewId).updateChildren(reviewMap).addOnCompleteListener({
+                Toast.makeText(context, "Review Added", Toast.LENGTH_SHORT).show()
+            })
+
+        }
 
         return customViewHolder
     }

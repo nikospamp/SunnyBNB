@@ -53,7 +53,7 @@ exports.sendFriendNotification = functions.database.ref('/NOTIFICATIONS/{user_id
 
             return admin.messaging().sendToDevice(token_id, payload).then(response => {
 
-                console.log('This was the notification Feature, Response: ' + response);
+                console.log('This was the notification Feature, Response: ' + response.toString());
 
             });
 

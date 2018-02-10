@@ -6,13 +6,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.ptuxiaki.sunnybnb.R
 import com.example.ptuxiaki.sunnybnb.ui.Reservations.ReservationsAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_my_houses_reservations.view.*
-import kotlinx.android.synthetic.main.fragment_personal_reservations.view.*
 
 class MyHousesReservationsFragment : Fragment() {
 
