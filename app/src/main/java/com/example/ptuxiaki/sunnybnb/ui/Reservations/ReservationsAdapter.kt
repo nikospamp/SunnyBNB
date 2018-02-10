@@ -46,6 +46,16 @@ class ReservationsAdapter(private var reservationDates: List<String>?,
 
             reviewRef.child(reviewId).updateChildren(reviewMap).addOnCompleteListener({
                 Toast.makeText(context, "Review Added", Toast.LENGTH_SHORT).show()
+                reviewRef.child(reviewId).addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(snap: DataSnapshot?) {
+                        val readReview = snap?.getValue(Review::class.java)
+                        Log.d("ReservationsAdapter", readReview.toString())
+                    }
+                })
             })
 
         }
