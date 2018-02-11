@@ -1,6 +1,7 @@
 package com.example.ptuxiaki.sunnybnb.ui.Messages
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import com.example.ptuxiaki.sunnybnb.BaseActivity
 import com.example.ptuxiaki.sunnybnb.Models.Message
 import com.example.ptuxiaki.sunnybnb.R
+import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity
 import com.example.ptuxiaki.sunnybnb.ui.Utilities.GetTimeAgo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -53,7 +55,12 @@ class MessagesActivity : BaseActivity() {
 
         custom_bar_name.text = userName
 
-        msgAdapter = MessagesAdapter(messagesList, applicationContext, currentUser.uid, userId)
+        msgAdapter = MessagesAdapter(messagesList, applicationContext, currentUser.uid, userId,
+                imageListener = { friendUid ->
+                    val profileIntent = Intent(this@MessagesActivity, ProfileActivity::class.java)
+                    profileIntent.putExtra("from_user_id", friendUid)
+                    startActivity(profileIntent)
+                })
 
         messages_rec.adapter = msgAdapter
 

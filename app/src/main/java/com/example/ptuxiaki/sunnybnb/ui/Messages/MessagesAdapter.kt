@@ -16,7 +16,11 @@ import kotlinx.android.synthetic.main.message_single.view.*
 /**
  * Created by Pampoukidis on 16/1/2018.
  */
-class MessagesAdapter(var messages: List<Message>?, var context: Context?, var currentUser: String?, var friendUser: String) : RecyclerView.Adapter<MessagesAdapter.CustomViewHolder>() {
+class MessagesAdapter(var messages: List<Message>?,
+                      var context: Context?,
+                      var currentUser: String?,
+                      var friendUser: String,
+                      var imageListener: ((friendUid: String) -> Unit)?) : RecyclerView.Adapter<MessagesAdapter.CustomViewHolder>() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -30,7 +34,7 @@ class MessagesAdapter(var messages: List<Message>?, var context: Context?, var c
 
     override fun onBindViewHolder(holder: CustomViewHolder?, position: Int) {
         val message = messages?.get(position)
-        holder?.bindTo(message, auth, currentUser, friendUser)
+        holder?.bindTo(message, auth, currentUser, friendUser, imageListener)
     }
 
     override fun getItemCount(): Int = messages?.count() ?: 0
@@ -40,7 +44,7 @@ class MessagesAdapter(var messages: List<Message>?, var context: Context?, var c
         private lateinit var ref: DatabaseReference
 
 
-        fun bindTo(message: Message?, auth: FirebaseAuth, currentUser: String?, friendUser: String) {
+        fun bindTo(message: Message?, auth: FirebaseAuth, currentUser: String?, friendUser: String, imageListener: ((friendUid: String) -> Unit)?) {
 
             ref = FirebaseDatabase.getInstance().reference.child("USERS")
 
@@ -78,6 +82,10 @@ class MessagesAdapter(var messages: List<Message>?, var context: Context?, var c
                         val image = dataSnapshot.child("photoUrl").value.toString()
                         Picasso.with(context).load(image)
                                 .placeholder(R.drawable.default_profile_image).into(view.message_single_image_left)
+
+                        view.message_single_image_left.setOnClickListener({
+                            imageListener?.invoke(friendUser)
+                        })
                     }
                 })
             }
