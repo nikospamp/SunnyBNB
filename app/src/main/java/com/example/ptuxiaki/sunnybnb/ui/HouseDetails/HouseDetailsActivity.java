@@ -34,12 +34,15 @@ public class HouseDetailsActivity extends BaseActivity {
     private TextView houseName;
     private TextView houseLocation;
     private TextView houseDescription;
+    private TextView ownerName;
+    private ImageView ownerPhoto;
     private Button bookNow;
     private Button reviewsBtn;
     private Button ownerDetails;
 
 
     private DatabaseReference housesData;
+    private DatabaseReference userReference;
     private FirebaseAuth mAuth;
 
     public String userId;
@@ -69,6 +72,8 @@ public class HouseDetailsActivity extends BaseActivity {
         houseName = findViewById(R.id.house_detail_name);
         houseLocation = findViewById(R.id.house_detail_location);
         houseDescription = findViewById(R.id.house_details_description);
+        ownerName = findViewById(R.id.house_details_owner_name);
+        ownerPhoto = findViewById(R.id.house_details_owner_photo);
         bookNow = findViewById(R.id.house_detail_reservation_btn);
         reviewsBtn = findViewById(R.id.reviewsButton);
         ownerDetails = findViewById(R.id.house_details_owner_details_btn);
@@ -113,6 +118,24 @@ public class HouseDetailsActivity extends BaseActivity {
                 houseLocation.setText(houseLocationStr);
                 houseDescription.setText(houseDescriptionStr);
 
+                userReference = FirebaseDatabase.getInstance().getReference().child("USERS").child(ownerId);
+
+                userReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String user_name = dataSnapshot.child("displayName").getValue().toString();
+                        String user_image = dataSnapshot.child("photoUrl").getValue().toString();
+
+                        ownerName.setText(user_name);
+                        Picasso.with(getApplicationContext()).load(user_image)
+                                .placeholder(R.drawable.default_profile_image).into(ownerPhoto);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 housesData.child("services").addValueEventListener(new ValueEventListener() {
                     @Override

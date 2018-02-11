@@ -122,7 +122,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:gravity="center"
-                android:text="More Info"
+                android:text="Contact"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -131,30 +131,45 @@
 
             <Button
                 android:id="@+id/sendMessageButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/colorPrimary"
                 android:padding="8dp"
-                android:textAllCaps="false"
                 android:text="Message the Owner"
+                android:textAllCaps="false"
                 android:textColor="@color/cardview_light_background"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <Button
-                android:textAllCaps="false"
                 android:id="@+id/callButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
                 android:background="@color/fui_bgEmail"
                 android:padding="8dp"
                 android:text="Call 2310-753-327"
+                android:textAllCaps="false"
                 android:textColor="@color/cardview_light_background"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="@+id/sendMessageButton" />
+
+            <TextView
+                android:id="@+id/house_details_reviews"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Read user reviews"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sendMessageButton" />
 
             <Button
                 android:id="@+id/reviewsButton"
@@ -162,14 +177,15 @@
                 android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/fui_bgEmail"
                 android:padding="8dp"
                 android:text="Reviews"
                 android:textAllCaps="false"
                 android:textColor="@color/cardview_light_background"
-                app:layout_constraintEnd_toStartOf="@+id/callButton"
-                app:layout_constraintStart_toEndOf="@+id/sendMessageButton"
-                app:layout_constraintTop_toTopOf="@+id/sendMessageButton" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/house_details_reviews" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline"
@@ -185,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="183dp" />
+                app:layout_constraintGuide_percent="0.5" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline3"
@@ -196,16 +212,31 @@
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="20dp" />
 
+            <TextView
+                android:id="@+id/house_detail_owner_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Owner Details"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reviewsButton" />
+
             <ImageView
                 android:id="@+id/house_details_owner_photo"
                 android:layout_width="120dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="24dp"
                 android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sendMessageButton"
+                app:layout_constraintTop_toBottomOf="@+id/house_detail_owner_details"
                 app:srcCompat="@drawable/default_profile_image" />
 
             <TextView
@@ -221,12 +252,15 @@
 
             <Button
                 android:id="@+id/house_details_owner_details_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/round_button"
                 android:text="Details"
+                app:layout_constraintBottom_toBottomOf="@+id/house_details_owner_photo"
+                app:layout_constraintEnd_toEndOf="@+id/house_details_owner_name"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/house_details_owner_name" />
 
