@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
-import com.example.ptuxiaki.sunnybnb.ui.MainActivity;
+import com.example.ptuxiaki.sunnybnb.ui.Payment.PaymentActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -188,8 +188,11 @@ public class BookingActivity extends BaseActivity implements ChooseDatesFragment
                                 long value = (long) dataSnapshot.getValue();
                                 value = value + 1;
                                 dataSnapshot.getRef().setValue(value).addOnCompleteListener(task1 -> {
-                                    Toast.makeText(getApplicationContext(), "Booked!", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(BookingActivity.this, MainActivity.class));
+                                    //Todo: Fix lazy implementation
+                                    Intent intent = new Intent(BookingActivity.this, PaymentActivity.class);
+                                    intent.putExtra("DAYS_LENGTH", dates.size());
+                                    intent.putExtra("HOUSE_ID", HOUSE_ID);
+                                    startActivity(intent);
                                     finish();
                                 });
                             }
