@@ -6,4 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.Reviews.ReviewsActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reviews_main_rec"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/review_single"
+        tools:orientation="vertical" />
 </android.support.constraint.ConstraintLayout>

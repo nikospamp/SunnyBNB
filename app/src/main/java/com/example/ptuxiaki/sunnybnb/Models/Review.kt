@@ -4,7 +4,7 @@ import java.util.*
 
 data class Review(var body: String? = null,
                   var uid: String? = null,
-                  var time: String? = null,
+                  var time: Any? = null,
                   var stars: Int? = null,
                   var title: String? = null) {
 

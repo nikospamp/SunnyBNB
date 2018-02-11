@@ -113,6 +113,7 @@
         <activity
             android:name=".ui.AddHouse.MapsActivity"
             android:label="@string/title_activity_maps" />
+        <activity android:name=".ui.Reviews.WriteReviewActivity"></activity>
     </application>
 
 </manifest>

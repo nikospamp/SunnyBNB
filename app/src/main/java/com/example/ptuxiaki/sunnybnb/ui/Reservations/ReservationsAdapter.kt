@@ -6,8 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.example.ptuxiaki.sunnybnb.Models.Review
 import com.example.ptuxiaki.sunnybnb.R
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
@@ -20,7 +18,8 @@ class ReservationsAdapter(private var reservationDates: List<String>?,
                           private var houseIds: List<String>?,
                           private var visitorsIds: List<String>?,
                           private var context: Context?,
-                          var listener: ((chosenCity: String) -> Unit)?)
+                          var listener: ((chosenCity: String) -> Unit)?,
+                          var reviewListener: ((chosenCity: String) -> Unit)?)
     : RecyclerView.Adapter<ReservationsAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -36,28 +35,9 @@ class ReservationsAdapter(private var reservationDates: List<String>?,
 
         itemView.reservation_review_btn.setOnClickListener {
             Log.d("ReservationsAdapter", "Clicked")
-            var reviewRef = FirebaseDatabase.getInstance().reference.child("REVIEWS").child(houseIds?.getOrNull(customViewHolder.adapterPosition))
-
-            val mReview = Review("This is a review!", "123", "16:30", 5, "A great house review")
-
-            val reviewMap = mReview.toMap()
-
-            val reviewId = reviewRef.push().key
-
-            reviewRef.child(reviewId).updateChildren(reviewMap).addOnCompleteListener({
-                Toast.makeText(context, "Review Added", Toast.LENGTH_SHORT).show()
-                reviewRef.child(reviewId).addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {
-
-                    }
-
-                    override fun onDataChange(snap: DataSnapshot?) {
-                        val readReview = snap?.getValue(Review::class.java)
-                        Log.d("ReservationsAdapter", readReview.toString())
-                    }
-                })
-            })
-
+            val item = houseIds?.getOrNull(customViewHolder.adapterPosition)
+                    ?: return@setOnClickListener
+            reviewListener?.invoke(item)
         }
 
         return customViewHolder

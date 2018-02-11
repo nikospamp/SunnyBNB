@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.example.ptuxiaki.sunnybnb.BaseActivity;
 import com.example.ptuxiaki.sunnybnb.R;
 import com.example.ptuxiaki.sunnybnb.ui.Booking.BookingActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
+import com.example.ptuxiaki.sunnybnb.ui.Reviews.ReviewsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +35,7 @@ public class HouseDetailsActivity extends BaseActivity {
     private TextView houseLocation;
     private TextView houseDescription;
     private Button bookNow;
+    private Button reviewsBtn;
     private Button ownerDetails;
 
 
@@ -69,6 +70,7 @@ public class HouseDetailsActivity extends BaseActivity {
         houseLocation = findViewById(R.id.house_detail_location);
         houseDescription = findViewById(R.id.house_details_description);
         bookNow = findViewById(R.id.house_detail_reservation_btn);
+        reviewsBtn = findViewById(R.id.reviewsButton);
         ownerDetails = findViewById(R.id.house_details_owner_details_btn);
         servicesRec = findViewById(R.id.rec_services);
 
@@ -79,6 +81,12 @@ public class HouseDetailsActivity extends BaseActivity {
             intent.putExtra("OWNER_ID", ownerId);
             startActivity(intent);
             finish();
+        });
+
+        reviewsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(HouseDetailsActivity.this, ReviewsActivity.class);
+            intent.putExtra("HOUSE_ID", HOUSE_ID);
+            startActivity(intent);
         });
 
         ownerDetails.setOnClickListener(v -> {

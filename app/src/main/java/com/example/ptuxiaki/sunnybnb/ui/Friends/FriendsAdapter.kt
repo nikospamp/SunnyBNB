@@ -23,7 +23,8 @@ class FriendsAdapter(var friends: List<String>?, var dates: List<String>?, var l
         val customViewHolder = CustomViewHolder(itemView, context)
 
         itemView.setOnClickListener({
-            val item = friends?.getOrNull(customViewHolder.adapterPosition) ?: return@setOnClickListener
+            val item = friends?.getOrNull(customViewHolder.adapterPosition)
+                    ?: return@setOnClickListener
             listener?.invoke(item)
         })
 
@@ -69,5 +70,4 @@ class FriendsAdapter(var friends: List<String>?, var dates: List<String>?, var l
 
         }
     }
-
 }

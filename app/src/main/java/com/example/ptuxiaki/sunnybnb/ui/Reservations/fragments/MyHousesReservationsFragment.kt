@@ -64,8 +64,13 @@ class MyHousesReservationsFragment : Fragment() {
 
                         reservationsAdapter = ReservationsAdapter(reservationDates.reversed(),
                                 houseIds.reversed(),
-                                visitorsName.reversed(), context, listener = { chosenCity ->
-                        })
+                                visitorsName.reversed(), context,
+                                listener = { chosenCity ->
+
+                                },
+                                reviewListener = { reviewCity ->
+
+                                })
 
                         view.reservations_my_houses_recycler.adapter = reservationsAdapter
 

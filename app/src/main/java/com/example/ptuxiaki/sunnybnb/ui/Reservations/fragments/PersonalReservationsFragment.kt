@@ -1,13 +1,16 @@
 package com.example.ptuxiaki.sunnybnb.ui.Reservations.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ptuxiaki.sunnybnb.R
 import com.example.ptuxiaki.sunnybnb.ui.Reservations.ReservationsAdapter
+import com.example.ptuxiaki.sunnybnb.ui.Reviews.WriteReviewActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_personal_reservations.view.*
@@ -62,8 +65,16 @@ class PersonalReservationsFragment : Fragment() {
 
                         reservationsAdapter = ReservationsAdapter(reservationDates.reversed(),
                                 houseIds.reversed(),
-                                visitorsName.reversed(), context, listener = { chosenCity ->
-                        })
+                                visitorsName.reversed(), context,
+                                listener = { chosenCity ->
+
+                                },
+                                reviewListener = { reviewCity ->
+                                    Log.d("REVIEW_CHOSEN", reviewCity)
+                                    val intent = Intent(activity, WriteReviewActivity::class.java)
+                                    intent.putExtra("HOUSE_ID", reviewCity)
+                                    startActivity(intent)
+                                })
 
                         view.reservations_personal_recycler.adapter = reservationsAdapter
 
