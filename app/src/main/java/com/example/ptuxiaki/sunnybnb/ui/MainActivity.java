@@ -32,7 +32,6 @@ import com.example.ptuxiaki.sunnybnb.ui.Favourites.FavoritesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Friends.FriendsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.HouseDetails.HouseDetailsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Messages.ChatActivity;
-import com.example.ptuxiaki.sunnybnb.ui.Messages.MessagesActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Profile.ProfileActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Reservations.ReservationsActivity;
 import com.example.ptuxiaki.sunnybnb.ui.Search.SearchActivity;
@@ -351,7 +350,7 @@ public class MainActivity extends BaseActivity
                         status = "default_status";
                         displayName = setNullToDefaultValue(signedUser.getDisplayName());
                         email = setNullToDefaultValue(signedUser.getEmail());
-                        photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl().toString());
+                        photoUrl = setNullToDefaultValue(signedUser.getPhotoUrl());
                         provider = setNullToDefaultValue(signedUser.getProviderId());
                         phoneNumber = setNullToDefaultValue(signedUser.getPhoneNumber());
                         token = currentToken;
@@ -509,11 +508,11 @@ public class MainActivity extends BaseActivity
     }
 
     //Database Housekeeping
-    public String setNullToDefaultValue(String s) {
+    public String setNullToDefaultValue(Object s) {
         String defaultValue = "default_value";
         if (s == null)
             return defaultValue;
-        return s;
+        return s.toString();
     }
 }
 
